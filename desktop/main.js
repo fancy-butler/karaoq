@@ -158,11 +158,40 @@ async function start() {
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('karaoq:update')) installNow();
     else if (url.startsWith('karaoq:pickfolder')) pickLibraryFolder();
+    else if (url.startsWith('karaoq:report')) saveReport();
     else if (url.startsWith('karaoq:check')) tellStage();
     else shell.openExternal(url);
     return { action: 'deny' };
   });
   win.webContents.on('did-finish-load', tellStage);
+}
+
+// ---------- 🐞 bug report: one file in Downloads with everything needed to diagnose a problem ----------
+async function saveReport() {
+  const os = require('os');
+  const get = async p => { try { return await (await fetch(`http://127.0.0.1:${port}${p}`)).json(); } catch (e) { return { error: e.message }; } };
+  let logTail = '';
+  try { logTail = fs.readFileSync(logFile, 'utf8').split('\n').slice(-3000).join('\n'); } catch (e) { logTail = `(no log: ${e.message})`; }
+  let settings = null;
+  try { settings = JSON.parse(fs.readFileSync(path.join(dataDir, 'party.json'), 'utf8')).settings; } catch { }
+  const [about, preflight, libraryInfo] = await Promise.all([get('/api/about'), get('/api/preflight'), get('/api/library')]);
+  const stamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+  const file = path.join(app.getPath('downloads'), `KARAO-Q-report-${stamp}.txt`);
+  const text = [
+    `KARAO-Q bug report — ${new Date().toString()}`,
+    `App ${app.getVersion()} · Electron ${process.versions.electron} · ${process.platform} ${os.release()} ${process.arch} · ${os.cpus()[0]?.model || ''} · ${Math.round(os.totalmem() / 1e9)} GB RAM`,
+    `Server: ${JSON.stringify(about)}`,
+    '', '== Pre-party check ==', JSON.stringify(preflight, null, 1),
+    '', '== Settings ==', JSON.stringify(settings, null, 1),
+    '', '== Karaoke library ==', JSON.stringify(libraryInfo, null, 1),
+    '', '== Log (last 3000 lines) ==', logTail,
+  ].join('\n');
+  try {
+    fs.writeFileSync(file, text);
+    log(`bug report saved: ${file}`);
+    shell.showItemInFolder(file);
+    if (win && !win.isDestroyed()) win.webContents.executeJavaScript(`window.KQReportSaved && window.KQReportSaved(${JSON.stringify(file)})`).catch(() => { });
+  } catch (e) { dialog.showErrorBox('KARAO-Q', `Couldn't save the report: ${e.message}`); }
 }
 
 // ---------- 💾 karaoke library folder picker ----------

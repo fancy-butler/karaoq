@@ -170,10 +170,17 @@
   };
 
 
+  window.KQReportSaved = file => toast(`🐞 Saved to Downloads: ${file.split(/[\\/]/).pop()} — send that file to whoever's fixing it`);
+
   // opened from the ☰ menu (stage.js asks; true = handled)
   KQStage.panels = {
     open(m) {
       if (m === 'update') { restartToUpdate(); return true; }
+      if (m === 'report') {
+        if (/Electron/.test(navigator.userAgent)) { toast('Saving a bug report…'); window.open('karaoq:report'); }
+        else toast('Bug reports are saved from the KARAO-Q app. For Docker: docker logs karaoq > karaoq.log', 'bad');
+        return true;
+      }
       if (m === 'library') { app.classList.add('lib'); libRefresh(); return true; }
       if (m === 'mics') { app.classList.add('mics'); micRefresh(); return true; }
       if (m === 'preflight') { app.classList.add('pf'); runPreflight(); return true; }
