@@ -93,6 +93,7 @@ const qr = url => QRCode.toString(url, { type: 'svg', margin: 1, errorCorrection
 let qrSvg = null, netUrl = null, netSvg = null;
 const VERSION = require('./package.json').version;
 app.get('/api/stats', (req, res) => res.json(party.personalStats(String(req.query.name || '').slice(0, 40))));
+app.get('/api/foryou', (req, res) => res.json(party.forYou(String(req.query.name || '').slice(0, 40))));
 app.get('/api/classics', (req, res) => res.json(require('./lib/classics.json')));
 app.get('/api/house', (req, res) => res.json(party.houseFaves()));
 app.get('/api/more', (req, res) => res.json(require('./lib/more.json')));

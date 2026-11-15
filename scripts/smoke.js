@@ -103,6 +103,10 @@ async function until(fn, ms, what) {
     ok(state.history.some(h => h.singer === 'Smoke Tester' && !h.skipped), 'sung song lands in history');
     ok((state.stats || []).some(s => s.singer === 'Smoke Tester' && s.sung === 1), 'songs-sung count updates');
 
+    const fyr = await (await fetch(BASE + '/api/foryou?name=' + encodeURIComponent('Smoke Tester'))).json();
+    ok(fyr && fyr.empty === false, `🎯 for-you suggestions exist for a singer (${(fyr.picks || []).length} picks)`);
+    ok((await (await fetch(BASE + '/api/foryou?name=Nobody')).json()).empty === true, 'for-you is empty for someone new');
+
     // skip, undo-safe ops, hold/back
     ok((await act('skip')).ok, 'host can skip');
     await until(() => state && state.phase === 'idle', 10000, 'idle after skip');

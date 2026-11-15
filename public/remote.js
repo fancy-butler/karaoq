@@ -96,9 +96,42 @@
     r.ok ? toast(`Added for ${partner ? singer + ' & ' + partner : singer} — #${r.position} in line`) : toast(r.error, 'bad');
   };
 
+  // 🎯 For you: suggestions for whoever this phone is, from what they've sung here + what's queued.
+  // Pool picks search YouTube when tapped; "sung alongside" picks are exact videos and add in one tap.
+  let fy = null, fySig = '';
+  function loadForYou() {
+    if (!myName) { $('#fyBox').hidden = true; return; }
+    fetch('/api/foryou?name=' + encodeURIComponent(myName)).then(r => r.json()).then(r => {
+      fy = r;
+      $('#fyBox').hidden = !!r.empty || (!r.picks.length && !r.alongside.length);
+      if (r.empty) return;
+      $('#fyHead').textContent = `🎯 For you, ${myName.split(' ')[0]}`;
+      const G = r.basis.genres.map(g => (KQ.GENRES[g] || [g])[0]);
+      const bits = [G.join(' & '), r.basis.decades.join('')].filter(Boolean);
+      $('#fyBasis').textContent = bits.length ? `Because you've been singing ${bits.join(' from the ')}` : 'Based on what you sing';
+      $('#fyPicks').innerHTML = r.picks.map(c => `<button data-q="${esc(c.artist + ' ' + c.title)}" style="--g:${KQ.gColor(c.g)}" class="cl" title="${esc(c.why)}">${esc(c.title)} <small>${esc(c.artist)}${c.y ? ` · ’${String(c.y).slice(2)}` : ''}</small></button>`).join('');
+      $('#fyAlong').innerHTML = r.alongside.length ? `<h5>Sung by people who sing what you sing</h5>` + r.alongside.map((h, i) => `<div class="item hf" style="--g:${KQ.gColor(h.genre)}"><img loading="lazy" src="${esc(thumb(h))}" alt=""><div class="meta"><div class="t">${esc(clean(h.title))}</div><div class="s">${h.genre ? KQ.genreChip(h) : ''}${esc(h.why)}</div></div><div class="acts"><button data-fyadd="${i}" title="Add">＋</button></div></div>`).join('') : '';
+    }).catch(() => { });
+  }
+  $('#fyAlong').onclick = async e => {
+    const b = e.target.closest('[data-fyadd]'); if (!b || !fy) return;
+    const h = fy.alongside[b.dataset.fyadd]; if (!h) return;
+    if (!myName) return showJoin();
+    const r = await addSong({ video: { videoId: h.videoId, title: h.title }, singer: myName, trusted: true });
+    r.ok ? toast(`Added — #${r.position} in line`) : toast(r.error, 'bad');
+  };
+  // refresh when this singer's songs change (queued, sung, removed)
+  KQ.on('state', st => {
+    const me = String(myName || '').trim().toLowerCase(); if (!me) return;
+    const mineQ = [st.current, ...st.queue].filter(Boolean).filter(i => [i.singer, i.with].some(n => String(n || '').toLowerCase() === me)).map(i => i.videoId + (i.genre || ''));
+    const sung = (st.stats || []).find(x => x.singer.toLowerCase() === me);
+    const sig = mineQ.join() + '|' + (sung ? sung.sung : 0);
+    if (sig !== fySig) { fySig = sig; if (!$('#suggest').hidden) loadForYou(); }
+  });
+
   function showSuggest() {
     $('#suggest').hidden = false; $('#results').innerHTML = ''; lastResults = [];
-    loadHouse();
+    loadHouse(); loadForYou();
     $('#recentBox').hidden = !recentQ.length;
     $('#recent').innerHTML = recentQ.map(q => `<button data-q="${esc(q)}">${esc(q)}</button>`).join('');
     renderClassics();

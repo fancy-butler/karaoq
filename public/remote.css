@@ -242,3 +242,8 @@ body[data-theme="minimal"] button:not(.ghost):not(.av) { color: #111; }
 
 .recap { width: 100%; margin: 4px 0 12px; font-weight: 800; background: linear-gradient(90deg, #ff3d9a, #a66bff); }
 .btnlink { display: block; text-align: center; margin: 10px 0 4px; padding: 12px; border-radius: 12px; background: var(--cyan, #29e0ff); color: #111; font-weight: 800; text-decoration: none; }
+
+#fyBox { background: linear-gradient(135deg, rgba(255,61,154,.10), rgba(41,224,255,.07)); border: 1px solid rgba(255,61,154,.35); border-radius: 16px; padding: 4px 12px 12px; margin: 8px 0 4px; }
+#fyBox h4 { color: var(--pink); }
+#fyBox .fybasis { margin: -4px 2px 10px; font-size: 13px; color: var(--dim); }
+#fyBox h5 { margin: 14px 2px 6px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
