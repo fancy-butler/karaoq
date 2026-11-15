@@ -12,7 +12,7 @@ Grab the installer for your computer from the **[latest release](https://github.
 | | File | First launch |
 |---|---|---|
 | **Windows** | `KARAO-Q-…-win-x64.exe` | If a blue "Windows protected your PC" box shows, click **More info → Run anyway**. Allow the firewall prompt so phones can connect. |
-| **macOS** | `KARAO-Q-…-mac-arm64.dmg` | Drag to Applications. The app isn't Apple-signed, so macOS blocks the first launch — see **[First launch on a Mac](#first-launch-on-a-mac)** below. |
+| **macOS** | `KARAO-Q-…-mac-arm64.dmg` (M1 or newer) or `KARAO-Q-…-mac-x64.dmg` (Intel; needs macOS 12 Monterey or newer) | Drag to Applications. The app isn't Apple-signed, so macOS blocks the first launch — see **[First launch on a Mac](#first-launch-on-a-mac)** below. |
 | **Linux** | `KARAO-Q-…-linux-x86_64.AppImage` | Right-click → Properties → allow executing, then double-click. You may be asked for your password once so phones can get through the firewall. |
 
 ### First launch on a Mac
@@ -26,7 +26,7 @@ KARAO-Q isn't signed with a paid Apple developer certificate, so macOS is suspic
    ```
    then open it again.
 
-After that it opens normally. Macs with Intel chips aren't built for yet.
+After that it opens normally. Not sure which Mac you have? Apple menu → **About This Mac**: "Chip: Apple M…" → arm64, "Processor: …Intel…" → x64.
 
 ### First launch on Windows
 - **"Windows protected your PC"** (blue box): click **More info → Run anyway**. It shows because the installer isn't signed with a paid certificate.
