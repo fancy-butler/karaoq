@@ -62,6 +62,7 @@ window.KQ = (() => {
   }
 
   function toast(msg, kind = '') {
+    if (!msg) return;
     let el = document.getElementById('toast');
     if (!el) { el = document.createElement('div'); el.id = 'toast'; document.body.appendChild(el); }
     el.textContent = msg; el.className = 'show ' + kind;
@@ -145,10 +146,10 @@ window.KQ = (() => {
     ['node-qrcode', 'https://github.com/soldair/node-qrcode', 'QR codes', 'MIT'],
   ];
   async function aboutHtml() {
-    let v = '';
-    try { v = (await (await fetch('/api/about')).json()).version; } catch { }
+    let v = '', yd = '';
+    try { const j = await (await fetch('/api/about')).json(); v = j.version; yd = j.ytdlp || ''; } catch { }
     return `<div class="about">
-      <h2>🎤 KARAO-<span>Q</span> <small>v${esc(v)}</small></h2>
+      <h2>🎤 KARAO-<span>Q</span> <small>v${esc(v)}</small></h2>${yd ? `<p class="fine">YouTube downloader (yt-dlp) ${esc(yd)} — keeps itself up to date</p>` : ''}
       <p>Party karaoke with a shared queue from everyone's phones.<br>Made by <b>fancy-butler</b> · <a href="https://github.com/fancy-butler/karaoq" target="_blank" rel="noopener">github.com/fancy-butler/karaoq</a></p>
       <h3>Built on</h3>
       <ul>${CREDITS.map(([n, u, what, lic]) => `<li><a href="${u}" target="_blank" rel="noopener">${n}</a> — ${what} <i>(${esc(lic)})</i></li>`).join('')}</ul>

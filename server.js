@@ -35,7 +35,7 @@ const pub = path.join(__dirname, 'public');
 const viaNet = req => !!(req.headers['cf-connecting-ip'] || req.headers['cf-ray']);
 // Over the internet link, guests get the phone remote and the search API — nothing else.
 app.use((req, res, next) => {
-  if (viaNet(req) && (req.path.startsWith('/media') || req.path.startsWith('/stage'))) return res.status(404).end();
+  if (viaNet(req) && (req.path.startsWith('/media') || req.path.startsWith('/stream') || req.path.startsWith('/stage'))) return res.status(404).end();
   next();
 });
 app.get('/', (req, res) => { res.setHeader('Cache-Control', 'no-cache'); res.sendFile(path.join(pub, 'remote.html')); });
@@ -43,6 +43,28 @@ app.get('/stage', (req, res) => { res.setHeader('Cache-Control', 'no-cache'); re
 // no-cache = phones re-check files every load, so an updated KARAO-Q never runs with stale page code
 app.use(express.static(pub, { index: false, setHeaders: res => res.setHeader('Cache-Control', 'no-cache') }));
 app.use('/media', express.static(yt.cacheDir, { fallthrough: false, maxAge: '1h' }));
+// Stream-first playback: proxy YouTube's direct stream so the TV can start a song before its download is done.
+// Same-origin keeps key change (WebAudio) working; Range requests pass through so seeking works.
+const https = require('https');
+app.get('/stream/:id', async (req, res) => {
+  const id = String(req.params.id);
+  if (!/^[\w-]{11}$/.test(id)) return res.status(400).end();
+  if (MOCK) { await yt.streamUrl(id); return res.sendFile(yt.mockClipFile()); }
+  let url;
+  try { url = await yt.streamUrl(id); } catch (e) { return res.status(502).end(); }
+  const pipe = (u, hops = 0) => {
+    const up = https.get(u, { headers: { 'User-Agent': 'Mozilla/5.0', ...((yt.streamHeaders && yt.streamHeaders.get(id)) || {}), ...(req.headers.range ? { Range: req.headers.range } : {}) } }, r => {
+      if (r.statusCode >= 300 && r.statusCode < 400 && r.headers.location && hops < 3) { r.resume(); return pipe(r.headers.location, hops + 1); }
+      if (r.statusCode >= 400) { yt.streams.delete(id); r.resume(); return res.status(502).end(); }
+      res.status(r.statusCode);
+      for (const h of ['content-type', 'content-length', 'content-range', 'accept-ranges']) if (r.headers[h]) res.setHeader(h, r.headers[h]);
+      r.pipe(res);
+    });
+    up.on('error', () => { if (!res.headersSent) res.status(502).end(); else res.destroy(); });
+    req.on('close', () => up.destroy());
+  };
+  pipe(url);
+});
 app.use('/avatars', express.static(people.avatarDir, { fallthrough: false, maxAge: '1d' }));
 // Selfie upload: the phone crops + shrinks it to a small JPEG first, so this stays tiny.
 app.post('/api/avatar', express.json({ limit: '900kb' }), (req, res) => {
@@ -75,7 +97,7 @@ app.get('/api/classics', (req, res) => res.json(require('./lib/classics.json')))
 app.get('/api/house', (req, res) => res.json(party.houseFaves()));
 app.get('/api/more', (req, res) => res.json(require('./lib/more.json')));
 app.get('/api/popular', (req, res) => res.json(require('./lib/popular.json')));
-app.get('/api/about', (req, res) => res.json({ version: VERSION }));
+app.get('/api/about', (req, res) => res.json({ version: VERSION, ytdlp: yt.ytVersion }));
 app.get('/api/join', async (req, res) => {
   if (!qrSvg) qrSvg = await qr(BASE_URL);
   res.json({ url: BASE_URL, svg: qrSvg, netUrl, netSvg });
@@ -170,6 +192,11 @@ if (USE_TUNNEL && (!MOCK || process.env.TUNNEL === '1')) {
   setTimeout(() => tunnel.start(), 300);
   process.on('exit', () => tunnel.stop());
 }
+
+// Keep yt-dlp fresh: on startup and twice a day while running (YouTube changes break old versions).
+yt.version();
+setTimeout(() => yt.selfUpdate('startup'), 5000).unref();
+setInterval(() => yt.selfUpdate('scheduled'), 12 * 3600 * 1000).unref();
 
 server.listen(PORT, () => {
   console.log(`\n  🎤  KARAO-Q ${MOCK ? '(MOCK MODE) ' : ''}running`);

@@ -34,10 +34,7 @@ function prepareYtdlp() {
       fs.chmodSync(dst, 0o755);
     }
   } catch (e) { log(`yt-dlp copy failed: ${e.message}`); }
-  if (fs.existsSync(dst)) {
-    execFile(dst, ['-U'], { timeout: 180000 }, (err, out) => log(`yt-dlp update: ${err ? err.message : String(out).trim().split('\n').pop()}`));
-    return dst;
-  }
+  if (fs.existsSync(dst)) return dst; // the server keeps it updated (startup, twice a day, and after failures)
   return 'yt-dlp';
 }
 

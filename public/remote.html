@@ -64,7 +64,7 @@
 
   <div id="tab-faves" class="tab"><div id="favNames" class="chips"></div><div id="favList"></div></div>
 
-  <div id="tab-done" class="tab"><div id="nightBox"></div><div id="awardsBox"></div><div id="mixBox"></div><div id="board"></div><div id="doneList"></div></div>
+  <div id="tab-done" class="tab"><button id="recapBtn" class="recap" hidden>📸 Make a night recap card</button><div id="nightBox"></div><div id="awardsBox"></div><div id="mixBox"></div><div id="board"></div><div id="doneList"></div></div>
 </main>
 
 <dialog id="nameDlg">
@@ -115,25 +115,31 @@
     </label>
     <label class="toggle"><input type="checkbox" id="setFair"> Fair rotation (everyone gets one before anyone gets two)</label>
     <label class="toggle"><input type="checkbox" id="setQr"> Show join QR code on screen during songs</label>
-    <label class="toggle"><input type="checkbox" id="setNext"> Show "Next up" on screen during songs</label>
-    <label class="toggle"><input type="checkbox" id="setRows"> Colour rows by genre</label>
-    <label class="toggle"><input type="checkbox" id="setIntro"> Title card + ta-da when each song starts</label>
-    <label class="toggle"><input type="checkbox" id="setLevel"> Even out song volumes (new downloads)</label>
-    <label class="toggle"><input type="checkbox" id="setOled"> OLED care (drift overlays, screensaver when idle)</label>
     <label>Songs each person can have waiting in line at once
       <select id="setMax"><option value="0">No limit</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
       <small style="display:block;margin-top:4px">Not a limit for the night: once one is sung, they can add another. Hosts aren't limited.</small>
     </label>
-    <label>Space for downloaded songs
-      <select id="setCache"><option value="2">2 GB</option><option value="5">5 GB</option><option value="10">10 GB</option><option value="20">20 GB</option><option value="50">50 GB</option></select>
-      <small id="cacheUse" style="display:block;margin-top:4px"></small>
-    </label>
+    <details id="advSet">
+      <summary>More settings</summary>
+      <label class="toggle"><input type="checkbox" id="setNext"> Show "Next up" on screen during songs</label>
+      <label class="toggle"><input type="checkbox" id="setIntro"> Title card + ta-da when each song starts</label>
+      <label class="toggle"><input type="checkbox" id="setRows"> Colour rows by genre</label>
+      <label class="toggle"><input type="checkbox" id="setStream"> Start songs right away by streaming if the download isn't finished</label>
+      <label class="toggle"><input type="checkbox" id="setLyrics"> Warn before adding videos that don't look like karaoke</label>
+      <label class="toggle"><input type="checkbox" id="setLevel"> Even out song volumes (new downloads)</label>
+      <label class="toggle"><input type="checkbox" id="setOled"> OLED care (drift overlays, screensaver when idle)</label>
+      <label>Space for downloaded songs
+        <select id="setCache"><option value="2">2 GB</option><option value="5">5 GB</option><option value="10">10 GB</option><option value="20">20 GB</option><option value="50">50 GB</option></select>
+        <small id="cacheUse" style="display:block;margin-top:4px"></small>
+      </label>
+    </details>
     <button type="button" id="newNightBtn" class="ghost" style="width:100%;margin-top:8px">🌙 Start a new night (clear queue + counts)</button>
     <menu><button value="cancel" class="ghost">Cancel</button><button id="setOk" value="ok">Save</button></menu>
   </form>
 </dialog>
 
 <script src="/common.js"></script>
+<script src="/recap.js"></script>
 <script src="/remote.js"></script>
 </body>
 </html>

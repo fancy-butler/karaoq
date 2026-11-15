@@ -36,7 +36,7 @@
       if (loaded !== cur.id) {
         loaded = cur.id;
         if (st.settings.introCard !== false) showIntro(cur);
-        vid.src = `/media/${cur.videoId}.mp4`;
+        vid.src = cur.stream ? `/stream/${cur.videoId}` : `/media/${cur.videoId}.mp4`; // stream-first: plays before the download finishes
         vid.currentTime = 0;
         flashNowTag();
       }
@@ -55,7 +55,7 @@
   }
   $('#unlock').onclick = () => { app.classList.remove('locked'); unlockAudio(); if (keyCtx) keyCtx.resume(); const st = KQ.state; if (st && st.phase === 'playing') tryPlay(); };
   vid.addEventListener('ended', () => { if (loaded) send({ type: 'ended', itemId: loaded }); });
-  vid.addEventListener('error', () => { if (loaded && vid.getAttribute('src')) { send({ type: 'playerError', itemId: loaded, message: vid.error ? `media error ${vid.error.code}` : 'error' }); toast("That video wouldn't play — skipping", 'bad'); } });
+  vid.addEventListener('error', () => { if (loaded && vid.getAttribute('src')) { send({ type: 'playerError', itemId: loaded, message: vid.error ? `media error ${vid.error.code}` : 'error' }); if (!(KQ.state && KQ.state.current && KQ.state.current.stream)) toast("That video wouldn't play — skipping", 'bad'); } });
   setInterval(() => { if (loaded && !vid.paused) send({ type: 'progress', itemId: loaded, t: vid.currentTime, d: vid.duration || 0 }); }, 1000);
 
   function showAwards(list) {
@@ -147,6 +147,7 @@
   KQ.on('cmd', m => {
     if (m.cmd === 'restart') { vid.currentTime = 0; flashNowTag(); }
     if (m.cmd === 'chime') chime();
+    if (m.cmd === 'toast') toast(m.text);
     if (m.cmd === 'awards') showAwards(m.awards || []);
   });
 

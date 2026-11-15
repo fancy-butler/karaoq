@@ -1,4 +1,4 @@
-# Releases are automatic: bump "version" in package.json and push to main.
+# Releases are automatic (after the smoke test passes): bump "version" in package.json and push to main.
 # A GitHub Release (vX.Y.Z) is created with notes from the commits, and the Windows .exe,
 # macOS .dmg and Linux .AppImage are built and attached (~15 min). Installed apps update from it.
 # Pushes that don't change the version build nothing. Run by hand from the Actions tab to get
@@ -15,7 +15,22 @@ permissions:
   contents: write
 
 jobs:
+  # Plays a whole mock party in headless Chrome. If anything's broken, nothing gets released.
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/smoke.js
+        env:
+          CHROME: /usr/bin/google-chrome
+
   check:
+    needs: smoke
     runs-on: ubuntu-latest
     outputs:
       mode: ${{ steps.v.outputs.mode }}

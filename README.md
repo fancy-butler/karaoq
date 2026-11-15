@@ -12,8 +12,25 @@ Grab the installer for your computer from the **[latest release](https://github.
 | | File | First launch |
 |---|---|---|
 | **Windows** | `KARAO-Q-…-win-x64.exe` | If a blue "Windows protected your PC" box shows, click **More info → Run anyway**. Allow the firewall prompt so phones can connect. |
-| **macOS** | `KARAO-Q-…-mac-arm64.dmg` | Drag to Applications, then **right-click → Open** the first time (the app isn't Apple-signed). |
+| **macOS** | `KARAO-Q-…-mac-arm64.dmg` | Drag to Applications. The app isn't Apple-signed, so macOS blocks the first launch — see **[First launch on a Mac](#first-launch-on-a-mac)** below. |
 | **Linux** | `KARAO-Q-…-linux-x86_64.AppImage` | Right-click → Properties → allow executing, then double-click. You may be asked for your password once so phones can get through the firewall. |
+
+### First launch on a Mac
+KARAO-Q isn't signed with a paid Apple developer certificate, so macOS is suspicious of it once:
+
+1. Open KARAO-Q from Applications. macOS says it can't be opened → click **Done** (not "Move to Trash").
+2. Open **System Settings → Privacy & Security**, scroll down to *"KARAO-Q was blocked…"* and click **Open Anyway**, then confirm with your password or Touch ID.
+3. If instead it says **"KARAO-Q is damaged and can't be opened"**, it isn't really damaged: macOS just won't run unsigned downloads. Open **Terminal** and paste:
+   ```
+   xattr -dr com.apple.quarantine /Applications/KARAO-Q.app
+   ```
+   then open it again.
+
+After that it opens normally. Macs with Intel chips aren't built for yet.
+
+### First launch on Windows
+- **"Windows protected your PC"** (blue box): click **More info → Run anyway**. It shows because the installer isn't signed with a paid certificate.
+- **Windows Firewall prompt**: tick **Private networks** and click **Allow** — otherwise phones can't connect over Wi-Fi (the internet "Can't connect?" link still works).
 
 Plug the computer into the TV, open KARAO-Q, and everyone scans the QR code. Close the window to quit.
 

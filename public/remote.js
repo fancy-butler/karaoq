@@ -57,7 +57,17 @@
   }
 
   // add with a friendly "already queued / just sung — add anyway?" check
+  // "No lyrics" check: a video whose title doesn't look like karaoke / lyrics / instrumental probably has the
+  // original vocals and nothing on screen to sing from. Ask once per video (host can turn this off).
+  const KARAOKE_RE = /karaoke|instrumental|lyrics?|backing track|minus ?one|off ?vocal|sing ?a?long|videoke|piano version|no vocals?/i;
+  const looksSingable = v => KARAOKE_RE.test(`${v.title || ''} ${v.channel || ''}`);
+  const okVids = new Set(JSON.parse(ls.get('kq.okVids') || '[]'));
   async function addSong(data) {
+    const v = data.video || {};
+    if (KQ.state && KQ.state.settings.lyricsWarn !== false && !data.trusted && v.videoId && !okVids.has(v.videoId) && v.title && !looksSingable(v)) {
+      if (!confirm(`“${v.title}” doesn't look like a karaoke video — it may have the original singer's vocals and no lyrics on screen.\n\nAdd it anyway?`)) return { ok: false, cancelled: true };
+      okVids.add(v.videoId); ls.set('kq.okVids', JSON.stringify([...okVids].slice(-200)));
+    }
     let r = await act('add', data);
     if (!r.ok && r.dup && confirm(`${r.error}.\n\nAdd it anyway?`)) r = await act('add', { ...data, force: true });
     return r;
@@ -82,7 +92,7 @@
     let singer = myName, partner = '';
     if (b.dataset.hfor !== undefined) { const r = await askName('Who is singing this one?', '', true); if (!r) return; singer = r.name; partner = r.partner; }
     else if (!singer) return showJoin();
-    const r = await addSong({ video: { videoId: h.videoId, title: h.title }, singer, with: partner });
+    const r = await addSong({ video: { videoId: h.videoId, title: h.title }, singer, with: partner, trusted: true });
     r.ok ? toast(`Added for ${partner ? singer + ' & ' + partner : singer} — #${r.position} in line`) : toast(r.error, 'bad');
   };
 
@@ -180,7 +190,7 @@
     box.innerHTML = lastResults.map((v, i) => `
       <div class="item ${queued.has(v.videoId) ? 'added' : ''}">
         <img loading="lazy" src="${esc(thumb(v))}" alt="">
-        <div class="meta"><div class="t">${esc(v.title)}</div><div class="s">${esc(v.channel)}${v.duration ? ' · ' + fmt(v.duration) : ''}${queued.has(v.videoId) ? ' · <span class="dl ok">in queue</span>' : ''}</div></div>
+        <div class="meta"><div class="t">${esc(v.title)}</div><div class="s">${esc(v.channel)}${v.duration ? ' · ' + fmt(v.duration) : ''}${queued.has(v.videoId) ? ' · <span class="dl ok">in queue</span>' : ''}${looksSingable(v) ? '' : ' · <span class="dl warn" title="Title doesn\'t say karaoke or lyrics — may have vocals and no lyrics">⚠ maybe no lyrics</span>'}</div></div>
         <div class="acts"><button class="ghost" data-for="${i}" title="Add for someone else">👤</button><button data-add="${i}" title="Add">＋</button></div>
       </div>`).join('');
   }
@@ -196,6 +206,16 @@
     const r = await addSong({ video: v, singer, with: partner });
     if (r.ok) toast(`Added for ${partner ? singer + ' & ' + partner : singer} — #${r.position} in line`);
     else toast(r.error, 'bad');
+  };
+
+  // ---------- night recap card ----------
+  $('#recapBtn').onclick = async () => {
+    const b = $('#recapBtn'); b.disabled = true; b.textContent = '🎨 Drawing…';
+    try {
+      const r = await KQRecap.share(KQ.state);
+      if (r && r.url) sheet(`<h3>Night recap</h3><img src="${r.url}" alt="Night recap" style="width:100%;border-radius:12px"><a class="btnlink" href="${r.url}" download="${esc(r.name)}">⬇ Save image</a><p class="hint">Or press and hold the picture to save or share it.</p>`, () => { });
+    } catch (e) { console.error(e); toast("Couldn't make the card", 'bad'); }
+    b.disabled = false; b.textContent = '📸 Make a night recap card';
   };
 
   // ---------- item action sheet ----------
@@ -419,6 +439,7 @@
       <img loading="lazy" src="${esc(thumb(it))}" alt="">
       <div class="meta"><div class="singer">${esc(who(it))}</div><div class="t">${esc(clean(it.title))}</div></div>
       <div class="acts">${host || it.clientId === KQ.clientId ? '<button class="cyan back">↩ Back</button>' : ''}<button class="ghost">⋯</button></div></div>`).join('');
+    $('#recapBtn').hidden = !(st.night && st.night.songs);
     $('#nightBox').innerHTML = KQ.nightHtml(st.night);
     $('#mixBox').innerHTML = mixHtml(st.mix);
     const aw = st.awards || [];
@@ -441,7 +462,7 @@
     const i = e.target.closest('[data-again]')?.dataset.again; if (i === undefined) return;
     const h = KQ.state.history[i];
     const singer = await askName('Who is singing this one?', myName); if (!singer) return;
-    const r = await addSong({ video: h, singer });
+    const r = await addSong({ video: h, singer, trusted: true });
     r.ok ? toast(`Added for ${singer} — #${r.position} in line`) : toast(r.error, 'bad');
   };
 
@@ -463,7 +484,7 @@
   $('#favList').onclick = async e => {
     const cur = (KQ.state.faves || {})[String(favFor).toLowerCase()]; if (!cur) return;
     const q = e.target.closest('[data-q]')?.dataset.q, u = e.target.closest('[data-unfav]')?.dataset.unfav;
-    if (q !== undefined) { const f = cur.songs[q]; const r = await addSong({ video: f, singer: cur.name, key: f.key }); r.ok ? toast(`Added for ${cur.name} — #${r.position} in line`) : toast(r.error, 'bad'); }
+    if (q !== undefined) { const f = cur.songs[q]; const r = await addSong({ video: f, singer: cur.name, key: f.key, trusted: true }); r.ok ? toast(`Added for ${cur.name} — #${r.position} in line`) : toast(r.error, 'bad'); }
     if (u !== undefined) run('fave', { singer: cur.name, video: cur.songs[u], on: false }, 'Removed');
   };
 
@@ -541,10 +562,12 @@
     $('#setLevel').checked = s.levelVolume !== false;
     $('#setIntro').checked = s.introCard !== false;
     $('#setOled').checked = s.oledCare !== false;
+    $('#setStream').checked = s.streamFirst !== false;
+    $('#setLyrics').checked = s.lyricsWarn !== false;
     $('#setCache').value = String(s.cacheGB || 5);
     if (!$('#setCache').value) { $('#setCache').insertAdjacentHTML('beforeend', `<option value="${s.cacheGB}">${s.cacheGB} GB</option>`); $('#setCache').value = String(s.cacheGB); }
     $('#cacheUse').textContent = `Using ${(KQ.state.cacheBytes / 1e9).toFixed(1)} GB now. Oldest unplayed songs are deleted first; queued songs are never touched.`;
-    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, oledCare: $('#setOled').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
+    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, oledCare: $('#setOled').checked, streamFirst: $('#setStream').checked, lyricsWarn: $('#setLyrics').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
   $('#newNightBtn').onclick = () => { if (confirm('Start a new night? The queue is cleared (you can restore it from the Queue tab) and song counts reset.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };

@@ -48,7 +48,7 @@ main { padding: 0 12px 40px; }
 #searchForm { display: flex; gap: 8px; }
 #searchForm button { flex: none; }
 .toggle { display: flex; align-items: center; gap: 8px; color: var(--dim); font-size: 14px; margin: 10px 2px; }
-.toggle input { width: 20px; height: 20px; accent-color: var(--pink); }
+.toggle input { width: 20px; height: 20px; accent-color: var(--pink); flex-shrink: 0; }
 .hint { color: var(--dim); text-align: center; margin: 32px 12px; }
 
 .item { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 14px; background: var(--panel); margin-bottom: 8px; border: 1px solid transparent; }
@@ -65,7 +65,7 @@ main { padding: 0 12px 40px; }
 .q.up { border-color: var(--gold); background: #2a2310; }
 .q.up .pos { color: var(--gold); }
 .badge { font-size: 11px; font-weight: 800; padding: 1px 6px; border-radius: 6px; background: #ff5a5a33; color: var(--red); margin-left: 6px; vertical-align: 2px; }
-.dl { font-size: 12px; font-weight: 700; } .dl.ok { color: var(--green); } .dl.busy { color: var(--cyan); } .dl.bad { color: var(--red); } .dl.wait { color: var(--dim); }
+.dl { font-size: 12px; font-weight: 700; } .dl.ok { color: var(--green); } .dl.busy { color: var(--cyan); } .dl.bad { color: var(--red); } .dl.wait { color: var(--dim); } .dl.warn { color: #ffb347; font-weight: 600; }
 h3 { margin: 22px 4px 8px; font-size: 15px; color: var(--gold); } h3 small { color: var(--dim); font-weight: 500; }
 .held { opacity: .85; border: 1px dashed var(--line); }
 .held .back { width: auto !important; padding: 0 12px !important; font-size: 14px !important; }
@@ -235,3 +235,10 @@ body[data-theme="minimal"] button:not(.ghost):not(.av) { color: #111; }
 #popular .empty { color: var(--dim); padding: 12px; }
 
 .wide { width: 100%; margin-top: 10px; padding: 14px; }
+
+#advSet { margin: 10px 0 4px; border-top: 1px solid rgba(255,255,255,.12); padding-top: 8px; }
+#advSet summary { cursor: pointer; font-weight: 700; color: var(--dim); padding: 6px 0; }
+#advSet[open] summary { color: inherit; }
+
+.recap { width: 100%; margin: 4px 0 12px; font-weight: 800; background: linear-gradient(90deg, #ff3d9a, #a66bff); }
+.btnlink { display: block; text-align: center; margin: 10px 0 4px; padding: 12px; border-radius: 12px; background: var(--cyan, #29e0ff); color: #111; font-weight: 800; text-decoration: none; }
