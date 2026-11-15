@@ -1,5 +1,5 @@
 (() => {
-  const { act, esc, fmt, clean, thumb, dlLabel, toast, ls, now, who, keyLabel } = KQ;
+  const { act, esc, fmt, clean, thumb, dlLabel, toast, ls, now, who, keyLabel, genreChip, mixHtml, GENRES } = KQ;
   const isFave = (singer, videoId) => !!((KQ.state?.faves || {})[String(singer || '').trim().toLowerCase()]?.songs || []).find(f => f.videoId === videoId);
   const $ = s => document.querySelector(s);
   if (new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
@@ -112,6 +112,14 @@
     return r;
   }
 
+  function pickGenre(it, isCurrent) {
+    const cur = it.genre;
+    sheet(`<div class="h"><b>Genre for</b><div>${esc(clean(it.title))}</div></div>` +
+      Object.entries(GENRES).map(([k, [label, col]]) => `<button data-a="g:${k}" class="gpick ${k === cur ? 'on' : ''}" style="--g:${col}">${esc(label)}</button>`).join('') +
+      `<button data-a="g:">🤷 Not sure (clear)</button>`,
+      a => run('genre', { id: isCurrent ? undefined : it.id, genre: a.slice(2) || null }, 'Genre updated'));
+  }
+
   function itemMenu(it, where) {
     const st = KQ.state, host = KQ.you.isHost, mine = it.clientId === KQ.clientId;
     const can = host || mine;
@@ -125,6 +133,7 @@
       if (can) b += `<button data-a="hold">🚪 Stepped out — keep song, pull from rotation</button>`;
     } else if (can) b += `<button data-a="back">↩ They're back — put them up next</button>`;
     if (can) b += `<button data-a="keyDown">🎚 Key down (now ${keyLabel(it.key) || '0'})</button><button data-a="keyUp">🎚 Key up (now ${keyLabel(it.key) || '0'})</button>`;
+    if (can) b += `<button data-a="genre">🎨 Genre: ${it.genre && GENRES[it.genre] ? esc(GENRES[it.genre][0]) : 'unknown'} — change</button>`;
     if (can) b += `<button data-a="duet">👥 ${it.with ? 'Change / remove duet partner' : 'Make it a duet'}</button>`;
     b += `<button data-a="fave">${isFave(it.singer, it.videoId) ? '★ Remove from' : '⭐ Save to'} ${esc(it.singer)}'s favourites</button>`;
     if (it.dl?.state === 'error') b += `<button data-a="retry">🔁 Retry download</button>`;
@@ -132,6 +141,7 @@
     if (!can) b += `<div class="h"><div>Only ${esc(it.singer)}'s phone or the host can change this one.</div></div>`;
     sheet(b, async a => {
       if (a === 'keyDown' || a === 'keyUp') return run('key', { id: it.id, delta: a === 'keyUp' ? 1 : -1 });
+      if (a === 'genre') return setTimeout(() => pickGenre(it, false), 50);
       if (a === 'fave') return run('fave', { singer: it.singer, video: { ...it } }, isFave(it.singer, it.videoId) ? 'Removed from favourites' : `⭐ Saved to ${it.singer}'s favourites`);
       if (a === 'duet') { const p = prompt(`Who's singing with ${it.singer}? (leave empty for solo)`, it.with || ''); if (p === null) return; return run('duet', { id: it.id, with: p }, p.trim() ? `Duet: ${it.singer} & ${p.trim()}` : 'Back to solo'); }
       if (a === 'up') return run('move', { id: it.id, to: idx - 1 });
@@ -155,6 +165,7 @@
     if (a.startsWith('react:')) { KQ.send({ type: 'react', emoji: a.slice(6) }); const b = e.target.closest('button'); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); return; }
     if (a === 'keyUp' || a === 'keyDown') return run('key', { delta: a === 'keyUp' ? 1 : -1 });
     if (a === 'keyZero') return run('key', { value: 0 }, 'Original key');
+    if (a === 'genreNow') return pickGenre(st.current, true);
     if (a === 'fave') { const c = st.current; return run('fave', { singer: c.singer, video: { ...c } }, isFave(c.singer, c.videoId) ? 'Removed from favourites' : `⭐ Saved to ${c.singer}'s favourites`); }
     const msgs = { defer: 'Swapped — next person is up', hold: 'Moved to Stepped out' };
     run(a, {}, msgs[a]);
@@ -169,6 +180,7 @@
         <div class="label">${st.phase === 'paused' ? '⏸ PAUSED' : '● NOW SINGING'}</div>
         <button class="star ${isFave(c.singer, c.videoId) ? 'on' : ''}" data-a="fave" title="Save to favourites">${isFave(c.singer, c.videoId) ? '★' : '☆'}</button>
         <div class="who">${esc(who(c))}</div><div class="song">${esc(clean(c.title))}</div>
+        ${host || mine ? `<button class="gbtn" data-a="genreNow">${genreChip(c) || '<span class="gchip unknown">＋ genre</span>'}</button>` : genreChip(c)}
         <div class="bar"><i id="pbar"></i></div><div class="times"><span id="ptime"></span><span id="pdur">${fmt(c.duration)}</span></div>
         <div class="reacts">${['🔥', '👏', '😂', '❤️', '🎉', '🤘'].map(e => `<button data-a="react:${e}">${e}</button>`).join('')}</div>
         ${host || mine ? `<div class="keyrow"><span>Key</span><button data-a="keyDown" class="ghost">−</button><b>${keyLabel(c.key) || '0'}</b><button data-a="keyUp" class="ghost">+</button>${c.key ? '<button data-a="keyZero" class="ghost small">reset</button>' : ''}</div>` : ''}
@@ -182,7 +194,7 @@
       el.innerHTML = `
         <span class="count" id="cd"></span>
         <div class="label up">★ UP NEXT</div>
-        <div class="who">${esc(who(u))}</div><div class="song">${esc(clean(u.title))}</div>
+        <div class="who">${esc(who(u))}</div><div class="song">${esc(clean(u.title))}</div>${genreChip(u) ? `<div style="margin-top:6px">${genreChip(u)}</div>` : ''}
         <div class="song" id="upStatus"></div>
         ${can ? `<div class="row">
           ${host ? '<button data-a="startNow" class="gold">▶ Start now</button>' : ''}
@@ -249,7 +261,7 @@
       <div class="pos">${up ? '★' : i + 1}</div>
       <img loading="lazy" src="${esc(thumb(it))}" alt="">
       <div class="meta"><div class="singer">${esc(who(it))}${it.key ? `<span class="keyb">${keyLabel(it.key)}</span>` : ''}${isFave(it.singer, it.videoId) ? '<span class="favb">★</span>' : ''}${sungBy(st, it.singer) ? `<span class="sung">🎤${sungBy(st, it.singer)}</span>` : ''}${it.deferred ? `<span class="badge">passed ${it.deferred}×</span>` : ''}</div>
-        <div class="t">${esc(clean(it.title))}</div><div class="s">${dlLabel(it.dl)}${it.duration ? ' · ' + fmt(it.duration) : ''}</div></div>
+        <div class="t">${esc(clean(it.title))}</div><div class="s">${genreChip(it)}${dlLabel(it.dl)}${it.duration ? ' · ' + fmt(it.duration) : ''}</div></div>
       <div class="acts"><button class="ghost" aria-label="Options">⋯</button></div></div>`;
   }
 
@@ -267,6 +279,7 @@
       <img loading="lazy" src="${esc(thumb(it))}" alt="">
       <div class="meta"><div class="singer">${esc(who(it))}</div><div class="t">${esc(clean(it.title))}</div></div>
       <div class="acts">${host || it.clientId === KQ.clientId ? '<button class="cyan back">↩ Back</button>' : ''}<button class="ghost">⋯</button></div></div>`).join('');
+    $('#mixBox').innerHTML = mixHtml(st.mix);
     $('#board').innerHTML = (st.stats || []).map((x, i) => `<span class="${i === 0 && x.sung > 1 ? 'top' : ''}">${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');
     $('#doneList').innerHTML = st.history.length ? st.history.map((h, i) => `<div class="item done">
       <img loading="lazy" src="${esc(thumb(h))}" alt="">

@@ -1,6 +1,6 @@
 {
   "name": "karaoq",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Party karaoke: YouTube karaoke with a shared queue fed from everyone's phones. No ads.",
   "main": "desktop/main.js",
   "scripts": {
@@ -16,7 +16,8 @@
   "dependencies": {
     "express": "^4.21.2",
     "qrcode": "^1.5.4",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "electron-updater": "^6.8.11"
   },
   "homepage": "https://github.com/fancy-butler/karaoq",
   "author": "fancy-butler",

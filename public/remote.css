@@ -131,3 +131,15 @@ nav button { padding: 10px 6px; font-size: 15px; }
 .about ul { padding-left: 18px; margin: 0; } .about i { color: var(--dim); font-style: normal; font-size: 12px; }
 .about a { color: var(--cyan); } .about .fine { color: var(--dim); font-size: 12px; margin-top: 14px; }
 #aboutDlg { max-height: 85vh; overflow: auto; }
+
+.gchip { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 999px; color: #0d0716; background: var(--g); margin-right: 6px; vertical-align: 1px; white-space: nowrap; }
+.gchip.unknown { background: transparent; color: var(--dim); border: 1px dashed var(--line); }
+.gbtn { background: transparent; padding: 0; margin-top: 6px; }
+.gpick { border-left: 8px solid var(--g) !important; } .gpick.on { outline: 2px solid var(--g); }
+.mix { background: var(--panel); border-radius: 14px; padding: 12px; margin: 4px 0 14px; }
+.mix::before { content: "Tonight's mix"; display: block; color: var(--dim); font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+.mixbar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px; }
+.mixbar i { display: block; min-width: 6px; }
+.mixlegend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; font-size: 13px; font-weight: 700; }
+.mixlegend b { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; }
+.mixdec { margin-top: 6px; color: var(--dim); font-size: 13px; } .mixdec em { font-style: normal; color: var(--text); font-weight: 700; }

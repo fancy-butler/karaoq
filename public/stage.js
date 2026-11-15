@@ -1,5 +1,5 @@
 (() => {
-  const { act, esc, clean, thumb, dlLabel, toast, now, send, who, keyLabel } = KQ;
+  const { act, esc, clean, thumb, dlLabel, toast, now, send, who, keyLabel, gColor, genreChip, mixHtml } = KQ;
   const $ = s => document.querySelector(s);
   const app = $('#app'), vid = $('#vid');
   let loaded = null;          // item id currently loaded in the <video>
@@ -146,9 +146,16 @@
     $('#sideCount').textContent = st.queue.length ? `· ${st.queue.length}` : '';
     $('#sideList').innerHTML = st.queue.length ? st.queue.map((it, i) => {
       const up = i === 0 && st.phase === 'upnext';
-      return `<li class="${up ? 'up' : ''}"><span class="n">${up ? '★' : i + 1}</span><span class="w">${esc(who(it))}${it.key ? `<span class="k">${keyLabel(it.key)}</span>` : ''}${sungBy(st, it.singer) ? `<span class="c">🎤${sungBy(st, it.singer)}</span>` : ''}${it.dl?.state !== 'ready' ? dlLabel(it.dl) : ''}</span><span class="t">${esc(clean(it.title))}</span></li>`;
+      return `<li class="${up ? 'up' : ''}" style="--g:${it.genre ? gColor(it.genre) : 'transparent'}"><span class="n">${up ? '★' : i + 1}</span><span class="w">${esc(who(it))}${it.key ? `<span class="k">${keyLabel(it.key)}</span>` : ''}${sungBy(st, it.singer) ? `<span class="c">🎤${sungBy(st, it.singer)}</span>` : ''}${it.dl?.state !== 'ready' ? dlLabel(it.dl) : ''}</span><span class="t">${esc(clean(it.title))}</span></li>`;
     }).join('') : '<li><span class="empty">Nobody in line. Scan the code below!</span></li>';
     $('#sideHeld').textContent = st.held.length ? `🚪 Stepped out: ${st.held.map(h => who(h)).join(', ')}` : '';
+
+    // the screen takes on the colour of the song's genre
+    const accentFrom = (st.phase === 'playing' || st.phase === 'paused') ? st.current : st.phase === 'upnext' ? st.queue[0] : null;
+    app.style.setProperty('--accent', accentFrom && accentFrom.genre ? gColor(accentFrom.genre) : '#ff3d9a');
+    $('#upGenre').innerHTML = st.phase === 'upnext' && st.queue[0] ? genreChip(st.queue[0]) : '';
+    const mixH = mixHtml(st.mix);
+    $('#idleMix').innerHTML = mixH; $('#sideMix').innerHTML = mixH;
 
     // songs sung tonight
     const statsHtml = (st.stats || []).map((x, i) => `<span class="st ${i === 0 && x.sung > 1 ? 'top' : ''}">${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');

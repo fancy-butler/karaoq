@@ -17,6 +17,8 @@ Grab the installer for your computer from the **[latest release](https://github.
 
 Plug the computer into the TV, open KARAO-Q, and everyone scans the QR code. Close the window to quit.
 
+**Updates:** on Windows and Linux, KARAO-Q updates itself, downloading in the background and installing when you close it. On a Mac, you'll get a notification with a link to the new version.
+
 Downloaded songs are capped at 5 GB by default (change it in ⚙ Settings on a phone). The oldest unplayed songs get deleted first, and queued songs are never touched. If KARAO-Q has been closed for 6+ hours, it starts with an empty queue and offers to restore last time's leftovers.
 
 ---
@@ -88,6 +90,9 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
 | ↶ **Undo** (`Z`) | Reverses the last queue change. For when someone fat-fingers it. |
 
 **Between songs** the TV shows a big **UP NEXT: NAME** screen with a countdown (15 s by default, adjustable in ⚙ Settings) and a chime. Set the countdown to "None" if you'd rather the host hit Start every time.
+
+## Genres & tonight's mix
+KARAO-Q reads the artist from the karaoke title and looks up the genre and decade on [MusicBrainz](https://musicbrainz.org), a free public music database. Every song gets a colour chip, the TV glows in the current song's genre colour, and **Tonight's mix** shows the night's split ("40% Pop · 25% Rock…") plus decades. Wrong guess? Tap the chip (or ⋯ → Genre) on a phone to fix it. Your pick is remembered.
 
 ## Singing features
 - **Key change:** the singer (or host) taps **−/+** on their phone to move the song down or up in semitones without changing the speed. It's shown on the TV as "key −2". Starred songs remember the key you last sang them in.

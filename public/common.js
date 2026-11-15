@@ -72,6 +72,25 @@ window.KQ = (() => {
   const who = it => it ? (it.with ? `${it.singer} & ${it.with}` : it.singer) : '';
   const keyLabel = k => !k ? '' : (k > 0 ? `+${k}` : `−${-k}`);
 
+  // ---------- genres ----------
+  const GENRES = {
+    pop: ['Pop', '#ff4fa3'], rock: ['Rock', '#ff4b4b'], metal: ['Metal', '#8f9bb3'], punk: ['Punk', '#b6ff3b'],
+    hiphop: ['Hip-hop', '#ffae2b'], rnb: ['R&B / Soul', '#a66bff'], disco: ['Disco / Funk', '#ffd23f'],
+    country: ['Country', '#c8925a'], electronic: ['Electronic', '#29e0ff'], latin: ['Latin', '#ff7a3d'],
+    jazz: ['Jazz / Blues', '#3b82ff'], folk: ['Folk', '#5fd38d'], musical: ['Musicals', '#e0b3ff'], kpop: ['K-pop / J-pop', '#40f0c0'],
+  };
+  const gColor = g => (GENRES[g] || [])[1] || '#ff3d9a';
+  const genreChip = it => it && it.genre && GENRES[it.genre] ? `<span class="gchip" style="--g:${GENRES[it.genre][1]}">${esc(GENRES[it.genre][0])}${it.year ? ` · ’${String(Math.floor(it.year / 10) * 10).slice(2)}s` : ''}</span>` : '';
+  // stacked colour bar + legend for tonight's genre mix
+  function mixHtml(mix) {
+    if (!mix || !mix.genres || !mix.genres.length) return '';
+    const total = mix.genres.reduce((a, x) => a + x.n, 0);
+    const pct = n => Math.round((n / total) * 100);
+    return `<div class="mix"><div class="mixbar">${mix.genres.map(x => `<i style="flex:${x.n};background:${gColor(x.k)}" title="${esc((GENRES[x.k] || [x.k])[0])}"></i>`).join('')}</div>
+      <div class="mixlegend">${mix.genres.slice(0, 6).map(x => `<span><b style="background:${gColor(x.k)}"></b>${pct(x.n)}% ${esc((GENRES[x.k] || [x.k])[0])}</span>`).join('')}</div>
+      ${mix.decades && mix.decades.length ? `<div class="mixdec">${mix.decades.slice(0, 5).map(d => `${esc(d.k)} <em>${pct(d.n)}%</em>`).join(' · ')}</div>` : ''}</div>`;
+  }
+
   // About / credits, shared by the TV screen and the phones
   const CREDITS = [
     ['yt-dlp', 'https://github.com/yt-dlp/yt-dlp', 'fetches the songs', 'Unlicense'],
@@ -98,6 +117,6 @@ window.KQ = (() => {
     </div>`;
   }
 
-  Object.assign(api, { aboutHtml, who, keyLabel, connect, act, send, now, esc, fmt, clean, thumb, dlLabel, toast });
+  Object.assign(api, { GENRES, gColor, genreChip, mixHtml, aboutHtml, who, keyLabel, connect, act, send, now, esc, fmt, clean, thumb, dlLabel, toast });
   return api;
 })();

@@ -1,7 +1,7 @@
 'use strict';
 // KARAO-Q desktop app (Electron). Everything is bundled: Node (Electron's own), yt-dlp, ffmpeg, deno and
 // cloudflared. Double-click → the TV screen opens fullscreen with the join QR. Close the window → it all shuts down.
-const { app, BrowserWindow, Menu, dialog, shell } = require('electron');
+const { app, BrowserWindow, Menu, dialog, shell, Notification } = require('electron');
 const { spawn, execFile } = require('child_process');
 const path = require('path');
 const fs = require('fs');
@@ -130,12 +130,38 @@ async function start() {
   win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
 }
 
+// ---------- updates ----------
+// Windows + Linux: download quietly, install when the app is closed (never mid-song).
+// macOS: unsigned apps can't self-update, so just say a new version is out and link to it.
+function checkForUpdates() {
+  if (!app.isPackaged) return;
+  let autoUpdater;
+  try { ({ autoUpdater } = require('electron-updater')); } catch (e) { return log(`updater unavailable: ${e.message}`); }
+  autoUpdater.logger = { info: log, warn: log, error: log, debug() { } };
+  if (process.platform === 'darwin') {
+    autoUpdater.autoDownload = false;
+    autoUpdater.on('update-available', info => {
+      if (!Notification.isSupported()) return;
+      const n = new Notification({ title: `KARAO-Q ${info.version} is out`, body: 'Click to download the new version.' });
+      n.on('click', () => shell.openExternal('https://github.com/fancy-butler/karaoq/releases/latest'));
+      n.show();
+    });
+    autoUpdater.checkForUpdates().catch(e => log(`update check failed: ${e.message}`));
+  } else {
+    autoUpdater.autoInstallOnAppQuit = true;
+    autoUpdater.on('update-downloaded', info => {
+      if (Notification.isSupported()) new Notification({ title: `KARAO-Q ${info.version} downloaded`, body: 'It will install the next time you close KARAO-Q.' }).show();
+    });
+    autoUpdater.checkForUpdates().catch(e => log(`update check failed: ${e.message}`));
+  }
+}
+
 // macOS needs an app menu for Cmd+Q / Cmd+F to work; elsewhere no menu bar at all.
 Menu.setApplicationMenu(process.platform === 'darwin'
   ? Menu.buildFromTemplate([{ role: 'appMenu' }, { role: 'viewMenu' }, { role: 'windowMenu' }])
   : null);
 
 app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
-app.whenReady().then(start);
+app.whenReady().then(() => { start(); setTimeout(checkForUpdates, 15000); });
 app.on('window-all-closed', () => app.quit());
 app.on('before-quit', () => { quitting = true; stopServer(); });

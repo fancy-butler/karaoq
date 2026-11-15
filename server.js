@@ -8,6 +8,7 @@ const QRCode = require('qrcode');
 const { Party } = require('./lib/party');
 const { YT } = require('./lib/yt');
 const { Tunnel } = require('./lib/tunnel');
+const { Genres } = require('./lib/genre');
 
 const PORT = Number(process.env.PORT) || 8080;
 const HOST_PIN = String(process.env.HOST_PIN || '').trim();   // empty = everyone can manage the queue
@@ -24,7 +25,8 @@ function lanAddress() {
 const BASE_URL = process.env.BASE_URL || `http://${lanAddress()}:${PORT}`;
 
 const yt = new YT({ cacheDir: path.join(DATA_DIR, 'cache'), bin: process.env.YTDLP || 'yt-dlp', mock: MOCK });
-const party = new Party({ file: path.join(DATA_DIR, 'party.json'), yt });
+const genres = new Genres({ file: path.join(DATA_DIR, 'genres.json'), mock: MOCK });
+const party = new Party({ file: path.join(DATA_DIR, 'party.json'), yt, genres });
 
 const app = express();
 const pub = path.join(__dirname, 'public');
