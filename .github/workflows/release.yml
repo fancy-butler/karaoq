@@ -75,6 +75,20 @@ jobs:
         run: npx electron-builder --publish ${{ needs.check.outputs.mode == 'publish' && 'always' || 'never' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Mac: prove the signature is valid (no "damaged" message) and that the packaged app actually starts
+      - name: Check the Mac app opens
+        if: runner.os == 'macOS'
+        run: |
+          APP=$(ls -d dist/mac*/KARAO-Q.app | head -1); echo "$APP"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          codesign -dv "$APP" 2>&1 | grep -E 'Signature|Identifier|flags'
+          RES="$APP/Contents/Resources/bin"; ls "$RES"
+          "$RES/yt-dlp" --version; "$RES/deno" --version | head -1; "$RES/ffmpeg" -hide_banner -version | head -1; "$RES/cloudflared" --version
+          "$APP/Contents/MacOS/KARAO-Q" > app.log 2>&1 &
+          for i in $(seq 1 60); do curl -fs http://127.0.0.1:8080/api/about && break; sleep 1; done
+          curl -fs http://127.0.0.1:8080/api/about | grep -q '"version"' || { cat app.log; exit 1; }
+          echo; echo "app started and its server answers"
+          pkill -f "KARAO-Q.app" || true
       - uses: actions/upload-artifact@v4
         if: needs.check.outputs.mode == 'test'
         with:
