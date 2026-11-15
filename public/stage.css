@@ -252,3 +252,12 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 
 /* song-only overlays never linger once the song is over */
 .idle #nowTag, .upnext #nowTag, .idle #intro, .upnext #intro { opacity: 0 !important; }
+
+/* awards show */
+#awardsShow { position: absolute; inset: 0; z-index: 38; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(70% 60% at 50% 40%, #3a2a08, #07030d 75%); cursor: pointer; padding: 3vh 4vw; }
+.awards #awardsShow { display: flex; }
+#awardsShow h1 { font-size: clamp(40px, 5vw, 90px); margin: 0 0 3vh; color: var(--gold); text-shadow: 0 0 40px #ffd23f88; }
+#awardsGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2vh 2vw; width: 100%; max-width: 1500px; }
+.acard { background: var(--panel); border: 1px solid #ffd23f55; border-radius: 22px; padding: 2.4vh 1vw; display: flex; flex-direction: column; align-items: center; gap: 6px; opacity: 0; animation: cardin .6s cubic-bezier(.2,1.4,.4,1) forwards; }
+@keyframes cardin { from { opacity: 0; transform: translateY(30px) scale(.9); } to { opacity: 1; transform: none; } }
+.acard .aic { font-size: 44px; } .acard h3 { margin: 6px 0 0; color: var(--gold); font-size: 24px; } .acard b { font-size: 22px; } .acard span { color: var(--dim); font-size: 16px; }

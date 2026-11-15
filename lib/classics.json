@@ -1,0 +1,848 @@
+[
+{
+"artist": "Queen",
+"title": "Bohemian Rhapsody",
+"g": "rock",
+"y": 1975
+},
+{
+"artist": "Queen",
+"title": "Don't Stop Me Now",
+"g": "rock",
+"y": 1978
+},
+{
+"artist": "Bon Jovi",
+"title": "Livin' on a Prayer",
+"g": "rock",
+"y": 1986
+},
+{
+"artist": "Journey",
+"title": "Don't Stop Believin'",
+"g": "rock",
+"y": 1981
+},
+{
+"artist": "Toto",
+"title": "Africa",
+"g": "rock",
+"y": 1982
+},
+{
+"artist": "Bonnie Tyler",
+"title": "Total Eclipse of the Heart",
+"g": "pop",
+"y": 1983
+},
+{
+"artist": "a-ha",
+"title": "Take On Me",
+"g": "electronic",
+"y": 1985
+},
+{
+"artist": "Cyndi Lauper",
+"title": "Girls Just Want to Have Fun",
+"g": "pop",
+"y": 1983
+},
+{
+"artist": "Cyndi Lauper",
+"title": "Time After Time",
+"g": "pop",
+"y": 1984
+},
+{
+"artist": "Whitney Houston",
+"title": "I Wanna Dance with Somebody",
+"g": "pop",
+"y": 1987
+},
+{
+"artist": "Whitney Houston",
+"title": "I Will Always Love You",
+"g": "rnb",
+"y": 1992
+},
+{
+"artist": "Celine Dion",
+"title": "My Heart Will Go On",
+"g": "pop",
+"y": 1997
+},
+{
+"artist": "Celine Dion",
+"title": "It's All Coming Back to Me Now",
+"g": "pop",
+"y": 1996
+},
+{
+"artist": "Heart",
+"title": "Alone",
+"g": "rock",
+"y": 1987
+},
+{
+"artist": "Pat Benatar",
+"title": "Hit Me with Your Best Shot",
+"g": "rock",
+"y": 1980
+},
+{
+"artist": "Meat Loaf",
+"title": "I'd Do Anything for Love",
+"g": "rock",
+"y": 1993
+},
+{
+"artist": "Europe",
+"title": "The Final Countdown",
+"g": "rock",
+"y": 1986
+},
+{
+"artist": "Survivor",
+"title": "Eye of the Tiger",
+"g": "rock",
+"y": 1982
+},
+{
+"artist": "Billy Joel",
+"title": "Piano Man",
+"g": "rock",
+"y": 1973
+},
+{
+"artist": "Elton John",
+"title": "Tiny Dancer",
+"g": "rock",
+"y": 1971
+},
+{
+"artist": "Elton John",
+"title": "Rocket Man",
+"g": "rock",
+"y": 1972
+},
+{
+"artist": "Fleetwood Mac",
+"title": "Dreams",
+"g": "rock",
+"y": 1977
+},
+{
+"artist": "ABBA",
+"title": "Dancing Queen",
+"g": "disco",
+"y": 1976
+},
+{
+"artist": "ABBA",
+"title": "Mamma Mia",
+"g": "disco",
+"y": 1975
+},
+{
+"artist": "Gloria Gaynor",
+"title": "I Will Survive",
+"g": "disco",
+"y": 1978
+},
+{
+"artist": "Bee Gees",
+"title": "Stayin' Alive",
+"g": "disco",
+"y": 1977
+},
+{
+"artist": "Donna Summer",
+"title": "Hot Stuff",
+"g": "disco",
+"y": 1979
+},
+{
+"artist": "Chic",
+"title": "Le Freak",
+"g": "disco",
+"y": 1978
+},
+{
+"artist": "Earth, Wind & Fire",
+"title": "September",
+"g": "disco",
+"y": 1978
+},
+{
+"artist": "Kool & the Gang",
+"title": "Celebration",
+"g": "disco",
+"y": 1980
+},
+{
+"artist": "Michael Jackson",
+"title": "Billie Jean",
+"g": "pop",
+"y": 1982
+},
+{
+"artist": "Michael Jackson",
+"title": "Beat It",
+"g": "pop",
+"y": 1982
+},
+{
+"artist": "Madonna",
+"title": "Like a Prayer",
+"g": "pop",
+"y": 1989
+},
+{
+"artist": "Madonna",
+"title": "La Isla Bonita",
+"g": "pop",
+"y": 1987
+},
+{
+"artist": "Prince",
+"title": "Purple Rain",
+"g": "rock",
+"y": 1984
+},
+{
+"artist": "Tina Turner",
+"title": "What's Love Got to Do with It",
+"g": "pop",
+"y": 1984
+},
+{
+"artist": "Tina Turner",
+"title": "The Best",
+"g": "pop",
+"y": 1989
+},
+{
+"artist": "Eurythmics",
+"title": "Sweet Dreams (Are Made of This)",
+"g": "electronic",
+"y": 1983
+},
+{
+"artist": "Tears for Fears",
+"title": "Everybody Wants to Rule the World",
+"g": "electronic",
+"y": 1985
+},
+{
+"artist": "Depeche Mode",
+"title": "Just Can't Get Enough",
+"g": "electronic",
+"y": 1981
+},
+{
+"artist": "The Human League",
+"title": "Don't You Want Me",
+"g": "electronic",
+"y": 1981
+},
+{
+"artist": "Soft Cell",
+"title": "Tainted Love",
+"g": "electronic",
+"y": 1981
+},
+{
+"artist": "Pet Shop Boys",
+"title": "West End Girls",
+"g": "electronic",
+"y": 1985
+},
+{
+"artist": "Erasure",
+"title": "A Little Respect",
+"g": "electronic",
+"y": 1988
+},
+{
+"artist": "Kim Wilde",
+"title": "Kids in America",
+"g": "electronic",
+"y": 1981
+},
+{
+"artist": "Robyn",
+"title": "Dancing On My Own",
+"g": "electronic",
+"y": 2010
+},
+{
+"artist": "Kylie Minogue",
+"title": "Can't Get You Out of My Head",
+"g": "electronic",
+"y": 2001
+},
+{
+"artist": "Loreen",
+"title": "Euphoria",
+"g": "electronic",
+"y": 2012
+},
+{
+"artist": "Spice Girls",
+"title": "Wannabe",
+"g": "pop",
+"y": 1996
+},
+{
+"artist": "Backstreet Boys",
+"title": "I Want It That Way",
+"g": "pop",
+"y": 1999
+},
+{
+"artist": "Britney Spears",
+"title": "...Baby One More Time",
+"g": "pop",
+"y": 1998
+},
+{
+"artist": "Britney Spears",
+"title": "Toxic",
+"g": "pop",
+"y": 2003
+},
+{
+"artist": "Christina Aguilera",
+"title": "Genie in a Bottle",
+"g": "pop",
+"y": 1999
+},
+{
+"artist": "Shania Twain",
+"title": "Man! I Feel Like a Woman!",
+"g": "country",
+"y": 1997
+},
+{
+"artist": "Shania Twain",
+"title": "You're Still the One",
+"g": "country",
+"y": 1997
+},
+{
+"artist": "Dolly Parton",
+"title": "Jolene",
+"g": "country",
+"y": 1973
+},
+{
+"artist": "Dolly Parton",
+"title": "9 to 5",
+"g": "country",
+"y": 1980
+},
+{
+"artist": "Johnny Cash",
+"title": "Ring of Fire",
+"g": "country",
+"y": 1963
+},
+{
+"artist": "John Denver",
+"title": "Take Me Home, Country Roads",
+"g": "country",
+"y": 1971
+},
+{
+"artist": "Garth Brooks",
+"title": "Friends in Low Places",
+"g": "country",
+"y": 1990
+},
+{
+"artist": "Kenny Rogers",
+"title": "The Gambler",
+"g": "country",
+"y": 1978
+},
+{
+"artist": "Patsy Cline",
+"title": "Crazy",
+"g": "country",
+"y": 1961
+},
+{
+"artist": "Carrie Underwood",
+"title": "Before He Cheats",
+"g": "country",
+"y": 2006
+},
+{
+"artist": "Taylor Swift",
+"title": "Love Story",
+"g": "country",
+"y": 2008
+},
+{
+"artist": "Kelly Clarkson",
+"title": "Since U Been Gone",
+"g": "pop",
+"y": 2004
+},
+{
+"artist": "Avril Lavigne",
+"title": "Complicated",
+"g": "punk",
+"y": 2002
+},
+{
+"artist": "Avril Lavigne",
+"title": "Sk8er Boi",
+"g": "punk",
+"y": 2002
+},
+{
+"artist": "Green Day",
+"title": "Basket Case",
+"g": "punk",
+"y": 1994
+},
+{
+"artist": "Blink-182",
+"title": "All the Small Things",
+"g": "punk",
+"y": 1999
+},
+{
+"artist": "My Chemical Romance",
+"title": "Welcome to the Black Parade",
+"g": "punk",
+"y": 2006
+},
+{
+"artist": "Paramore",
+"title": "Misery Business",
+"g": "punk",
+"y": 2007
+},
+{
+"artist": "The Killers",
+"title": "Mr. Brightside",
+"g": "rock",
+"y": 2003
+},
+{
+"artist": "Oasis",
+"title": "Wonderwall",
+"g": "rock",
+"y": 1995
+},
+{
+"artist": "Nirvana",
+"title": "Smells Like Teen Spirit",
+"g": "rock",
+"y": 1991
+},
+{
+"artist": "Alanis Morissette",
+"title": "You Oughta Know",
+"g": "rock",
+"y": 1995
+},
+{
+"artist": "No Doubt",
+"title": "Don't Speak",
+"g": "rock",
+"y": 1995
+},
+{
+"artist": "4 Non Blondes",
+"title": "What's Up?",
+"g": "rock",
+"y": 1992
+},
+{
+"artist": "Fastball",
+"title": "The Way",
+"g": "rock",
+"y": 1998
+},
+{
+"artist": "Smash Mouth",
+"title": "All Star",
+"g": "rock",
+"y": 1999
+},
+{
+"artist": "Natalie Imbruglia",
+"title": "Torn",
+"g": "pop",
+"y": 1997
+},
+{
+"artist": "Shakira",
+"title": "Whenever, Wherever",
+"g": "latin",
+"y": 2001
+},
+{
+"artist": "Shakira",
+"title": "Hips Don't Lie",
+"g": "latin",
+"y": 2006
+},
+{
+"artist": "Ricky Martin",
+"title": "Livin' la Vida Loca",
+"g": "latin",
+"y": 1999
+},
+{
+"artist": "Luis Fonsi",
+"title": "Despacito",
+"g": "latin",
+"y": 2017
+},
+{
+"artist": "Gloria Estefan",
+"title": "Conga",
+"g": "latin",
+"y": 1985
+},
+{
+"artist": "Aretha Franklin",
+"title": "Respect",
+"g": "rnb",
+"y": 1967
+},
+{
+"artist": "Aretha Franklin",
+"title": "(You Make Me Feel Like) A Natural Woman",
+"g": "rnb",
+"y": 1967
+},
+{
+"artist": "Stevie Wonder",
+"title": "Superstition",
+"g": "rnb",
+"y": 1972
+},
+{
+"artist": "Marvin Gaye & Tammi Terrell",
+"title": "Ain't No Mountain High Enough",
+"g": "rnb",
+"y": 1967
+},
+{
+"artist": "Destiny's Child",
+"title": "Say My Name",
+"g": "rnb",
+"y": 1999
+},
+{
+"artist": "Beyoncé",
+"title": "Crazy in Love",
+"g": "rnb",
+"y": 2003
+},
+{
+"artist": "Adele",
+"title": "Rolling in the Deep",
+"g": "pop",
+"y": 2010
+},
+{
+"artist": "Adele",
+"title": "Someone Like You",
+"g": "pop",
+"y": 2011
+},
+{
+"artist": "Amy Winehouse",
+"title": "Valerie",
+"g": "rnb",
+"y": 2007
+},
+{
+"artist": "Bruno Mars",
+"title": "Uptown Funk",
+"g": "disco",
+"y": 2014
+},
+{
+"artist": "Lizzo",
+"title": "Good as Hell",
+"g": "rnb",
+"y": 2016
+},
+{
+"artist": "Lady Gaga",
+"title": "Bad Romance",
+"g": "pop",
+"y": 2009
+},
+{
+"artist": "Lady Gaga & Bradley Cooper",
+"title": "Shallow",
+"g": "pop",
+"y": 2018
+},
+{
+"artist": "Katy Perry",
+"title": "Teenage Dream",
+"g": "pop",
+"y": 2010
+},
+{
+"artist": "Carly Rae Jepsen",
+"title": "Call Me Maybe",
+"g": "pop",
+"y": 2012
+},
+{
+"artist": "Dua Lipa",
+"title": "Don't Start Now",
+"g": "disco",
+"y": 2019
+},
+{
+"artist": "Olivia Rodrigo",
+"title": "good 4 u",
+"g": "punk",
+"y": 2021
+},
+{
+"artist": "Harry Styles",
+"title": "As It Was",
+"g": "pop",
+"y": 2022
+},
+{
+"artist": "Outkast",
+"title": "Hey Ya!",
+"g": "hiphop",
+"y": 2003
+},
+{
+"artist": "Sir Mix-a-Lot",
+"title": "Baby Got Back",
+"g": "hiphop",
+"y": 1992
+},
+{
+"artist": "Eminem",
+"title": "Lose Yourself",
+"g": "hiphop",
+"y": 2002
+},
+{
+"artist": "Will Smith",
+"title": "Gettin' Jiggy wit It",
+"g": "hiphop",
+"y": 1997
+},
+{
+"artist": "Salt-N-Pepa",
+"title": "Push It",
+"g": "hiphop",
+"y": 1987
+},
+{
+"artist": "Frank Sinatra",
+"title": "My Way",
+"g": "jazz",
+"y": 1969
+},
+{
+"artist": "Frank Sinatra",
+"title": "Fly Me to the Moon",
+"g": "jazz",
+"y": 1964
+},
+{
+"artist": "Etta James",
+"title": "At Last",
+"g": "jazz",
+"y": 1960
+},
+{
+"artist": "Louis Armstrong",
+"title": "What a Wonderful World",
+"g": "jazz",
+"y": 1967
+},
+{
+"artist": "Nina Simone",
+"title": "Feeling Good",
+"g": "jazz",
+"y": 1965
+},
+{
+"artist": "Wicked",
+"title": "Defying Gravity",
+"g": "musical",
+"y": 2003
+},
+{
+"artist": "Les Misérables",
+"title": "I Dreamed a Dream",
+"g": "musical",
+"y": 1985
+},
+{
+"artist": "The Greatest Showman",
+"title": "This Is Me",
+"g": "musical",
+"y": 2017
+},
+{
+"artist": "Grease",
+"title": "You're the One That I Want",
+"g": "musical",
+"y": 1978
+},
+{
+"artist": "Grease",
+"title": "Summer Nights",
+"g": "musical",
+"y": 1978
+},
+{
+"artist": "Frozen",
+"title": "Let It Go",
+"g": "musical",
+"y": 2013
+},
+{
+"artist": "The Little Mermaid",
+"title": "Part of Your World",
+"g": "musical",
+"y": 1989
+},
+{
+"artist": "Moana",
+"title": "How Far I'll Go",
+"g": "musical",
+"y": 2016
+},
+{
+"artist": "Chicago",
+"title": "Cell Block Tango",
+"g": "musical",
+"y": 1975
+},
+{
+"artist": "Rent",
+"title": "Seasons of Love",
+"g": "musical",
+"y": 1996
+},
+{
+"artist": "The Muppets",
+"title": "Rainbow Connection",
+"g": "musical",
+"y": 1979
+},
+{
+"artist": "Simon & Garfunkel",
+"title": "The Sound of Silence",
+"g": "folk",
+"y": 1964
+},
+{
+"artist": "Bob Dylan",
+"title": "Like a Rolling Stone",
+"g": "folk",
+"y": 1965
+},
+{
+"artist": "The Proclaimers",
+"title": "I'm Gonna Be (500 Miles)",
+"g": "folk",
+"y": 1988
+},
+{
+"artist": "Mumford & Sons",
+"title": "Little Lion Man",
+"g": "folk",
+"y": 2009
+},
+{
+"artist": "BTS",
+"title": "Dynamite",
+"g": "kpop",
+"y": 2020
+},
+{
+"artist": "PSY",
+"title": "Gangnam Style",
+"g": "kpop",
+"y": 2012
+},
+{
+"artist": "Metallica",
+"title": "Nothing Else Matters",
+"g": "metal",
+"y": 1991
+},
+{
+"artist": "Bon Jovi",
+"title": "Wanted Dead or Alive",
+"g": "rock",
+"y": 1986
+},
+{
+"artist": "Guns N' Roses",
+"title": "Sweet Child o' Mine",
+"g": "rock",
+"y": 1987
+},
+{
+"artist": "AC/DC",
+"title": "Highway to Hell",
+"g": "rock",
+"y": 1979
+},
+{
+"artist": "Twisted Sister",
+"title": "We're Not Gonna Take It",
+"g": "metal",
+"y": 1984
+},
+{
+"artist": "Aqua",
+"title": "Barbie Girl",
+"g": "electronic",
+"y": 1997
+},
+{
+"artist": "Vengaboys",
+"title": "We Like to Party!",
+"g": "electronic",
+"y": 1998
+},
+{
+"artist": "Village People",
+"title": "Y.M.C.A.",
+"g": "disco",
+"y": 1978
+},
+{
+"artist": "Rick Astley",
+"title": "Never Gonna Give You Up",
+"g": "pop",
+"y": 1987
+},
+{
+"artist": "Men at Work",
+"title": "Down Under",
+"g": "rock",
+"y": 1981
+},
+{
+"artist": "TWRP",
+"title": "Starlight Brigade",
+"g": "electronic",
+"y": 2018
+}
+]

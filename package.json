@@ -1,6 +1,6 @@
 {
   "name": "karaoq",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Party karaoke: YouTube karaoke with a shared queue fed from everyone's phones. No ads.",
   "main": "desktop/main.js",
   "scripts": {

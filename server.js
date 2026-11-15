@@ -70,6 +70,8 @@ app.get('/api/lookup', async (req, res) => {
 const qr = url => QRCode.toString(url, { type: 'svg', margin: 1, errorCorrectionLevel: 'M' });
 let qrSvg = null, netUrl = null, netSvg = null;
 const VERSION = require('./package.json').version;
+app.get('/api/stats', (req, res) => res.json(party.personalStats(String(req.query.name || '').slice(0, 40))));
+app.get('/api/classics', (req, res) => res.json(require('./lib/classics.json')));
 app.get('/api/about', (req, res) => res.json({ version: VERSION }));
 app.get('/api/join', async (req, res) => {
   if (!qrSvg) qrSvg = await qr(BASE_URL);
@@ -118,6 +120,7 @@ wss.on('connection', (ws, req) => {
         ws.lastReact = now;
         const emoji = ['🔥', '👏', '😂', '❤️', '🎉', '🤘', '😍', '😭', '🤯', '🙌', '💃', '🕺', '🎤', '⭐', '💯', '🍻', '🥂', '👑', '🦄', '💀'].includes(m.emoji) ? m.emoji : null;
         if (!emoji) break;
+        party.react();
         for (const c of wss.clients) if (c.role === 'stage') send(c, { type: 'react', emoji });
         break;
       }

@@ -58,6 +58,14 @@
   vid.addEventListener('error', () => { if (loaded && vid.getAttribute('src')) { send({ type: 'playerError', itemId: loaded, message: vid.error ? `media error ${vid.error.code}` : 'error' }); toast("That video wouldn't play — skipping", 'bad'); } });
   setInterval(() => { if (loaded && !vid.paused) send({ type: 'progress', itemId: loaded, t: vid.currentTime, d: vid.duration || 0 }); }, 1000);
 
+  function showAwards(list) {
+    if (!list.length) return toast('No awards yet — somebody sing something!', 'bad');
+    $('#awardsGrid').innerHTML = list.map((x, i) => `<div class="acard" style="animation-delay:${i * 0.35}s"><div class="aic">${x.icon}</div>${avatar(x.name.split(' & ')[0], 'l')}<h3>${esc(x.title)}</h3><b>${esc(x.name)}</b><span>${esc(x.why)}</span></div>`).join('');
+    app.classList.add('awards'); tada();
+    clearTimeout(showAwards.t); showAwards.t = setTimeout(() => app.classList.remove('awards'), 60000);
+  }
+  $('#awardsShow').onclick = () => app.classList.remove('awards');
+
   function showIntro(it) {
     $('#introAv').innerHTML = avatars(it, 'xl');
     $('#introName').textContent = who(it);
@@ -137,6 +145,7 @@
   KQ.on('cmd', m => {
     if (m.cmd === 'restart') { vid.currentTime = 0; flashNowTag(); }
     if (m.cmd === 'chime') chime();
+    if (m.cmd === 'awards') showAwards(m.awards || []);
   });
 
   const sungBy = (st, name) => ((st.stats || []).find(x => x.singer.toLowerCase() === String(name).trim().toLowerCase()) || {}).sung || 0;
@@ -292,6 +301,7 @@
     setMenu(false);
     const st = KQ.state;
     if (m === 'add') openDrawerAt('');
+    if (m === 'awards') showAwards((KQ.state && KQ.state.awards) || []);
     if (m === 'settings') openDrawerAt('#settings');
     if (m === 'queue') { sidePinned = !sidePinned; if (st) render(st); }
     if (m === 'help') { if (!$('#helpAbout').innerHTML) KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; }); app.classList.add('help'); }
@@ -319,7 +329,7 @@
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     const st = KQ.state; if (!st) return;
     const k = e.key;
-    if (k === 'Escape') { setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
+    if (k === 'Escape') { app.classList.remove('awards'); setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
     if (k === 'm' || k === 'M') { setMenu(!app.classList.contains('menu')); return; }
     if (k === 'a' || k === 'A' || k === '/') { e.preventDefault(); setDrawer(!drawerOpen); return; }
     if (k === 'q' || k === 'Q') { sidePinned = !sidePinned; render(st); toast(sidePinned ? 'Queue pinned' : 'Queue hides during songs'); return; }

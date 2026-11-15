@@ -34,7 +34,14 @@
       <button>Go</button>
     </form>
     <label class="toggle"><input type="checkbox" id="karaoke" checked> Karaoke versions only</label>
-    <div id="results"><p class="hint">Search for a song and tap <b>＋</b> to add it under your name.<br>Tap <b>👤</b> to add one for somebody else.</p></div>
+    <div id="suggest">
+      <div class="spin"><button id="spinBtn" class="gold">🎲 Spin for me</button><select id="spinGenre"><option value="">Any genre</option></select><select id="spinDecade"><option value="">Any decade</option></select></div>
+      <div id="recentBox"><h4>Your recent searches</h4><div id="recent" class="chips"></div></div>
+      <h4>Party classics <button id="reshuffle" class="ghost tiny">🔀</button></h4>
+      <div id="classics" class="chips"></div>
+      <p class="hint">Tap <b>＋</b> on a result to add it under your name · <b>👤</b> to add one for somebody else.</p>
+    </div>
+    <div id="results"></div>
   </div>
 
   <div id="tab-queue" class="tab">
@@ -51,7 +58,7 @@
 
   <div id="tab-faves" class="tab"><div id="favNames" class="chips"></div><div id="favList"></div></div>
 
-  <div id="tab-done" class="tab"><div id="mixBox"></div><div id="board"></div><div id="doneList"></div></div>
+  <div id="tab-done" class="tab"><div id="awardsBox"></div><div id="mixBox"></div><div id="board"></div><div id="doneList"></div></div>
 </main>
 
 <dialog id="nameDlg">

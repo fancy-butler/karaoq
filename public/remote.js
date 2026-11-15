@@ -63,14 +63,51 @@
     return r;
   }
 
+  // ---------- search suggestions: recent searches, party classics, 🎲 roulette ----------
+  let recentQ = JSON.parse(ls.get('kq.recentQ') || '[]');
+  let classics = [];
+  const searchFor = q => { $('#q').value = q; $('#searchForm').requestSubmit ? $('#searchForm').requestSubmit() : $('#searchForm').onsubmit(new Event('submit')); };
+  function showSuggest() {
+    $('#suggest').hidden = false; $('#results').innerHTML = ''; lastResults = [];
+    $('#recentBox').hidden = !recentQ.length;
+    $('#recent').innerHTML = recentQ.map(q => `<button data-q="${esc(q)}">${esc(q)}</button>`).join('');
+    renderClassics();
+  }
+  function renderClassics() {
+    const pick = [...classics].sort(() => Math.random() - 0.5).slice(0, 10);
+    $('#classics').innerHTML = pick.map(c => `<button data-q="${esc(c.artist + ' ' + c.title)}" style="--g:${KQ.gColor(c.g)}" class="cl">${esc(c.title)} <small>${esc(c.artist)}</small></button>`).join('');
+  }
+  fetch('/api/classics').then(r => r.json()).then(list => {
+    classics = list;
+    const gs = [...new Set(list.map(c => c.g))];
+    $('#spinGenre').innerHTML += gs.map(g => `<option value="${g}">${esc((GENRES[g] || [g])[0])}</option>`).join('');
+    const ds = [...new Set(list.map(c => Math.floor(c.y / 10) * 10))].sort();
+    $('#spinDecade').innerHTML += ds.map(d => `<option value="${d}">${d}s</option>`).join('');
+    renderClassics();
+  }).catch(() => { });
+  $('#suggest').onclick = e => { const q = e.target.closest('[data-q]')?.dataset.q; if (q) searchFor(q); };
+  $('#reshuffle').onclick = e => { e.stopPropagation(); renderClassics(); };
+  $('#spinBtn').onclick = () => {
+    const g = $('#spinGenre').value, d = $('#spinDecade').value;
+    const pool = classics.filter(c => (!g || c.g === g) && (!d || Math.floor(c.y / 10) * 10 === Number(d)));
+    if (!pool.length) return toast('Nothing in that combo — try another', 'bad');
+    const c = pool[Math.floor(Math.random() * pool.length)];
+    toast(`🎲 The wheel says: ${c.title} — ${c.artist}`);
+    searchFor(`${c.artist} ${c.title}`);
+  };
+  $('#q').addEventListener('input', () => { if (!$('#q').value.trim()) showSuggest(); });
+  showSuggest();
+
   // ---------- search ----------
   $('#karaoke').checked = ls.get('kq.karaoke') !== '0';
   $('#karaoke').onchange = () => ls.set('kq.karaoke', $('#karaoke').checked ? '1' : '0');
   $('#searchForm').onsubmit = async e => {
     e.preventDefault();
     const q = $('#q').value.trim();
-    if (!q) return;
+    if (!q) { showSuggest(); return; }
     $('#q').blur();
+    if (!/youtu\.?be/.test(q)) { recentQ = [q, ...recentQ.filter(x => x.toLowerCase() !== q.toLowerCase())].slice(0, 10); ls.set('kq.recentQ', JSON.stringify(recentQ)); }
+    $('#suggest').hidden = true;
     const box = $('#results');
     box.innerHTML = '<p class="hint">Searching…</p>';
     try {
@@ -131,6 +168,18 @@
       a => run('genre', { id: isCurrent ? undefined : it.id, genre: a.slice(2) || null }, 'Genre updated'));
   }
 
+  // Wrong version (no lyrics, bad audio): show other karaoke versions; picking one keeps their spot
+  async function swapVersion(it) {
+    toast('Finding other versions…');
+    try {
+      const r = await fetch(`/api/search?q=${encodeURIComponent(clean(it.title))}&karaoke=1`); const list = (await r.json()).filter(v => v.videoId !== it.videoId).slice(0, 8);
+      if (!list.length) return toast('No other versions found', 'bad');
+      sheet(`<div class="h"><b>Other versions</b><div>${esc(who(it))} keeps their spot in line.</div></div>` +
+        list.map((v, i) => `<button data-a="${i}" class="verbtn"><img src="${esc(thumb(v))}" alt=""><span>${esc(v.title)}<small>${esc(v.channel)}${v.duration ? ' · ' + fmt(v.duration) : ''}</small></span></button>`).join(''),
+        a => run('swap', { id: it.id, video: list[Number(a)] }));
+    } catch { toast('Search failed', 'bad'); }
+  }
+
   function itemMenu(it, where) {
     const st = KQ.state, host = KQ.you.isHost, mine = it.clientId === KQ.clientId;
     const can = host || mine;
@@ -147,12 +196,14 @@
     if (can) b += `<button data-a="genre">🎨 Genre: ${it.genre && GENRES[it.genre] ? esc(GENRES[it.genre][0]) : 'unknown'} — change</button>`;
     if (can) b += `<button data-a="duet">👥 ${it.with ? 'Change / remove duet partner' : 'Make it a duet'}</button>`;
     b += `<button data-a="fave">${isFave(it.singer, it.videoId) ? '★ Remove from' : '⭐ Save to'} ${esc(it.singer)}'s favourites</button>`;
+    if (can) b += `<button data-a="swapv">🔁 Wrong version? Pick another</button>`;
     if (it.dl?.state === 'error') b += `<button data-a="retry">🔁 Retry download</button>`;
     if (can) b += `<button data-a="remove" class="warn">🗑 Remove song</button>`;
     if (!can) b += `<div class="h"><div>Only ${esc(it.singer)}'s phone or the host can change this one.</div></div>`;
     sheet(b, async a => {
       if (a === 'keyDown' || a === 'keyUp') return run('key', { id: it.id, delta: a === 'keyUp' ? 1 : -1 });
       if (a === 'genre') return setTimeout(() => pickGenre(it, false), 50);
+      if (a === 'swapv') return setTimeout(() => swapVersion(it), 50);
       if (a === 'fave') return run('fave', { singer: it.singer, video: { ...it } }, isFave(it.singer, it.videoId) ? 'Removed from favourites' : `⭐ Saved to ${it.singer}'s favourites`);
       if (a === 'duet') { const p = prompt(`Who's singing with ${it.singer}? (leave empty for solo)`, it.with || ''); if (p === null) return; return run('duet', { id: it.id, with: p }, p.trim() ? `Duet: ${it.singer} & ${p.trim()}` : 'Back to solo'); }
       if (a === 'up') return run('move', { id: it.id, to: idx - 1 });
@@ -315,6 +366,8 @@
       <div class="meta"><div class="singer">${esc(who(it))}</div><div class="t">${esc(clean(it.title))}</div></div>
       <div class="acts">${host || it.clientId === KQ.clientId ? '<button class="cyan back">↩ Back</button>' : ''}<button class="ghost">⋯</button></div></div>`).join('');
     $('#mixBox').innerHTML = mixHtml(st.mix);
+    const aw = st.awards || [];
+    $('#awardsBox').innerHTML = aw.length ? `<div class="awards"><h4>🏆 Tonight's awards${KQ.you.isHost ? ' <button id="awardsTv" class="ghost tiny">Show on TV</button>' : ''}</h4>${aw.map(x => `<div class="award"><span class="ic">${x.icon}</span>${avatar(x.name.split(' & ')[0], 'm')}<div><b>${esc(x.title)}</b><span>${esc(x.name)} · ${esc(x.why)}</span></div></div>`).join('')}</div>` : '';
     $('#board').innerHTML = (st.stats || []).map((x, i) => `<span class="${i === 0 && x.sung > 1 ? 'top' : ''}">${avatar(x.singer, 's')} ${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');
     $('#doneList').innerHTML = st.history.length ? st.history.map((h, i) => `<div class="item done">
       <img loading="lazy" src="${esc(thumb(h))}" alt="">
@@ -359,9 +412,22 @@
     if (u !== undefined) run('fave', { singer: cur.name, video: cur.songs[u], on: false }, 'Removed');
   };
 
+  $('#awardsBox').onclick = e => { if (e.target.id === 'awardsTv') run('awards', {}, '🏆 On the TV now'); };
   $('#leftovers').onclick = e => { const v = e.target.closest('[data-lo]')?.dataset.lo; if (v === undefined) return; run('leftovers', { restore: v === '1' }, v === '1' ? 'Restored' : 'Cleared'); };
 
   // ---------- about ----------
+  async function openStats() {
+    if (!myName) return showJoin();
+    const st = await (await fetch(`/api/stats?name=${encodeURIComponent(myName)}`)).json().catch(() => ({ songs: 0 }));
+    const pills = (arr, f) => arr.map(f).join(' ');
+    $('#aboutBody').innerHTML = `<div class="about mystats"><div class="whorow">${avatar(myName, 'l')}<h2>${esc(myName)}</h2></div>` + (st.songs ? `
+      <p><b>${st.songs}</b> song${st.songs > 1 ? 's' : ''} over <b>${st.nights}</b> night${st.nights > 1 ? 's' : ''} · singing since ${new Date(st.since).toLocaleDateString()}</p>
+      <h3>Most sung</h3><ol>${st.topSongs.map(t => `<li>${esc(clean(t.title))} <i>×${t.n}</i></li>`).join('')}</ol>
+      ${st.genres.length ? `<h3>Genres</h3><p>${pills(st.genres, x => `<span class="gchip" style="--g:${KQ.gColor(x.g)}">${esc((GENRES[x.g] || [x.g])[0])} ×${x.n}</span>`)}</p>` : ''}
+      ${st.decades.length ? `<h3>Decades</h3><p>${st.decades.map(x => `${x.d} ×${x.n}`).join(' · ')}</p>` : ''}
+      ${st.duets.length ? `<h3>Favourite duet partners</h3><p>${st.duets.map(x => `${esc(x.p)} ×${x.n}`).join(' · ')}</p>` : ''}` : '<p>No songs sung yet. Go get one in the queue! 🎤</p>') + '</div>';
+    $('#aboutDlg').showModal();
+  }
   async function openAbout() { $('#aboutBody').innerHTML = await KQ.aboutHtml(); $('#aboutDlg').showModal(); }
   // ☰ menu: everything that used to be buried at the bottom of the Queue tab
   $('#menuBtn').onclick = () => {
@@ -374,7 +440,7 @@
     if (!hosted && !KQ.you.viaNet && !KQ.you.pinRequired) b += `<button data-a="claim">👑 Be the host <small>(only you + co-hosts manage the queue)</small></button>`;
     if (hosted && host) b += `<button data-a="cohosts">👑 Co-hosts…</button><button data-a="handoff">🤝 Hand off hosting…</button><button data-a="endhost">🔓 End host mode (everyone manages)</button>`;
     if (!host && KQ.you.pinRequired) b += `<button data-a="pin">🔑 Enter host PIN</button>`;
-    b += `<button data-a="name">🙂 Change my name or look</button><button data-a="about">ⓘ About & credits</button>`;
+    b += `<button data-a="stats">📊 My stats</button><button data-a="name">🙂 Change my name or look</button><button data-a="about">ⓘ About & credits</button>`;
     sheet(b, a => {
       if (a === 'claim') run('claimHost', {});
       if (a === 'endhost' && confirm('End host mode? Everyone will be able to manage the queue again.')) run('endHosting', {}, 'Open party: everyone can manage');
@@ -385,6 +451,7 @@
       if (a === 'pin') $('#pinBtn').onclick();
       if (a === 'name') $('#meBtn').onclick();
       if (a === 'about') openAbout();
+      if (a === 'stats') openStats();
     });
   };
   // choose a person for co-host / hand-off
