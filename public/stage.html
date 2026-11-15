@@ -60,6 +60,16 @@
     <div class="side-join"><div class="qr"></div><div><b>Add songs</b><span class="url"></span></div><div class="net-only cornernet"><div class="netqr"></div><small>Can't connect?</small></div></div>
   </aside>
 
+  <button id="menuPill" aria-label="Menu">☰ Menu</button>
+  <div id="menuPanel">
+    <button data-m="add">🔍 Add songs <kbd>A</kbd></button>
+    <button data-m="settings">⚙ Party settings</button>
+    <button data-m="queue">📋 Show / hide queue <kbd>Q</kbd></button>
+    <button data-m="help">⌨ Help &amp; keys <kbd>?</kbd></button>
+    <button data-m="about">ⓘ About &amp; credits</button>
+    <button data-m="full">⛶ Fullscreen <kbd>F</kbd></button>
+    <button data-m="quit" class="quit">⏻ Quit KARAO-Q</button>
+  </div>
   <div id="drawer"><iframe id="drawerFrame" title="Add songs"></iframe></div>
   <div id="unlock"><div><b>Click anywhere to start</b><span>(browsers need one click before they'll play sound)</span></div></div>
   <div id="help">
@@ -78,6 +88,7 @@
       <dt>J</dt><dd>Show / hide the join QR during songs</dd>
       <dt>U</dt><dd>Show / hide "Next up" during songs</dd>
       <dt>F</dt><dd>Fullscreen</dd>
+      <dt>M</dt><dd>Menu (or just move the mouse)</dd>
       <dt>?</dt><dd>This help &amp; credits</dd>
     </dl>
     <div id="helpAbout"></div>

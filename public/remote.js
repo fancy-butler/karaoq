@@ -328,7 +328,23 @@
   $('#leftovers').onclick = e => { const v = e.target.closest('[data-lo]')?.dataset.lo; if (v === undefined) return; run('leftovers', { restore: v === '1' }, v === '1' ? 'Restored' : 'Cleared'); };
 
   // ---------- about ----------
-  $('#aboutBtn').onclick = async () => { $('#aboutBody').innerHTML = await KQ.aboutHtml(); $('#aboutDlg').showModal(); };
+  async function openAbout() { $('#aboutBody').innerHTML = await KQ.aboutHtml(); $('#aboutDlg').showModal(); }
+  // ☰ menu: everything that used to be buried at the bottom of the Queue tab
+  $('#menuBtn').onclick = () => {
+    const host = KQ.you.isHost;
+    let b = `<div class="h"><b>KARAO-Q</b><div>${host ? 'You can manage the party' : 'Guest: you can add songs and manage your own'}</div></div>`;
+    if (host) b += `<button data-a="settings">⚙ Party settings</button><button data-a="undo">↶ Undo last queue change</button><button data-a="shuffle">🔀 Fair shuffle the queue</button>`;
+    if (!host && KQ.you.pinRequired) b += `<button data-a="pin">🔑 Enter host PIN</button>`;
+    b += `<button data-a="name">👤 Change my name</button><button data-a="about">ⓘ About & credits</button>`;
+    sheet(b, a => {
+      if (a === 'settings') $('#settingsBtn').onclick();
+      if (a === 'undo') $('#undoBtn').onclick();
+      if (a === 'shuffle') $('#shuffleBtn').onclick();
+      if (a === 'pin') $('#pinBtn').onclick();
+      if (a === 'name') $('#meBtn').onclick();
+      if (a === 'about') openAbout();
+    });
+  };
   $('#aboutClose').onclick = () => $('#aboutDlg').close();
   dialogDismiss($('#aboutDlg'));
 
@@ -354,6 +370,11 @@
   KQ.on('pinResult', m => toast(m.ok ? "You're a host now" : 'Wrong PIN', m.ok ? '' : 'bad'));
 
   KQ.on('state', render);
+  let openedFromHash = false;
+  KQ.on('state', () => {
+    if (!openedFromHash && location.hash === '#settings' && KQ.you.isHost) { openedFromHash = true; $('#settingsBtn').onclick(); }
+  });
+  window.addEventListener('hashchange', () => { if (location.hash === '#settings' && KQ.you.isHost) $('#settingsBtn').onclick(); });
   KQ.on('conn', up => document.body.classList.toggle('offline', !up));
   setInterval(() => { tickCountdown(); tickProgress(); }, 250);
   setInterval(() => { if (KQ.state) renderEta(KQ.state); }, 5000);

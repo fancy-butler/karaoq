@@ -18,7 +18,16 @@
     }).catch(() => { });
   }
   loadJoin();
-  fetch('/api/about').then(r => r.json()).then(j => { $('#ver').textContent = `v${j.version} · github.com/fancy-butler/karaoq`; }).catch(() => { });
+  fetch('/api/about').then(r => r.json()).then(j => {
+    $('#ver').textContent = `v${j.version} · github.com/fancy-butler/karaoq`;
+    // Say so when an update has just installed
+    let prev = null; try { prev = localStorage.getItem('kq.ver'); localStorage.setItem('kq.ver', j.version); } catch { }
+    if (prev && prev !== j.version) {
+      const b = document.createElement('div'); b.id = 'updated';
+      b.innerHTML = `✨ KARAO-Q updated to <b>v${esc(j.version)}</b><a href="https://github.com/fancy-butler/karaoq/releases/tag/v${esc(j.version)}" target="_blank">what's new</a>`;
+      app.appendChild(b); setTimeout(() => b.classList.add('gone'), 9000); setTimeout(() => b.remove(), 10000);
+    }
+  }).catch(() => { });
 
   // ---------- player ----------
   function syncPlayer(st) {
@@ -187,13 +196,40 @@
     app.classList.toggle('showticker', !!showTicker && !app.classList.contains('side'));
   }, 250);
 
-  // Hide mouse cursor when idle
-  let mouseT; document.addEventListener('mousemove', () => { document.body.classList.remove('hidecursor'); clearTimeout(mouseT); mouseT = setTimeout(() => document.body.classList.add('hidecursor'), 2500); });
+  // Mouse moves → cursor + ☰ Menu appear; both hide again after 3 s still (unless the menu is open)
+  let mouseT;
+  document.addEventListener('mousemove', () => {
+    document.body.classList.remove('hidecursor'); app.classList.add('mouse');
+    clearTimeout(mouseT);
+    mouseT = setTimeout(() => { if (!app.classList.contains('menu')) { document.body.classList.add('hidecursor'); app.classList.remove('mouse'); } }, 3000);
+  });
+  function setMenu(open) { app.classList.toggle('menu', open); if (open) $('#menuPanel button').focus(); }
+  $('#menuPill').onclick = e => { e.stopPropagation(); setMenu(!app.classList.contains('menu')); };
+  document.addEventListener('click', e => { if (!e.target.closest('#menuPanel, #menuPill')) setMenu(false); });
+  function openDrawerAt(hash) {
+    const f = $('#drawerFrame');
+    const url = '/?embed=1' + (hash || '');
+    if (!f.src || !f.src.endsWith(url)) f.src = url;
+    else if (hash) { try { f.contentWindow.location.hash = ''; f.contentWindow.location.hash = hash; } catch { } }
+    setDrawer(true);
+  }
+  $('#menuPanel').onclick = e => {
+    const m = e.target.closest('[data-m]')?.dataset.m; if (!m) return;
+    setMenu(false);
+    const st = KQ.state;
+    if (m === 'add') openDrawerAt('');
+    if (m === 'settings') openDrawerAt('#settings');
+    if (m === 'queue') { sidePinned = !sidePinned; if (st) render(st); }
+    if (m === 'help') { if (!$('#helpAbout').innerHTML) KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; }); app.classList.add('help'); }
+    if (m === 'about') { KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; app.classList.add('help'); setTimeout(() => $('#helpAbout').scrollIntoView({ behavior: 'smooth' }), 50); }); }
+    if (m === 'full') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => { });
+    if (m === 'quit') { if (confirm('Quit KARAO-Q? The queue is saved.')) window.close(); }
+  };
 
   // ---------- keyboard ----------
   function setDrawer(open) {
     drawerOpen = open;
-    if (open && !$('#drawerFrame').src) $('#drawerFrame').src = '/?embed=1';
+    if (open && !$('#drawerFrame').getAttribute('src')) $('#drawerFrame').src = '/?embed=1';
     app.classList.toggle('drawer', open);
     if (open) setTimeout(() => { try { $('#drawerFrame').contentWindow.focus(); $('#drawerFrame').contentDocument.querySelector('#q')?.focus(); } catch { } }, 350);
   }
@@ -209,7 +245,8 @@
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     const st = KQ.state; if (!st) return;
     const k = e.key;
-    if (k === 'Escape') { setDrawer(false); app.classList.remove('help'); return; }
+    if (k === 'Escape') { setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
+    if (k === 'm' || k === 'M') { setMenu(!app.classList.contains('menu')); return; }
     if (k === 'a' || k === 'A' || k === '/') { e.preventDefault(); setDrawer(!drawerOpen); return; }
     if (k === 'q' || k === 'Q') { sidePinned = !sidePinned; render(st); toast(sidePinned ? 'Queue pinned' : 'Queue hides during songs'); return; }
     if (k === '?') { if (!$('#helpAbout').innerHTML) KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; }); app.classList.toggle('help'); return; }
