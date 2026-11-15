@@ -271,3 +271,7 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #attract .night { max-width: 900px; margin: 0 auto; } #attract .ntiles { grid-template-columns: repeat(4, 1fr); gap: 12px; }
 #attract .nt { padding: 14px 6px; } #attract .nt i { font-size: 28px; } #attract .nt b { font-size: 30px; } #attract .nt span { font-size: 15px; } #attract .night::before { font-size: 15px; } #attract .nlong { font-size: 18px; text-align: center; }
 #awardsShow .asub { color: var(--dim); font-size: clamp(16px, 1.6vw, 24px); margin: -2vh 0 3vh; } #awardsShow .asub b { color: var(--text); }
+
+#updPill { position: absolute; bottom: 10vh; left: 50%; transform: translateX(-50%); z-index: 44; background: linear-gradient(135deg, #2a0f3d, #13213a); border: 1px solid var(--cyan); color: var(--text); font-size: 20px; padding: 12px 24px; border-radius: 999px; cursor: pointer; box-shadow: 0 8px 30px #0009; }
+#updPill b { color: var(--cyan); } #updPill:hover { border-color: var(--gold); }
+#menuPanel .upd { color: var(--cyan); font-weight: 800; }

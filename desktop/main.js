@@ -9,7 +9,7 @@ const net = require('net');
 const http = require('http');
 
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
-if (!app.requestSingleInstanceLock()) { app.quit(); return; }
+let gotLock = app.requestSingleInstanceLock();
 
 const isWin = process.platform === 'win32';
 const exe = name => (isWin ? `${name}.exe` : name);
@@ -83,7 +83,10 @@ function stopServer() {
   if (!server || server.exitCode !== null) return;
   // Windows has no SIGTERM: kill the whole tree so the internet-link helper doesn't linger.
   if (isWin) spawn('taskkill', ['/pid', String(server.pid), '/T', '/F'], { stdio: 'ignore' });
-  else server.kill('SIGTERM');
+  else {
+    server.kill('SIGTERM');
+    const s = server; setTimeout(() => { if (s.exitCode === null) { log('server ignored SIGTERM — killing'); try { s.kill('SIGKILL'); } catch { } } }, 3000).unref();
+  }
 }
 
 async function start() {
@@ -124,10 +127,29 @@ async function start() {
     webPreferences: { autoplayPolicy: 'no-user-gesture-required', backgroundThrottling: false },
   });
   win.loadURL(`http://localhost:${port}/stage`);
-  win.webContents.setWindowOpenHandler(({ url }) => { shell.openExternal(url); return { action: 'deny' }; });
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('karaoq:update')) installNow();
+    else if (url.startsWith('karaoq:check')) tellStage();
+    else shell.openExternal(url);
+    return { action: 'deny' };
+  });
+  win.webContents.on('did-finish-load', tellStage);
 }
 
 // ---------- updates ----------
+let updateReady = null, updaterRef = null;
+// Show the "Restart to update" button on the TV (the stage page asks via window.open('karaoq:…')).
+function tellStage() {
+  if (updateReady && win && !win.isDestroyed()) win.webContents.executeJavaScript(`window.KQUpdateReady && window.KQUpdateReady(${JSON.stringify(updateReady)})`).catch(() => { });
+}
+function installNow() {
+  if (!updaterRef || !updateReady) return;
+  log(`restart to update → ${updateReady}`);
+  quitting = true;
+  try { fs.writeFileSync(path.join(dataDir, '.closing'), String(Date.now())); } catch { }
+  stopServer();
+  setTimeout(() => updaterRef.quitAndInstall(true, true), 800); // silent install, then reopen KARAO-Q
+}
 // Windows + Linux: download quietly, install when the app is closed (never mid-song).
 // macOS: unsigned apps can't self-update, so just say a new version is out and link to it.
 function checkForUpdates() {
@@ -147,8 +169,11 @@ function checkForUpdates() {
   } else {
     autoUpdater.autoInstallOnAppQuit = true;
     autoUpdater.on('update-downloaded', info => {
-      if (Notification.isSupported()) new Notification({ title: `KARAO-Q ${info.version} downloaded`, body: 'It will install the next time you close KARAO-Q.' }).show();
+      updateReady = info.version;
+      tellStage();
+      if (Notification.isSupported()) new Notification({ title: `KARAO-Q ${info.version} is ready`, body: 'Use "Restart to update" on the TV screen, or it installs next time you close KARAO-Q.' }).show();
     });
+    updaterRef = autoUpdater;
     autoUpdater.checkForUpdates().catch(e => log(`update check failed: ${e.message}`));
   }
 }
@@ -159,6 +184,32 @@ Menu.setApplicationMenu(process.platform === 'darwin'
   : null);
 
 app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
-app.whenReady().then(() => { start(); setTimeout(checkForUpdates, 15000); });
+// Opened again while the last session is still closing (e.g. installing an update)? Wait for it instead of
+// silently giving up — that used to leave you clicking the icon with nothing happening.
+async function waitForLock() {
+  const closing = path.join(dataDir, '.closing');
+  let fresh = false;
+  try { fresh = Date.now() - fs.statSync(closing).mtimeMs < 60000; } catch { }
+  const until = Date.now() + (fresh ? 45000 : 4000);
+  while (Date.now() < until) {
+    await new Promise(r => setTimeout(r, 500));
+    if (app.requestSingleInstanceLock()) return true;
+  }
+  return false;
+}
+
+app.whenReady().then(async () => {
+  if (!gotLock) {
+    gotLock = await waitForLock();
+    if (!gotLock) { app.quit(); return; } // a running KARAO-Q got focused instead
+  }
+  try { fs.unlinkSync(path.join(dataDir, '.closing')); } catch { }
+  start(); setTimeout(checkForUpdates, 15000);
+});
 app.on('window-all-closed', () => app.quit());
-app.on('before-quit', () => { quitting = true; stopServer(); });
+app.on('before-quit', () => {
+  if (!gotLock) return;
+  quitting = true;
+  try { fs.mkdirSync(dataDir, { recursive: true }); fs.writeFileSync(path.join(dataDir, '.closing'), String(Date.now())); } catch { }
+  stopServer();
+});

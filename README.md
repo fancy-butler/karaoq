@@ -34,7 +34,7 @@ After that it opens normally. Not sure which Mac you have? Apple menu → **Abou
 
 Plug the computer into the TV, open KARAO-Q, and everyone scans the QR code. Close the window to quit.
 
-**Updates:** on Windows and Linux, KARAO-Q updates itself, downloading in the background and installing when you close it. On a Mac, you'll get a notification with a link to the new version.
+**Updates:** on Windows and Linux, KARAO-Q downloads new versions in the background. Between songs, the TV shows **⬆ Restart to update**: click it and KARAO-Q updates and reopens by itself in a few seconds (the queue is kept). Or ignore it and the update installs the next time you close KARAO-Q. On a Mac, you'll get a notification with a link to the new version.
 
 Downloaded songs are capped at 5 GB by default (change it in ⚙ Settings on a phone). The oldest unplayed songs get deleted first, and queued songs are never touched. After 6+ hours with nothing happening (whether KARAO-Q was closed or left open), it starts a new night: empty queue, fresh counts, and a Restore/Clear banner for last time's leftovers.
 

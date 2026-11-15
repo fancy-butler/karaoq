@@ -29,6 +29,26 @@
     }
   }).catch(() => { });
 
+  // ---------- "Restart to update" (desktop app only: the app tells us when a new version has downloaded) ----------
+  let updVer = null;
+  window.KQUpdateReady = v => {
+    updVer = v;
+    $('#updBtn').hidden = false; $('#updBtn').textContent = `⬆ Restart to update (v${v})`;
+    $('#updPill span').textContent = `v${v}`;
+    syncUpdPill();
+  };
+  // only offered between songs, never mid-song
+  function syncUpdPill() { $('#updPill').hidden = !(updVer && KQ.state && KQ.state.phase === 'idle'); }
+  function restartToUpdate() {
+    if (!updVer) return;
+    const busy = KQ.state && KQ.state.phase !== 'idle';
+    if (!confirm(`Install KARAO-Q v${updVer} now? It takes a few seconds and reopens by itself.${busy ? '\n\nThe current song will stop — the queue is saved.' : ''}`)) return;
+    toast('Updating… back in a few seconds');
+    window.open('karaoq:update');
+  }
+  $('#updPill').onclick = restartToUpdate;
+  KQ.on('state', syncUpdPill);
+
   // ---------- player ----------
   function syncPlayer(st) {
     const cur = st.current;
@@ -311,6 +331,7 @@
     if (m === 'help') { if (!$('#helpAbout').innerHTML) KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; }); app.classList.add('help'); }
     if (m === 'about') { KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; app.classList.add('help'); setTimeout(() => $('#helpAbout').scrollIntoView({ behavior: 'smooth' }), 50); }); }
     if (m === 'full') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => { });
+    if (m === 'update') return restartToUpdate();
     if (m === 'quit') { if (confirm('Quit KARAO-Q? The queue is saved.')) window.close(); }
   };
 
