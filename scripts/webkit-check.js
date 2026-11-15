@@ -20,7 +20,9 @@ const ok = (c, m) => { console.log(`${c ? '  ✓' : '  ✗'} ${m}`); if (!c) fai
 (async () => {
   const { webkit, devices } = require('playwright');
   fs.mkdirSync(SHOTS, { recursive: true });
-  const srv = spawn(process.execPath, [path.join(ROOT, 'server.js')], { env: { ...process.env, MOCK: '1', TUNNEL: '0', PORT: String(PORT), DATA_DIR: DATA }, stdio: 'ignore' });
+  const srv = spawn(process.execPath, [path.join(ROOT, 'server.js')], { env: { ...process.env, MOCK: '1', TUNNEL: '0', PORT: String(PORT), DATA_DIR: DATA }, stdio: ['ignore', 'pipe', 'pipe'] });
+  let log = ''; srv.stdout.on('data', d => { log += d; }); srv.stderr.on('data', d => { log += d; });
+  srv.on('exit', c => { log += `\n[server exited ${c}]`; });
   process.on('exit', () => { try { srv.kill(); } catch { } });
   for (let i = 0; i < 60; i++) { try { if ((await fetch(BASE + '/api/about')).ok) break; } catch { } await sleep(250); }
   console.log('KARAO-Q on WebKit (iPhone emulation)');
@@ -61,7 +63,7 @@ const ok = (c, m) => { console.log(`${c ? '  ✓' : '  ✗'} ${m}`); if (!c) fai
     await tv.screenshot({ path: path.join(SHOTS, '4-tv.png') });
     ok(st, 'server reachable');
     ok(errors.length === 0, `no JavaScript errors in WebKit${errors.length ? ':\n      ' + errors.join('\n      ') : ''}`);
-  } catch (e) { failures++; console.error('  ✗', e.message); }
+  } catch (e) { failures++; console.error('  ✗', e.stack || e.message); console.error('--- server log ---\n' + log.split('\n').slice(-25).join('\n')); }
   await browser.close();
   console.log(failures ? `\n${failures} check(s) FAILED` : '\nAll good on WebKit 🍎');
   process.exit(failures ? 1 : 0);
