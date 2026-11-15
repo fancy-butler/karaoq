@@ -257,7 +257,8 @@
   function qRow(it, i, st) {
     const up = i === 0 && st.phase === 'upnext';
     const mine = it.clientId === KQ.clientId;
-    return `<div class="item q ${up ? 'up' : ''} ${mine ? 'mine' : ''}" data-id="${it.id}">
+    const tint = st.settings.genreRows !== false && it.genre && KQ.GENRES[it.genre];
+    return `<div class="item q ${up ? 'up' : ''} ${mine ? 'mine' : ''} ${tint ? 'tinted' : ''}" data-id="${it.id}" ${tint ? `style="--g:${KQ.gColor(it.genre)}"` : ''}>
       <div class="pos">${up ? '★' : i + 1}</div>
       <img loading="lazy" src="${esc(thumb(it))}" alt="">
       <div class="meta"><div class="singer">${esc(who(it))}${it.key ? `<span class="keyb">${keyLabel(it.key)}</span>` : ''}${isFave(it.singer, it.videoId) ? '<span class="favb">★</span>' : ''}${sungBy(st, it.singer) ? `<span class="sung">🎤${sungBy(st, it.singer)}</span>` : ''}${it.deferred ? `<span class="badge">passed ${it.deferred}×</span>` : ''}</div>
@@ -341,10 +342,11 @@
     $('#setFair').checked = s.fair;
     $('#setQr').checked = s.showQr !== false;
     $('#setNext').checked = s.showNext !== false;
+    $('#setRows').checked = s.genreRows !== false;
     $('#setCache').value = String(s.cacheGB || 5);
     if (!$('#setCache').value) { $('#setCache').insertAdjacentHTML('beforeend', `<option value="${s.cacheGB}">${s.cacheGB} GB</option>`); $('#setCache').value = String(s.cacheGB); }
     $('#cacheUse').textContent = `Using ${(KQ.state.cacheBytes / 1e9).toFixed(1)} GB now. Oldest unplayed songs are deleted first; queued songs are never touched.`;
-    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
+    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
   $('#newNightBtn').onclick = () => { if (confirm('Start a new night? The queue is cleared (you can restore it from the Queue tab) and song counts reset.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };

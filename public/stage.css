@@ -159,3 +159,11 @@ kbd { background: #ffffff1c; border: 1px solid #ffffff33; border-bottom-width: 3
 .mixlegend b { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; }
 .mixdec { margin-top: 6px; color: var(--dim); font-size: .85em; } .mixdec em { font-style: normal; color: var(--text); font-weight: 700; }
 #idleMix { font-size: 18px; } #sideMix { font-size: 14px; padding: 4px; }
+
+#sideList li.tinted { background: linear-gradient(90deg, color-mix(in srgb, var(--g) 28%, transparent) 0%, color-mix(in srgb, var(--g) 8%, transparent) 50%, transparent 90%); }
+/* up-next screen sits beside the sidebar instead of under it; long names/titles shrink and wrap */
+.side #upnext { right: min(430px, 34vw); transition: right .35s; }
+.up-inner { max-width: 100%; box-sizing: border-box; }
+#upSong { max-width: 100%; overflow-wrap: anywhere; }
+.side #upSinger { font-size: clamp(56px, 8vw, 170px); }
+#upSinger.long { font-size: clamp(48px, 6.5vw, 130px) !important; }

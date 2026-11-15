@@ -131,6 +131,7 @@
         const el = $('#upSinger'); el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
       }
       $('#upSinger').textContent = who(head);
+      $('#upSinger').classList.toggle('long', who(head).length > 12);
       $('#upSong').textContent = clean(head.title);
       $('.bgthumb').style.backgroundImage = `url("${thumb(head)}")`;
       const after = st.queue[1];
@@ -146,7 +147,8 @@
     $('#sideCount').textContent = st.queue.length ? `· ${st.queue.length}` : '';
     $('#sideList').innerHTML = st.queue.length ? st.queue.map((it, i) => {
       const up = i === 0 && st.phase === 'upnext';
-      return `<li class="${up ? 'up' : ''}" style="--g:${it.genre ? gColor(it.genre) : 'transparent'}"><span class="n">${up ? '★' : i + 1}</span><span class="w">${esc(who(it))}${it.key ? `<span class="k">${keyLabel(it.key)}</span>` : ''}${sungBy(st, it.singer) ? `<span class="c">🎤${sungBy(st, it.singer)}</span>` : ''}${it.dl?.state !== 'ready' ? dlLabel(it.dl) : ''}</span><span class="t">${esc(clean(it.title))}</span></li>`;
+      const tint = st.settings.genreRows !== false && it.genre;
+      return `<li class="${up ? 'up' : ''} ${tint ? 'tinted' : ''}" style="--g:${it.genre ? gColor(it.genre) : 'transparent'}"><span class="n">${up ? '★' : i + 1}</span><span class="w">${esc(who(it))}${it.key ? `<span class="k">${keyLabel(it.key)}</span>` : ''}${sungBy(st, it.singer) ? `<span class="c">🎤${sungBy(st, it.singer)}</span>` : ''}${it.dl?.state !== 'ready' ? dlLabel(it.dl) : ''}</span><span class="t">${esc(clean(it.title))}</span></li>`;
     }).join('') : '<li><span class="empty">Nobody in line. Scan the code below!</span></li>';
     $('#sideHeld').textContent = st.held.length ? `🚪 Stepped out: ${st.held.map(h => who(h)).join(', ')}` : '';
 

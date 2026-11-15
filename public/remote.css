@@ -143,3 +143,8 @@ nav button { padding: 10px 6px; font-size: 15px; }
 .mixlegend { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; font-size: 13px; font-weight: 700; }
 .mixlegend b { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; }
 .mixdec { margin-top: 6px; color: var(--dim); font-size: 13px; } .mixdec em { font-style: normal; color: var(--text); font-weight: 700; }
+
+/* rows tinted by genre: solid edge fading into the row */
+.q.tinted { border-left: 6px solid var(--g); background: linear-gradient(90deg, color-mix(in srgb, var(--g) 30%, #1a1026) 0%, color-mix(in srgb, var(--g) 10%, #1a1026) 45%, #1a1026 85%); }
+.q.tinted.mine { background: linear-gradient(90deg, color-mix(in srgb, var(--g) 30%, #10243a) 0%, color-mix(in srgb, var(--g) 10%, #10243a) 45%, #10243a 85%); }
+.q.tinted.up { border-color: var(--gold); border-left-color: var(--g); }
