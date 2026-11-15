@@ -100,7 +100,12 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
 - **Reactions:** 20 emoji, with six in the quick row and ＋ for the rest.
 
 ## Fun stuff
-- **🎲 Spin for me:** can't decide? The Search tab picks a karaoke classic for you, optionally by genre or decade. It also shows your recent searches and a shuffle of party classics to tap.
+- **Can't decide what to sing?** The Search tab shows:
+  - **🏠 Popular at this party:** the songs sung most on this computer across every night. It builds itself, no accounts needed.
+  - **🔥 Most sung karaoke songs:** the top 100 most-sung karaoke songs in Canada from the [Singa karaoke app](https://singa.com/blog/most-popular-karaoke-songs-in-canada/) (2026 ranking).
+  - **Browse by genre and decade:** pick e.g. *Country* + *1970s* and the list shows every matching song.
+  - **🎲 Spin for me:** a random pick from the same pool, using the same genre/decade filters.
+  - Your recent searches, plus a shuffle of more party classics.
 - **Wrong version?** ⋯ on a queued song → pick another karaoke version. The singer keeps their spot.
 - **🏆 Tonight's awards:** Mic Hog, Genre Hopper, Crowd Favourite (most reactions), Marathon Mic, Time Traveller, Duet Darling, Fashionably Late, Opening Act. They're on the phone's Sung tab, and a host can put them on the TV (or ☰ Menu → Awards on the TV).
 - **Tonight so far:** party time (ticking live), songs sung, singers, time spent singing, songs per hour, reactions, what's left in line, and the longest song. It's on the Sung tab, in the TV's rotating idle screen, and under the awards.

@@ -1,0 +1,692 @@
+{
+"source": "Singa karaoke app — 100 most popular karaoke songs in Canada (2026)",
+"url": "https://singa.com/blog/most-popular-karaoke-songs-in-canada/",
+"songs": [
+{
+"rank": 1,
+"title": "Sweet Caroline",
+"artist": "Neil Diamond",
+"g": "pop",
+"y": 1969
+},
+{
+"rank": 2,
+"title": "Tennessee Whiskey",
+"artist": "Chris Stapleton",
+"g": "country",
+"y": 2015
+},
+{
+"rank": 3,
+"title": "Golden",
+"artist": "KPop Demon Hunters Cast",
+"g": "kpop",
+"y": 2025
+},
+{
+"rank": 4,
+"title": "You're Beautiful",
+"artist": "James Blunt",
+"g": "pop",
+"y": 2004
+},
+{
+"rank": 5,
+"title": "Creep",
+"artist": "Radiohead",
+"g": "rock",
+"y": 1992
+},
+{
+"rank": 6,
+"title": "Take On Me",
+"artist": "a-ha",
+"g": "electronic",
+"y": 1985
+},
+{
+"rank": 7,
+"title": "I Want It That Way",
+"artist": "Backstreet Boys",
+"g": "pop",
+"y": 1999
+},
+{
+"rank": 8,
+"title": "Dancing Queen",
+"artist": "ABBA",
+"g": "disco",
+"y": 1976
+},
+{
+"rank": 9,
+"title": "Pink Pony Club",
+"artist": "Chappell Roan",
+"g": "pop",
+"y": 2020
+},
+{
+"rank": 10,
+"title": "Take Me Home, Country Roads",
+"artist": "John Denver",
+"g": "country",
+"y": 1971
+},
+{
+"rank": 11,
+"title": "Stand by Me",
+"artist": "Ben E. King",
+"g": "rnb",
+"y": 1961
+},
+{
+"rank": 12,
+"title": "Zombie",
+"artist": "The Cranberries",
+"g": "rock",
+"y": 1994
+},
+{
+"rank": 13,
+"title": "Hotel California",
+"artist": "Eagles",
+"g": "rock",
+"y": 1976
+},
+{
+"rank": 14,
+"title": "Picture",
+"artist": "Kid Rock & Sheryl Crow",
+"g": "country",
+"y": 2002
+},
+{
+"rank": 15,
+"title": "Bohemian Rhapsody",
+"artist": "Queen",
+"g": "rock",
+"y": 1975
+},
+{
+"rank": 16,
+"title": "Don't Stop Believin'",
+"artist": "Journey",
+"g": "rock",
+"y": 1981
+},
+{
+"rank": 17,
+"title": "Folsom Prison Blues",
+"artist": "Johnny Cash",
+"g": "country",
+"y": 1955
+},
+{
+"rank": 18,
+"title": "Teenage Dirtbag",
+"artist": "Wheatus",
+"g": "rock",
+"y": 2000
+},
+{
+"rank": 19,
+"title": "My Way",
+"artist": "Frank Sinatra",
+"g": "jazz",
+"y": 1969
+},
+{
+"rank": 20,
+"title": "Wonderwall",
+"artist": "Oasis",
+"g": "rock",
+"y": 1995
+},
+{
+"rank": 21,
+"title": "Lose Control",
+"artist": "Teddy Swims",
+"g": "rnb",
+"y": 2023
+},
+{
+"rank": 22,
+"title": "Piano Man",
+"artist": "Billy Joel",
+"g": "rock",
+"y": 1973
+},
+{
+"rank": 23,
+"title": "Hallelujah",
+"artist": "Pentatonix",
+"g": "pop",
+"y": 2016
+},
+{
+"rank": 24,
+"title": "Friends in Low Places",
+"artist": "Garth Brooks",
+"g": "country",
+"y": 1990
+},
+{
+"rank": 25,
+"title": "Man! I Feel Like a Woman!",
+"artist": "Shania Twain",
+"g": "country",
+"y": 1997
+},
+{
+"rank": 26,
+"title": "Dreams",
+"artist": "Fleetwood Mac",
+"g": "rock",
+"y": 1977
+},
+{
+"rank": 27,
+"title": "In the End",
+"artist": "Linkin Park",
+"g": "metal",
+"y": 2000
+},
+{
+"rank": 28,
+"title": "Ring of Fire",
+"artist": "Johnny Cash",
+"g": "country",
+"y": 1963
+},
+{
+"rank": 29,
+"title": "Before He Cheats",
+"artist": "Carrie Underwood",
+"g": "country",
+"y": 2006
+},
+{
+"rank": 30,
+"title": "Crazy",
+"artist": "Gnarls Barkley",
+"g": "rnb",
+"y": 2006
+},
+{
+"rank": 31,
+"title": "Mr. Brightside",
+"artist": "The Killers",
+"g": "rock",
+"y": 2003
+},
+{
+"rank": 32,
+"title": "What's Up?",
+"artist": "4 Non Blondes",
+"g": "rock",
+"y": 1992
+},
+{
+"rank": 33,
+"title": "Someone You Loved",
+"artist": "Lewis Capaldi",
+"g": "pop",
+"y": 2018
+},
+{
+"rank": 34,
+"title": "Wagon Wheel",
+"artist": "Old Crow Medicine Show",
+"g": "folk",
+"y": 2004
+},
+{
+"rank": 35,
+"title": "Islands in the Stream",
+"artist": "Kenny Rogers & Dolly Parton",
+"g": "country",
+"y": 1983
+},
+{
+"rank": 36,
+"title": "Peaceful Easy Feeling",
+"artist": "Eagles",
+"g": "rock",
+"y": 1972
+},
+{
+"rank": 37,
+"title": "Wicked Game",
+"artist": "Chris Isaak",
+"g": "rock",
+"y": 1989
+},
+{
+"rank": 38,
+"title": "Let It Go",
+"artist": "Idina Menzel",
+"g": "musical",
+"y": 2013
+},
+{
+"rank": 39,
+"title": "Shallow",
+"artist": "Lady Gaga & Bradley Cooper",
+"g": "pop",
+"y": 2018
+},
+{
+"rank": 40,
+"title": "Rainy Day People",
+"artist": "Gordon Lightfoot",
+"g": "folk",
+"y": 1975
+},
+{
+"rank": 41,
+"title": "Mamma Mia",
+"artist": "ABBA",
+"g": "disco",
+"y": 1975
+},
+{
+"rank": 42,
+"title": "WAP",
+"artist": "Cardi B & Megan Thee Stallion",
+"g": "hiphop",
+"y": 2020
+},
+{
+"rank": 43,
+"title": "Livin' on a Prayer",
+"artist": "Bon Jovi",
+"g": "rock",
+"y": 1986
+},
+{
+"rank": 44,
+"title": "Baby",
+"artist": "Justin Bieber & Ludacris",
+"g": "pop",
+"y": 2010
+},
+{
+"rank": 45,
+"title": "Blue Eyes Crying in the Rain",
+"artist": "Willie Nelson",
+"g": "country",
+"y": 1975
+},
+{
+"rank": 46,
+"title": "Lyin' Eyes",
+"artist": "Eagles",
+"g": "rock",
+"y": 1975
+},
+{
+"rank": 47,
+"title": "Love Shack",
+"artist": "The B-52's",
+"g": "rock",
+"y": 1989
+},
+{
+"rank": 48,
+"title": "Walkin' After Midnight",
+"artist": "Patsy Cline",
+"g": "country",
+"y": 1957
+},
+{
+"rank": 49,
+"title": "House of the Rising Sun",
+"artist": "The Animals",
+"g": "rock",
+"y": 1964
+},
+{
+"rank": 50,
+"title": "Summer of '69",
+"artist": "Bryan Adams",
+"g": "rock",
+"y": 1985
+},
+{
+"rank": 51,
+"title": "Rockin' Around the Christmas Tree",
+"artist": "Brenda Lee",
+"g": "pop",
+"y": 1958
+},
+{
+"rank": 52,
+"title": "Still Into You",
+"artist": "Paramore",
+"g": "punk",
+"y": 2013
+},
+{
+"rank": 54,
+"title": "Love Story",
+"artist": "Taylor Swift",
+"g": "country",
+"y": 2008
+},
+{
+"rank": 55,
+"title": "Last Christmas",
+"artist": "Wham!",
+"g": "pop",
+"y": 1984
+},
+{
+"rank": 56,
+"title": "The Scientist",
+"artist": "Coldplay",
+"g": "rock",
+"y": 2002
+},
+{
+"rank": 57,
+"title": "APT.",
+"artist": "Rosé & Bruno Mars",
+"g": "kpop",
+"y": 2024
+},
+{
+"rank": 58,
+"title": "Have You Ever Seen the Rain?",
+"artist": "Creedence Clearwater Revival",
+"g": "rock",
+"y": 1970
+},
+{
+"rank": 59,
+"title": "Fly Me to the Moon",
+"artist": "Frank Sinatra",
+"g": "jazz",
+"y": 1964
+},
+{
+"rank": 60,
+"title": "Landslide",
+"artist": "Fleetwood Mac",
+"g": "rock",
+"y": 1975
+},
+{
+"rank": 61,
+"title": "Ironic",
+"artist": "Alanis Morissette",
+"g": "rock",
+"y": 1995
+},
+{
+"rank": 62,
+"title": "Your Idol",
+"artist": "KPop Demon Hunters Cast",
+"g": "kpop",
+"y": 2025
+},
+{
+"rank": 63,
+"title": "Tequila Sunrise",
+"artist": "Eagles",
+"g": "rock",
+"y": 1973
+},
+{
+"rank": 64,
+"title": "Yellow",
+"artist": "Coldplay",
+"g": "rock",
+"y": 2000
+},
+{
+"rank": 65,
+"title": "Let It Be",
+"artist": "The Beatles",
+"g": "rock",
+"y": 1970
+},
+{
+"rank": 66,
+"title": "The Sound of Silence",
+"artist": "Simon & Garfunkel",
+"g": "folk",
+"y": 1964
+},
+{
+"rank": 67,
+"title": "Snowman",
+"artist": "Sia",
+"g": "pop",
+"y": 2017
+},
+{
+"rank": 68,
+"title": "Kryptonite",
+"artist": "3 Doors Down",
+"g": "rock",
+"y": 2000
+},
+{
+"rank": 69,
+"title": "Party in the U.S.A.",
+"artist": "Miley Cyrus",
+"g": "pop",
+"y": 2009
+},
+{
+"rank": 70,
+"title": "Sweet Child o' Mine",
+"artist": "Guns N' Roses",
+"g": "rock",
+"y": 1987
+},
+{
+"rank": 71,
+"title": "Wannabe",
+"artist": "Spice Girls",
+"g": "pop",
+"y": 1996
+},
+{
+"rank": 72,
+"title": "I Will Survive",
+"artist": "Gloria Gaynor",
+"g": "disco",
+"y": 1978
+},
+{
+"rank": 73,
+"title": "Takedown",
+"artist": "KPop Demon Hunters Cast",
+"g": "kpop",
+"y": 2025
+},
+{
+"rank": 74,
+"title": "Fishin' in the Dark",
+"artist": "Nitty Gritty Dirt Band",
+"g": "country",
+"y": 1987
+},
+{
+"rank": 75,
+"title": "Yesterday",
+"artist": "Official Hige Dandism",
+"g": "kpop",
+"y": null
+},
+{
+"rank": 76,
+"title": "Ruby Tuesday",
+"artist": "The Rolling Stones",
+"g": "rock",
+"y": 1967
+},
+{
+"rank": 77,
+"title": "Beautiful Things",
+"artist": "Benson Boone",
+"g": "pop",
+"y": 2024
+},
+{
+"rank": 78,
+"title": "Here Without You",
+"artist": "3 Doors Down",
+"g": "rock",
+"y": 2002
+},
+{
+"rank": 79,
+"title": "I Wanna Dance with Somebody",
+"artist": "Whitney Houston",
+"g": "pop",
+"y": 1987
+},
+{
+"rank": 80,
+"title": "The Man Who Sold the World",
+"artist": "David Bowie",
+"g": "rock",
+"y": 1970
+},
+{
+"rank": 81,
+"title": "The Fate of Ophelia",
+"artist": "Taylor Swift",
+"g": "pop",
+"y": 2025
+},
+{
+"rank": 82,
+"title": "The Gambler",
+"artist": "Kenny Rogers",
+"g": "country",
+"y": 1978
+},
+{
+"rank": 83,
+"title": "Under the Bridge",
+"artist": "Red Hot Chili Peppers",
+"g": "rock",
+"y": 1991
+},
+{
+"rank": 84,
+"title": "Neon Moon",
+"artist": "Brooks & Dunn",
+"g": "country",
+"y": 1991
+},
+{
+"rank": 85,
+"title": "Rolling in the Deep",
+"artist": "Adele",
+"g": "pop",
+"y": 2010
+},
+{
+"rank": 86,
+"title": "Girls Just Want to Have Fun",
+"artist": "Cyndi Lauper",
+"g": "pop",
+"y": 1983
+},
+{
+"rank": 87,
+"title": "Always on My Mind",
+"artist": "Brenda Lee",
+"g": "country",
+"y": 1972
+},
+{
+"rank": 88,
+"title": "Chiseled in Stone",
+"artist": "Vern Gosdin",
+"g": "country",
+"y": 1988
+},
+{
+"rank": 89,
+"title": "Santeria",
+"artist": "Sublime",
+"g": "rock",
+"y": 1996
+},
+{
+"rank": 90,
+"title": "Forever Young",
+"artist": "Alphaville",
+"g": "electronic",
+"y": 1984
+},
+{
+"rank": 91,
+"title": "Don't It Make My Brown Eyes Blue",
+"artist": "Crystal Gayle",
+"g": "country",
+"y": 1977
+},
+{
+"rank": 92,
+"title": "The Long and Winding Road",
+"artist": "The Beatles",
+"g": "rock",
+"y": 1970
+},
+{
+"rank": 93,
+"title": "Flowers",
+"artist": "Miley Cyrus",
+"g": "pop",
+"y": 2023
+},
+{
+"rank": 94,
+"title": "Bring Me to Life",
+"artist": "Evanescence",
+"g": "metal",
+"y": 2003
+},
+{
+"rank": 95,
+"title": "Blue Christmas",
+"artist": "Elvis Presley",
+"g": "rock",
+"y": 1957
+},
+{
+"rank": 96,
+"title": "Sweet Dreams (Are Made of This)",
+"artist": "Eurythmics",
+"g": "electronic",
+"y": 1983
+},
+{
+"rank": 97,
+"title": "Unwritten",
+"artist": "Natasha Bedingfield",
+"g": "pop",
+"y": 2004
+},
+{
+"rank": 99,
+"title": "Iris",
+"artist": "Goo Goo Dolls",
+"g": "rock",
+"y": 1998
+},
+{
+"rank": 100,
+"title": "Take It Easy",
+"artist": "Eagles",
+"g": "rock",
+"y": 1972
+}
+]
+}

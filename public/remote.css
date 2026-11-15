@@ -222,3 +222,14 @@ body[data-theme="minimal"] button:not(.ghost):not(.av) { color: #111; }
 .night { background: var(--panel); border-radius: 14px; padding: 12px; margin: 4px 0 14px; }
 #board span { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px 4px 4px; }
 #board span .av { margin: 0; }
+
+#popular { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+#popular button { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: var(--panel); border-left: 4px solid var(--g); padding: 10px 12px; font-weight: 700; font-size: 15px; }
+#popular em { font-style: normal; color: var(--gold); font-weight: 900; min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; }
+#popular span { display: flex; flex-direction: column; } #popular small { color: var(--dim); font-weight: 500; font-size: 13px; }
+#popMore { margin-top: 8px; }
+.credit { font-size: 11px; color: var(--dim); margin: 6px 2px 0; } .credit a { color: var(--dim); }
+
+.hf { border-left: 4px solid var(--g); }
+
+#popular .empty { color: var(--dim); padding: 12px; }

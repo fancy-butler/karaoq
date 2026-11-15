@@ -67,21 +67,66 @@
   let recentQ = JSON.parse(ls.get('kq.recentQ') || '[]');
   let classics = [];
   const searchFor = q => { $('#q').value = q; $('#searchForm').requestSubmit ? $('#searchForm').requestSubmit() : $('#searchForm').onsubmit(new Event('submit')); };
+  // House favourites: most-sung on this machine across all nights. Tapping one adds that exact video.
+  let house = [];
+  function loadHouse() {
+    fetch('/api/house').then(r => r.json()).then(list => {
+      house = list.filter(h => h.n >= 2 || list.length >= 5).slice(0, 10);
+      $('#houseBox').hidden = !house.length;
+      $('#house').innerHTML = house.map((h, i) => `<div class="item hf" style="--g:${KQ.gColor(h.genre)}"><img loading="lazy" src="${esc(thumb(h))}" alt=""><div class="meta"><div class="t">${esc(clean(h.title))}</div><div class="s">${h.genre ? KQ.genreChip(h) : ''}sung ${h.n}× · by ${h.singers} ${h.singers === 1 ? 'person' : 'people'}</div></div><div class="acts"><button class="ghost" data-hfor="${i}" title="Add for someone else">👤</button><button data-hadd="${i}" title="Add">＋</button></div></div>`).join('');
+    }).catch(() => { });
+  }
+  $('#house').onclick = async e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const h = house[b.dataset.hadd ?? b.dataset.hfor]; if (!h) return;
+    let singer = myName, partner = '';
+    if (b.dataset.hfor !== undefined) { const r = await askName('Who is singing this one?', '', true); if (!r) return; singer = r.name; partner = r.partner; }
+    else if (!singer) return showJoin();
+    const r = await addSong({ video: { videoId: h.videoId, title: h.title }, singer, with: partner });
+    r.ok ? toast(`Added for ${partner ? singer + ' & ' + partner : singer} — #${r.position} in line`) : toast(r.error, 'bad');
+  };
+
   function showSuggest() {
     $('#suggest').hidden = false; $('#results').innerHTML = ''; lastResults = [];
+    loadHouse();
     $('#recentBox').hidden = !recentQ.length;
     $('#recent').innerHTML = recentQ.map(q => `<button data-q="${esc(q)}">${esc(q)}</button>`).join('');
     renderClassics();
   }
   function renderClassics() {
-    const pick = [...classics].sort(() => Math.random() - 0.5).slice(0, 10);
+    const pick = classics.filter(c => !c.rank).sort(() => Math.random() - 0.5).slice(0, 10);
     $('#classics').innerHTML = pick.map(c => `<button data-q="${esc(c.artist + ' ' + c.title)}" style="--g:${KQ.gColor(c.g)}" class="cl">${esc(c.title)} <small>${esc(c.artist)}</small></button>`).join('');
   }
-  fetch('/api/classics').then(r => r.json()).then(list => {
-    classics = list;
-    const gs = [...new Set(list.map(c => c.g))];
+  // Most-sung chart (real karaoke-app data) + our classics; 🎲 spins over both
+  let popular = [], popAll = false;
+  const decadeOf = c => (c.y ? Math.floor(c.y / 10) * 10 : null);
+  function renderPopular() {
+    const g = $('#spinGenre').value, d = $('#spinDecade').value;
+    const filtering = !!(g || d);
+    // no filter: the chart. With a genre/decade: every matching song, chart songs first, then the rest by year
+    const pool = filtering
+      ? classics.filter(c => (!g || c.g === g) && (!d || decadeOf(c) === Number(d))).sort((a, b) => (a.rank || 999) - (b.rank || 999) || (a.y || 0) - (b.y || 0))
+      : popular;
+    const list = popAll || filtering ? pool : pool.slice(0, 15);
+    const label = [g && (GENRES[g] || [g])[0], d && `${d}s`].filter(Boolean).join(' · ');
+    $('#popHead').textContent = filtering ? `🎵 ${label} — ${pool.length} song${pool.length === 1 ? '' : 's'}` : '🔥 Most sung karaoke songs';
+    $('#popMore').hidden = filtering;
+    if (!list.length) { $('#popular').innerHTML = '<li class="empty">Nothing in that combo — try another genre or decade.</li>'; return; }
+    $('#popular').innerHTML = list.map(c => `<li><button data-q="${esc(c.artist + ' ' + c.title)}" style="--g:${KQ.gColor(c.g)}"><em>${c.rank || (c.y ? `’${String(c.y).slice(2)}` : '•')}</em><span>${esc(c.title)}<small>${esc(c.artist)}</small></span></button></li>`).join('');
+    $('#popMore').textContent = popAll ? 'Show fewer' : `Show all ${popular.length}`;
+  }
+  $('#spinGenre').onchange = $('#spinDecade').onchange = () => renderPopular();
+  $('#popMore').onclick = e => { e.stopPropagation(); popAll = !popAll; renderPopular(); };
+  Promise.all([fetch('/api/popular').then(r => r.json()), fetch('/api/classics').then(r => r.json())]).then(([pop, list]) => {
+    popular = pop.songs;
+    $('#popCredit').innerHTML = `Ranking: <a href="${esc(pop.url)}" target="_blank" rel="noopener">${esc(pop.source)}</a>`;
+    renderPopular();
+    const seen = new Set(popular.map(c => (c.artist + c.title).toLowerCase()));
+    classics = [...popular, ...list.filter(c => !seen.has((c.artist + c.title).toLowerCase()))];
+    renderPopular();
+    const gs = [...new Set(classics.map(c => c.g))];
     $('#spinGenre').innerHTML += gs.map(g => `<option value="${g}">${esc((GENRES[g] || [g])[0])}</option>`).join('');
-    const ds = [...new Set(list.filter(c => c.y).map(c => Math.floor(c.y / 10) * 10))].sort();
+    const ds = [...new Set(classics.filter(c => c.y).map(c => Math.floor(c.y / 10) * 10))].sort();
     $('#spinDecade').innerHTML += ds.map(d => `<option value="${d}">${d}s</option>`).join('');
     renderClassics();
   }).catch(() => { });

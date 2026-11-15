@@ -35,9 +35,14 @@
     </form>
     <label class="toggle"><input type="checkbox" id="karaoke" checked> Karaoke versions only</label>
     <div id="suggest">
-      <div class="spin"><button id="spinBtn" class="gold">🎲 Spin for me</button><select id="spinGenre"><option value="">Any genre</option></select><select id="spinDecade"><option value="">Any decade</option></select></div>
+      <div class="spin"><button id="spinBtn" class="gold">🎲 Spin for me</button><select id="spinGenre" aria-label="Genre"><option value="">All genres</option></select><select id="spinDecade" aria-label="Decade"><option value="">All decades</option></select></div>
       <div id="recentBox"><h4>Your recent searches</h4><div id="recent" class="chips"></div></div>
-      <h4>Party classics <button id="reshuffle" class="ghost tiny">🔀</button></h4>
+      <div id="houseBox" hidden><h4>🏠 Popular at this party</h4><div id="house"></div></div>
+      <h4 id="popHead">🔥 Most sung karaoke songs</h4>
+      <ol id="popular"></ol>
+      <button id="popMore" class="ghost tiny">Show all</button>
+      <p class="credit" id="popCredit"></p>
+      <h4>More party classics <button id="reshuffle" class="ghost tiny">🔀</button></h4>
       <div id="classics" class="chips"></div>
       <p class="hint">Tap <b>＋</b> on a result to add it under your name · <b>👤</b> to add one for somebody else.</p>
     </div>
