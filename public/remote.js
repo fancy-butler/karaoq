@@ -347,7 +347,7 @@
     $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
-  $('#newNightBtn').onclick = () => { if (confirm('Reset everyone\'s song counts for a new night? The queue stays.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };
+  $('#newNightBtn').onclick = () => { if (confirm('Start a new night? The queue is cleared (you can restore it from the Queue tab) and song counts reset.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };
   $('#pinBtn').onclick = () => { const p = prompt('Host PIN'); if (p) { ls.set('kq.pin', p); KQ.send({ type: 'pin', pin: p }); } };
   KQ.on('pinResult', m => toast(m.ok ? "You're a host now" : 'Wrong PIN', m.ok ? '' : 'bad'));
 
