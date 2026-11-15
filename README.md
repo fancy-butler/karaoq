@@ -1,0 +1,105 @@
+# 🎤 KARAO-Q
+
+YouTube karaoke for parties, without passing a keyboard around. One computer drives the TV. Everyone else adds songs from their phone by scanning a QR code, and nobody installs an app.
+
+There are no ads to block. Songs are fetched with **yt-dlp** and played from a local file, so YouTube's player (and its ads, "are you still watching?" prompts and autoplay junk) never comes into it. Each song is downloaded while the one before it plays, so there's no buffering gap between singers.
+
+Works on **Linux, Windows and macOS**.
+
+---
+
+## Setup (one time)
+
+You need four things on the party computer:
+
+| | Linux | Windows | macOS |
+|---|---|---|---|
+| Node 18+ | `sudo apt install nodejs npm` | `winget install OpenJS.NodeJS.LTS` | `brew install node` |
+| yt-dlp | `pipx install yt-dlp` | `winget install yt-dlp.yt-dlp` | `brew install yt-dlp` |
+| ffmpeg | `sudo apt install ffmpeg` | `winget install Gyan.FFmpeg` | `brew install ffmpeg` |
+| deno | `curl -fsSL https://deno.land/install.sh \| sh` | `winget install DenoLand.Deno` | `brew install deno` |
+
+(Recent yt-dlp needs deno to handle YouTube.) You also need any Chromium-type browser: Chrome, Chromium, Brave or Edge.
+
+### Optional: the "Can't connect?" internet QR
+Some phones can't reach the party computer over Wi-Fi: guest networks, routers that wall devices off from each other, people on mobile data. Install **cloudflared** and KARAO-Q shows a second QR code that works from any network.
+
+| Linux (Arch/CachyOS) | Windows | macOS |
+|---|---|---|
+| `sudo pacman -S cloudflared` | `winget install Cloudflare.cloudflared` | `brew install cloudflared` |
+
+What it exposes: **only the phone remote page**. The TV page, the downloaded videos and the rest of your computer are not reachable through it. The address is long, random, and **changes every time you start KARAO-Q**. People who join this way are **guests**: they can add songs and manage their own, but only the party computer (or someone with the host PIN) can skip, reorder or remove other people's songs. The link stops working as soon as you close KARAO-Q. Traffic goes through Cloudflare's free tunnel service. Run with `TUNNEL=0` to switch it off.
+
+## Run it
+
+**The first time**, run the launcher from the folder:
+- **Linux / macOS:** `./start.sh`
+- **Windows:** double-click `start.bat`
+
+It adds a **KARAO-Q icon** to your app menu (Linux), Applications folder (macOS), or Desktop + Start menu (Windows). **From then on, just click the icon**, with no terminal. On Linux, the one-time firewall step asks for your password in a normal pop-up. If something goes wrong when starting from the icon, you get a notification, and details go to `data/karaoq.log`.
+
+### Older notes
+
+- **Linux / macOS:** `./start.sh`
+- **Windows:** double-click `start.bat`
+
+The stage opens fullscreen on the TV. Close the browser (Alt+F4 / Cmd+Q) and the whole thing shuts down. Nothing stays running in the background.
+
+Phones must be on the **same wifi**. They scan the QR code on screen, and that's it.
+
+Options (environment variables):
+- `HOST_PIN=1234`: only people who enter the PIN can reorder, skip or remove other people's songs. Guests can still add songs and manage their own. The party computer is always host. Default: no PIN, everyone can do everything.
+- `PORT=8080`: change the port.
+- `BASE_URL=http://192.168.1.50:8080`: override the address in the QR code if it picks the wrong network adapter.
+
+---
+
+## How the queue works
+
+The queue is **saved to disk on every change**. You can refresh the browser, close the lid, or have the server crash, and when you start it again everyone is still in line. A song that was cut off mid-way goes back to the **front**.
+
+**Fair rotation** (on by default): everyone gets one song before anyone gets a second. If Stan queues 5 songs and Jo queues 1, Jo doesn't wait behind all five.
+
+**When the next singer isn't in the room:**
+
+| Button / key | What it does |
+|---|---|
+| 🙋 **Not here** (`N`) | Swaps them back **one spot**. The next person goes and they keep their place. Their song shows a "passed 1×" badge so you can see who keeps ducking out. |
+| 🚪 **Stepped out** (`H`) | Takes their song out of the rotation and parks it. Nobody waits on them. |
+| ↩ **Back** | When they come back, one tap puts them **up next**. |
+| 🔀 **Fair shuffle** | Shuffles the line but keeps it fair. |
+| ↶ **Undo** (`Z`) | Reverses the last queue change. For when someone fat-fingers it. |
+
+**Between songs** the TV shows a big **UP NEXT: NAME** screen with a countdown (15 s by default, adjustable in ⚙ Settings) and a chime. Set the countdown to "None" if you'd rather the host hit Start every time.
+
+## Singing features
+- **Key change:** the singer (or host) taps **−/+** on their phone to move the song down or up in semitones without changing the speed. It's shown on the TV as "key −2". Starred songs remember the key you last sang them in.
+- **Favourites:** tap ☆ on the song that's playing, or ⋯ → Save on any queued song. The **⭐ Faves** tab lists each person's songs across nights, with one tap to queue (in their key).
+- **Duets:** tap 👤 when adding to enter a duet partner, or ⋯ → "Make it a duet" on a queued song. Shows as "Stan & Priya" and counts for both.
+- **Reactions:** everyone gets 🔥👏😂❤️🎉🤘 buttons while someone sings. They float up the side of the TV.
+
+## Phone remote
+- Search adds "karaoke" automatically and ranks real karaoke channels first. You can also paste a YouTube link.
+- **＋** adds a song under your name. **👤** adds one for someone else, which is handy when one phone queues for a few people.
+- A banner shows **how many songs until you're up** and roughly how many minutes. It flashes when you're next.
+- The **Sung** tab shows tonight's history, with one tap to queue a song again.
+
+## Keyboard on the party computer
+`A` or `/` opens the search/queue panel right on the TV, for keyboard + mouse people. `?` shows all keys.
+
+`Enter` start now · `N` not here · `H` stepped out · `Space` pause · `R` restart · `S S` skip (press twice) · `Z` undo · `← →` seek 10 s · `Q` pin queue sidebar · `F` fullscreen
+
+---
+
+## Troubleshooting
+- **Downloads failing:** update yt-dlp (`yt-dlp -U`, or update it through your package manager). YouTube changes all the time. The launchers try to update it on every start.
+- **Phones can't connect:** they have to be on the same wifi, and the computer's firewall has to allow the port. On Windows, allow Node through the firewall prompt the first time.
+- **No sound on the TV:** click once on the stage. Browsers need one click before they'll play audio unless they were launched with the autoplay flag, which the launchers do.
+- **Testing without internet:** `MOCK=1 node server.js` fakes search results and generates test videos.
+
+Downloaded songs are cached in `data/cache/`, so repeat requests start instantly. Delete the folder whenever you like.
+
+## Credits
+The idea of a QR-joined, phone-fed queue owes a lot to [PiKaraoke](https://github.com/vicwomg/pikaraoke) and [yt-kara](https://github.com/Zeletochoy/yt-kara). The video plumbing is all [yt-dlp](https://github.com/yt-dlp/yt-dlp).
+
+Downloading from YouTube is against YouTube's terms of service. This is meant for private home use.

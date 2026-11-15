@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="/icon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KARAO-Q — Stage</title>
+<link rel="stylesheet" href="/stage.css">
+</head>
+<body>
+<div id="app">
+  <video id="vid" playsinline preload="auto"></video>
+
+  <!-- Nobody in line -->
+  <section id="idle" class="screen">
+    <div class="idle-inner">
+      <h1 class="logo">🎤 KARAO<span>-Q</span></h1>
+      <p class="big">Scan to add songs</p>
+      <div class="joins">
+        <div class="join-main"><div class="qr big-qr"></div><p class="url"></p></div>
+        <div class="join-net net-only"><div class="netqr"></div><b>Can't connect?</b><span>Scan this one instead<br>(works on any network)</span></div>
+      </div>
+      <p id="idleHeld" class="sub"></p>
+      <div id="idleStats" class="stats"></div>
+      <p class="keys">Keyboard: <kbd>A</kbd> add songs · <kbd>Q</kbd> queue · <kbd>F</kbd> fullscreen · <kbd>?</kbd> all keys</p>
+    </div>
+  </section>
+
+  <!-- Between songs: call the next singer up -->
+  <section id="upnext" class="screen">
+    <div class="bgthumb"></div>
+    <div class="up-inner">
+      <div class="up-label">UP NEXT</div>
+      <div id="upSinger"></div>
+      <div id="upSong"></div>
+      <div id="ring"><span id="ringNum"></span></div>
+      <div id="upStatus"></div>
+      <div id="upAfter"></div>
+      <p class="keys"><kbd>Enter</kbd> start now · <kbd>N</kbd> not here (next person goes) · <kbd>H</kbd> stepped out</p>
+    </div>
+  </section>
+
+  <!-- During a song -->
+  <div id="nowTag"><small>NOW SINGING</small><b id="nowSinger"></b><em id="nowKey"></em></div>
+  <div id="ticker"><small>NEXT UP</small><b id="tickSinger"></b><span id="tickSong"></span></div>
+  <div id="joinCorner"><div class="qr"></div><div><b>Scan to add songs</b><span class="url"></span><em id="phonesCorner"></em></div><div class="net-only cornernet"><div class="netqr"></div><small>Can't connect?</small></div></div>
+  <div id="pausedTag">⏸ PAUSED</div>
+
+  <aside id="side">
+    <h2>Queue <span id="sideCount"></span><small id="phonesSide"></small></h2>
+    <div class="hint"><kbd>Q</kbd> to pin / hide</div>
+    <ol id="sideList"></ol>
+    <div id="sideHeld"></div>
+    <div id="sideStats" class="stats"></div>
+    <div class="side-join"><div class="qr"></div><div><b>Add songs</b><span class="url"></span></div><div class="net-only cornernet"><div class="netqr"></div><small>Can't connect?</small></div></div>
+  </aside>
+
+  <div id="drawer"><iframe id="drawerFrame" title="Add songs"></iframe></div>
+  <div id="unlock"><div><b>Click anywhere to start</b><span>(browsers need one click before they'll play sound)</span></div></div>
+  <div id="help">
+    <h2>Keys</h2>
+    <dl>
+      <dt>A or /</dt><dd>Search &amp; add songs (keyboard + mouse)</dd>
+      <dt>Q</dt><dd>Show / hide queue sidebar</dd>
+      <dt>Enter</dt><dd>Start the next song now</dd>
+      <dt>N</dt><dd>Not here — swap the next singer back one spot</dd>
+      <dt>H</dt><dd>Stepped out — park their song until they're back</dd>
+      <dt>Space</dt><dd>Pause / resume</dd>
+      <dt>R</dt><dd>Restart song</dd>
+      <dt>S S</dt><dd>Skip song (press twice)</dd>
+      <dt>Z</dt><dd>Undo last queue change</dd>
+      <dt>← →</dt><dd>Seek 10 s</dd>
+      <dt>J</dt><dd>Show / hide the join QR during songs</dd>
+      <dt>U</dt><dd>Show / hide "Next up" during songs</dd>
+      <dt>F</dt><dd>Fullscreen</dd>
+      <dt>?</dt><dd>This help</dd>
+    </dl>
+  </div>
+</div>
+<script src="/common.js"></script>
+<script src="/stage.js"></script>
+</body>
+</html>

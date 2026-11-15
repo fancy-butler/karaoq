@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b0d4d"/><stop offset="1" stop-color="#08243a"/></linearGradient>
+    <linearGradient id="q" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3d9a"/><stop offset="1" stop-color="#ff79bf"/></linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="url(#bg)"/>
+  <!-- Q: ring + short tail crossing it -->
+  <circle cx="128" cy="124" r="78" fill="none" stroke="url(#q)" stroke-width="22"/>
+  <rect x="160" y="168" width="64" height="24" rx="12" transform="rotate(42 192 180)" fill="url(#q)"/>
+  <!-- microphone inside -->
+  <rect x="106" y="62" width="44" height="72" rx="22" fill="#f4ecff"/>
+  <g stroke="#7a5d94" stroke-width="3.5" stroke-linecap="round"><line x1="114" y1="84" x2="142" y2="84"/><line x1="112" y1="96" x2="144" y2="96"/><line x1="114" y1="108" x2="142" y2="108"/></g>
+  <path d="M94 116 a34 34 0 0 0 68 0" fill="none" stroke="#29e0ff" stroke-width="9" stroke-linecap="round"/>
+  <line x1="128" y1="150" x2="128" y2="172" stroke="#29e0ff" stroke-width="9" stroke-linecap="round"/>
+  <line x1="110" y1="174" x2="146" y2="174" stroke="#29e0ff" stroke-width="9" stroke-linecap="round"/>
+</svg>

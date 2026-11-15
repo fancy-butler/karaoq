@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="/icon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0716">
+<title>KARAO-Q</title>
+<link rel="stylesheet" href="/remote.css">
+</head>
+<body>
+<header>
+  <div class="brand">🎤 KARAO<span>-Q</span></div>
+  <button id="meBtn" class="chip">Singing as <b id="meName">—</b></button>
+  <button id="undoBtn" class="ghost" hidden title="Undo last queue change">↶ Undo</button>
+</header>
+
+<section id="now"></section>
+<div id="eta" hidden></div>
+
+<nav>
+  <button data-tab="search" class="on">Search</button>
+  <button data-tab="queue">Queue <span id="qCount" class="count"></span></button>
+  <button data-tab="faves">⭐ Faves</button>
+  <button data-tab="done">Sung</button>
+</nav>
+
+<main>
+  <div id="tab-search" class="tab on">
+    <form id="searchForm" autocomplete="off">
+      <input id="q" type="search" enterkeyhint="search" placeholder="Song, artist, or paste a YouTube link">
+      <button>Go</button>
+    </form>
+    <label class="toggle"><input type="checkbox" id="karaoke" checked> Karaoke versions only</label>
+    <div id="results"><p class="hint">Search for a song and tap <b>＋</b> to add it under your name.<br>Tap <b>👤</b> to add one for somebody else.</p></div>
+  </div>
+
+  <div id="tab-queue" class="tab">
+    <div id="queueList"></div>
+    <h3 id="heldHead" hidden>Stepped out <small>— songs kept, not in rotation</small></h3>
+    <div id="heldList"></div>
+    <div id="hostTools" hidden>
+      <button id="shuffleBtn" class="ghost">🔀 Fair shuffle</button>
+      <button id="settingsBtn" class="ghost">⚙ Settings</button>
+    </div>
+    <button id="pinBtn" class="ghost" hidden>🔑 Enter host PIN</button>
+  </div>
+
+  <div id="tab-faves" class="tab"><div id="favNames" class="chips"></div><div id="favList"></div></div>
+
+  <div id="tab-done" class="tab"><div id="board"></div><div id="doneList"></div></div>
+</main>
+
+<dialog id="nameDlg">
+  <form method="dialog">
+    <h2 id="nameTitle">Who's singing?</h2>
+    <input id="nameInput" maxlength="40" placeholder="Your name" autocomplete="nickname">
+    <input id="partnerInput" maxlength="40" placeholder="Duet partner (optional)" hidden style="margin-top:8px">
+    <div id="nameChips" class="chips"></div>
+    <menu><button value="cancel" class="ghost">Cancel</button><button id="nameOk" value="ok">OK</button></menu>
+  </form>
+</dialog>
+
+<dialog id="sheet"><div id="sheetBody"></div></dialog>
+
+<dialog id="settingsDlg">
+  <form method="dialog">
+    <h2>Party settings</h2>
+    <label>Countdown before each song
+      <select id="setCountdown">
+        <option value="0">None — host taps Start</option>
+        <option value="5">5 seconds</option><option value="10">10 seconds</option>
+        <option value="15">15 seconds</option><option value="20">20 seconds</option>
+        <option value="30">30 seconds</option><option value="45">45 seconds</option>
+      </select>
+    </label>
+    <label class="toggle"><input type="checkbox" id="setFair"> Fair rotation (everyone gets one before anyone gets two)</label>
+    <label class="toggle"><input type="checkbox" id="setQr"> Show join QR code on screen during songs</label>
+    <label class="toggle"><input type="checkbox" id="setNext"> Show "Next up" on screen during songs</label>
+    <button type="button" id="newNightBtn" class="ghost" style="width:100%;margin-top:8px">🌙 Start a new night (reset song counts)</button>
+    <menu><button value="cancel" class="ghost">Cancel</button><button id="setOk" value="ok">Save</button></menu>
+  </form>
+</dialog>
+
+<script src="/common.js"></script>
+<script src="/remote.js"></script>
+</body>
+</html>
