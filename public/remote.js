@@ -133,7 +133,7 @@
     const seen = new Set(); classics = [];
     for (const c of [...popular, ...more.songs, ...list]) { const k = songKey(c); if (!seen.has(k)) { seen.add(k); classics.push(c); } }
     renderPopular();
-    const gs = [...new Set(classics.map(c => c.g))];
+    const gs = [...new Set(classics.map(c => c.g))].filter(Boolean);
     $('#spinGenre').innerHTML += gs.map(g => `<option value="${g}">${esc((GENRES[g] || [g])[0])}</option>`).join('');
     const ds = [...new Set(classics.filter(c => c.y).map(c => Math.floor(c.y / 10) * 10))].sort();
     $('#spinDecade').innerHTML += ds.map(d => `<option value="${d}">${d}s</option>`).join('');

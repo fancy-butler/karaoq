@@ -17,12 +17,20 @@
    "url": "https://stemsplit.io/blog/country-karaoke-songs"
   },
   "singking": {
-   "name": "Sing King — biggest karaoke songs (2024) & most-viewed",
+   "name": "Sing King — biggest karaoke songs (2022, 2024) & most-viewed videos",
    "url": "https://singking.com/blog/the-20-biggest-karaoke-songs-of-2024/"
   },
   "ph": {
    "name": "Filipino karaoke-machine top 10 (Kollective Hustle)",
    "url": "https://kollectivehustle.com/"
+  },
+  "kfus": {
+   "name": "KaraFun — Top US",
+   "url": "https://www.karafun.com/en-za/karaoke/playlist/top-us-7/"
+  },
+  "kfdec": {
+   "name": "KaraFun — top songs by decade",
+   "url": "https://www.karafun.com/en-za/karaoke/best-karaoke/"
   }
  },
  "songs": [
@@ -1873,6 +1881,776 @@
    "g": "pop",
    "y": 1997,
    "src": "ph"
+  },
+  {
+   "title": "Hope",
+   "artist": "XXXTENTACION",
+   "g": "hiphop",
+   "y": 2018,
+   "src": "singking"
+  },
+  {
+   "title": "Angel Baby",
+   "artist": "Troye Sivan",
+   "g": "pop",
+   "y": 2021,
+   "src": "singking"
+  },
+  {
+   "title": "Heat Waves",
+   "artist": "Glass Animals",
+   "g": "rock",
+   "y": 2020,
+   "src": "singking"
+  },
+  {
+   "title": "Wellerman",
+   "artist": "Nathan Evans",
+   "g": "folk",
+   "y": 2021,
+   "src": "singking"
+  },
+  {
+   "title": "Line Without A Hook",
+   "artist": "Ricky Montgomery",
+   "g": "rock",
+   "y": 2016,
+   "src": "singking"
+  },
+  {
+   "title": "I Choose",
+   "artist": "Alessia Cara",
+   "g": "pop",
+   "y": 2019,
+   "src": "singking"
+  },
+  {
+   "title": "Ob-La-Di, Ob-La-Da",
+   "artist": "The Beatles",
+   "g": "rock",
+   "y": 1968,
+   "src": "singking"
+  },
+  {
+   "title": "I Love You So",
+   "artist": "The Walters",
+   "g": "rock",
+   "y": 2014,
+   "src": "singking"
+  },
+  {
+   "title": "(Everything I Do) I Do It For You",
+   "artist": "Bryan Adams",
+   "g": "rock",
+   "y": 1991,
+   "src": "singking"
+  },
+  {
+   "title": "When You Tell Me That You Love Me",
+   "artist": "Diana Ross",
+   "g": "pop",
+   "y": 1991,
+   "src": "singking"
+  },
+  {
+   "title": "Enemy",
+   "artist": "Imagine Dragons",
+   "g": "rock",
+   "y": 2021,
+   "src": "singking"
+  },
+  {
+   "title": "Until I Found You",
+   "artist": "Stephen Sanchez",
+   "g": "pop",
+   "y": 2021,
+   "src": "singking"
+  },
+  {
+   "title": "Running Up That Hill (A Deal With God)",
+   "artist": "Kate Bush",
+   "g": "pop",
+   "y": 1985,
+   "src": "singking"
+  },
+  {
+   "title": "Toxic",
+   "artist": "BoyWithUke",
+   "g": "pop",
+   "y": 2021,
+   "src": "singking"
+  },
+  {
+   "title": "happier",
+   "artist": "Olivia Rodrigo",
+   "g": "pop",
+   "y": 2021,
+   "src": "singking"
+  },
+  {
+   "title": "Love Yourself",
+   "artist": "Justin Bieber",
+   "g": "pop",
+   "y": 2015,
+   "src": "singking"
+  },
+  {
+   "title": "Rewrite The Stars",
+   "artist": "The Greatest Showman",
+   "g": "musical",
+   "y": 2017,
+   "src": "singking"
+  },
+  {
+   "title": "Right Here Waiting",
+   "artist": "Richard Marx",
+   "g": "rock",
+   "y": 1989,
+   "src": "singking"
+  },
+  {
+   "title": "Memories",
+   "artist": "Maroon 5",
+   "g": "pop",
+   "y": 2019,
+   "src": "singking"
+  },
+  {
+   "title": "Skinny Love",
+   "artist": "Birdy",
+   "g": "folk",
+   "y": 2011,
+   "src": "singking"
+  },
+  {
+   "title": "Love Of My Life",
+   "artist": "Queen",
+   "g": "rock",
+   "y": 1975,
+   "src": "singking"
+  },
+  {
+   "title": "We Don't Talk Anymore",
+   "artist": "Charlie Puth & Selena Gomez",
+   "g": "pop",
+   "y": 2016,
+   "src": "singking"
+  },
+  {
+   "title": "Perfect",
+   "artist": "Ed Sheeran",
+   "g": "pop",
+   "y": 2017,
+   "src": "singking"
+  },
+  {
+   "title": "A Thousand Years",
+   "artist": "Christina Perri",
+   "g": "pop",
+   "y": 2011,
+   "src": "singking"
+  },
+  {
+   "title": "7 Years",
+   "artist": "Lukas Graham",
+   "g": "pop",
+   "y": 2015,
+   "src": "singking"
+  },
+  {
+   "title": "Beauty and the Beast",
+   "artist": "Ariana Grande & John Legend",
+   "g": "musical",
+   "y": 2017,
+   "src": "singking"
+  },
+  {
+   "title": "I Won't Give Up",
+   "artist": "Jason Mraz",
+   "g": "pop",
+   "y": 2012,
+   "src": "singking"
+  },
+  {
+   "title": "She Will Be Loved",
+   "artist": "Maroon 5",
+   "g": "pop",
+   "y": 2002,
+   "src": "singking"
+  },
+  {
+   "title": "Rockabye",
+   "artist": "Clean Bandit ft. Sean Paul & Anne-Marie",
+   "g": "electronic",
+   "y": 2016,
+   "src": "singking"
+  },
+  {
+   "title": "abcdefu",
+   "artist": "GAYLE",
+   "g": "pop",
+   "y": 2021,
+   "src": "singking"
+  },
+  {
+   "title": "Another Love",
+   "artist": "Tom Odell",
+   "g": "pop",
+   "y": 2012,
+   "src": "singking"
+  },
+  {
+   "title": "Snap",
+   "artist": "Rosa Linn",
+   "g": "pop",
+   "y": 2022,
+   "src": "singking"
+  },
+  {
+   "title": "Choosin' Texas",
+   "artist": "Ella Langley",
+   "g": "country",
+   "y": null,
+   "src": "kfus"
+  },
+  {
+   "title": "You Look Like You Love Me",
+   "artist": "Ella Langley & Riley Green",
+   "g": "country",
+   "y": 2024,
+   "src": "kfus"
+  },
+  {
+   "title": "Black Velvet",
+   "artist": "Alannah Myles",
+   "g": "rock",
+   "y": 1989,
+   "src": "kfus"
+  },
+  {
+   "title": "Give Me One Reason",
+   "artist": "Tracy Chapman",
+   "g": "folk",
+   "y": 1995,
+   "src": "kfus"
+  },
+  {
+   "title": "Babydoll",
+   "artist": "Jamie Miller",
+   "g": null,
+   "y": null,
+   "src": "kfus"
+  },
+  {
+   "title": "Cry to Me",
+   "artist": "Solomon Burke",
+   "g": "rnb",
+   "y": 1962,
+   "src": "kfus"
+  },
+  {
+   "title": "My Girl",
+   "artist": "The Temptations",
+   "g": "rnb",
+   "y": 1964,
+   "src": "kfus"
+  },
+  {
+   "title": "Suspicious Minds",
+   "artist": "Elvis Presley",
+   "g": "rock",
+   "y": 1969,
+   "src": "kfus"
+  },
+  {
+   "title": "Mustang Sally",
+   "artist": "The Commitments",
+   "g": "rnb",
+   "y": 1991,
+   "src": "kfus"
+  },
+  {
+   "title": "Brown Eyed Girl",
+   "artist": "Van Morrison",
+   "g": "rock",
+   "y": 1967,
+   "src": "kfus"
+  },
+  {
+   "title": "Human",
+   "artist": "The Killers",
+   "g": "rock",
+   "y": 2008,
+   "src": "kfus"
+  },
+  {
+   "title": "Proud Mary",
+   "artist": "Ike & Tina Turner",
+   "g": "rnb",
+   "y": 1971,
+   "src": "kfus"
+  },
+  {
+   "title": "Rehab",
+   "artist": "Amy Winehouse",
+   "g": "rnb",
+   "y": 2006,
+   "src": "kfus"
+  },
+  {
+   "title": "Blame It on the Boogie",
+   "artist": "The Jacksons",
+   "g": "disco",
+   "y": 1978,
+   "src": "kfdec"
+  },
+  {
+   "title": "The Chain",
+   "artist": "Fleetwood Mac",
+   "g": "rock",
+   "y": 1977,
+   "src": "kfdec"
+  },
+  {
+   "title": "Is This Love",
+   "artist": "Bob Marley",
+   "g": "pop",
+   "y": 1978,
+   "src": "kfdec"
+  },
+  {
+   "title": "Copacabana",
+   "artist": "Barry Manilow",
+   "g": "pop",
+   "y": 1978,
+   "src": "kfdec"
+  },
+  {
+   "title": "Got to Be Real",
+   "artist": "Cheryl Lynn",
+   "g": "disco",
+   "y": 1978,
+   "src": "kfdec"
+  },
+  {
+   "title": "Long Train Runnin'",
+   "artist": "The Doobie Brothers",
+   "g": "rock",
+   "y": 1973,
+   "src": "kfdec"
+  },
+  {
+   "title": "Stuck in the Middle with You",
+   "artist": "Stealers Wheel",
+   "g": "rock",
+   "y": 1972,
+   "src": "kfdec"
+  },
+  {
+   "title": "What You Won't Do For Love",
+   "artist": "Bobby Caldwell",
+   "g": "rnb",
+   "y": 1978,
+   "src": "kfdec"
+  },
+  {
+   "title": "This Will Be",
+   "artist": "Natalie Cole",
+   "g": "rnb",
+   "y": 1975,
+   "src": "kfdec"
+  },
+  {
+   "title": "If I Could Turn Back Time",
+   "artist": "Cher",
+   "g": "pop",
+   "y": 1989,
+   "src": "kfdec"
+  },
+  {
+   "title": "Dancing in the Dark",
+   "artist": "Bruce Springsteen",
+   "g": "rock",
+   "y": 1984,
+   "src": "kfdec"
+  },
+  {
+   "title": "Bette Davis Eyes",
+   "artist": "Kim Carnes",
+   "g": "pop",
+   "y": 1981,
+   "src": "kfdec"
+  },
+  {
+   "title": "Walking on Sunshine",
+   "artist": "Katrina and the Waves",
+   "g": "pop",
+   "y": 1985,
+   "src": "kfdec"
+  },
+  {
+   "title": "Free Fallin'",
+   "artist": "Tom Petty",
+   "g": "rock",
+   "y": 1989,
+   "src": "kfdec"
+  },
+  {
+   "title": "With or Without You",
+   "artist": "U2",
+   "g": "rock",
+   "y": 1987,
+   "src": "kfdec"
+  },
+  {
+   "title": "I'm Still Standing",
+   "artist": "Elton John",
+   "g": "pop",
+   "y": 1983,
+   "src": "kfdec"
+  },
+  {
+   "title": "Footloose",
+   "artist": "Kenny Loggins",
+   "g": "rock",
+   "y": 1984,
+   "src": "kfdec"
+  },
+  {
+   "title": "Fast Car",
+   "artist": "Tracy Chapman",
+   "g": "folk",
+   "y": 1988,
+   "src": "kfdec"
+  },
+  {
+   "title": "Your Love",
+   "artist": "The Outfield",
+   "g": "rock",
+   "y": 1985,
+   "src": "kfdec"
+  },
+  {
+   "title": "Uptown Girl",
+   "artist": "Billy Joel",
+   "g": "pop",
+   "y": 1983,
+   "src": "kfdec"
+  },
+  {
+   "title": "All Night Long (All Night)",
+   "artist": "Lionel Richie",
+   "g": "pop",
+   "y": 1983,
+   "src": "kfdec"
+  },
+  {
+   "title": "Hello",
+   "artist": "Lionel Richie",
+   "g": "pop",
+   "y": 1984,
+   "src": "kfdec"
+  },
+  {
+   "title": "We Built This City",
+   "artist": "Starship",
+   "g": "rock",
+   "y": 1985,
+   "src": "kfdec"
+  },
+  {
+   "title": "Faith",
+   "artist": "George Michael",
+   "g": "pop",
+   "y": 1987,
+   "src": "kfdec"
+  },
+  {
+   "title": "Nothing's Gonna Stop Us Now",
+   "artist": "Starship",
+   "g": "pop",
+   "y": 1987,
+   "src": "kfdec"
+  },
+  {
+   "title": "Bed of Roses",
+   "artist": "Bon Jovi",
+   "g": "rock",
+   "y": 1992,
+   "src": "kfdec"
+  },
+  {
+   "title": "Un-Break My Heart",
+   "artist": "Toni Braxton",
+   "g": "rnb",
+   "y": 1996,
+   "src": "kfdec"
+  },
+  {
+   "title": "Dreams",
+   "artist": "The Cranberries",
+   "g": "rock",
+   "y": 1992,
+   "src": "kfdec"
+  },
+  {
+   "title": "So into You",
+   "artist": "Tamia",
+   "g": "rnb",
+   "y": 1998,
+   "src": "kfdec"
+  },
+  {
+   "title": "Bitter Sweet Symphony",
+   "artist": "The Verve",
+   "g": "rock",
+   "y": 1997,
+   "src": "kfdec"
+  },
+  {
+   "title": "It's All Coming Back to Me Now",
+   "artist": "Céline Dion",
+   "g": "pop",
+   "y": 1996,
+   "src": "kfdec"
+  },
+  {
+   "title": "Save Tonight",
+   "artist": "Eagle-Eye Cherry",
+   "g": "rock",
+   "y": 1997,
+   "src": "kfdec"
+  },
+  {
+   "title": "Kiss Me",
+   "artist": "Sixpence None the Richer",
+   "g": "pop",
+   "y": 1997,
+   "src": "kfdec"
+  },
+  {
+   "title": "Back At One",
+   "artist": "Brian McKnight",
+   "g": "rnb",
+   "y": 1999,
+   "src": "kfdec"
+  },
+  {
+   "title": "Weak",
+   "artist": "SWV",
+   "g": "rnb",
+   "y": 1992,
+   "src": "kfdec"
+  },
+  {
+   "title": "I'd Do Anything for Love (But I Won't Do That)",
+   "artist": "Meat Loaf",
+   "g": "rock",
+   "y": 1993,
+   "src": "kfdec"
+  },
+  {
+   "title": "Where Is The Love",
+   "artist": "Black Eyed Peas",
+   "g": "hiphop",
+   "y": 2003,
+   "src": "kfdec"
+  },
+  {
+   "title": "Yeah!",
+   "artist": "Usher ft. Lil Jon & Ludacris",
+   "g": "rnb",
+   "y": 2004,
+   "src": "kfdec"
+  },
+  {
+   "title": "Don't Cha",
+   "artist": "The Pussycat Dolls",
+   "g": "pop",
+   "y": 2005,
+   "src": "kfdec"
+  },
+  {
+   "title": "Umbrella",
+   "artist": "Rihanna ft. Jay-Z",
+   "g": "pop",
+   "y": 2007,
+   "src": "kfdec"
+  },
+  {
+   "title": "So Sick",
+   "artist": "Ne-Yo",
+   "g": "rnb",
+   "y": 2005,
+   "src": "kfdec"
+  },
+  {
+   "title": "Thong Song",
+   "artist": "Sisqó",
+   "g": "rnb",
+   "y": 1999,
+   "src": "kfdec"
+  },
+  {
+   "title": "Promiscuous",
+   "artist": "Nelly Furtado ft. Timbaland",
+   "g": "pop",
+   "y": 2006,
+   "src": "kfdec"
+  },
+  {
+   "title": "Lady Marmalade",
+   "artist": "Christina Aguilera, Lil' Kim, Mýa & P!nk",
+   "g": "pop",
+   "y": 2001,
+   "src": "kfdec"
+  },
+  {
+   "title": "SexyBack",
+   "artist": "Justin Timberlake",
+   "g": "pop",
+   "y": 2006,
+   "src": "kfdec"
+  },
+  {
+   "title": "Bleeding Love",
+   "artist": "Leona Lewis",
+   "g": "pop",
+   "y": 2007,
+   "src": "kfdec"
+  },
+  {
+   "title": "Cry Me a River",
+   "artist": "Justin Timberlake",
+   "g": "pop",
+   "y": 2002,
+   "src": "kfdec"
+  },
+  {
+   "title": "Hot In Herre",
+   "artist": "Nelly",
+   "g": "hiphop",
+   "y": 2002,
+   "src": "kfdec"
+  },
+  {
+   "title": "Shape of My Heart",
+   "artist": "Backstreet Boys",
+   "g": "pop",
+   "y": 2000,
+   "src": "kfdec"
+  },
+  {
+   "title": "Riptide",
+   "artist": "Vance Joy",
+   "g": "folk",
+   "y": 2013,
+   "src": "kfdec"
+  },
+  {
+   "title": "Thinking Out Loud",
+   "artist": "Ed Sheeran",
+   "g": "pop",
+   "y": 2014,
+   "src": "kfdec"
+  },
+  {
+   "title": "A Sky Full of Stars",
+   "artist": "Coldplay",
+   "g": "rock",
+   "y": 2014,
+   "src": "kfdec"
+  },
+  {
+   "title": "Wake Me Up",
+   "artist": "Avicii",
+   "g": "electronic",
+   "y": 2013,
+   "src": "kfdec"
+  },
+  {
+   "title": "Shut Up and Dance",
+   "artist": "Walk the Moon",
+   "g": "rock",
+   "y": 2014,
+   "src": "kfdec"
+  },
+  {
+   "title": "Love The Way You Lie",
+   "artist": "Eminem ft. Rihanna",
+   "g": "hiphop",
+   "y": 2010,
+   "src": "kfdec"
+  },
+  {
+   "title": "Let Her Go",
+   "artist": "Passenger",
+   "g": "folk",
+   "y": 2012,
+   "src": "kfdec"
+  },
+  {
+   "title": "Grenade",
+   "artist": "Bruno Mars",
+   "g": "pop",
+   "y": 2010,
+   "src": "kfdec"
+  },
+  {
+   "title": "Dancing on My Own",
+   "artist": "Calum Scott",
+   "g": "pop",
+   "y": 2016,
+   "src": "kfdec"
+  },
+  {
+   "title": "Counting Stars",
+   "artist": "OneRepublic",
+   "g": "pop",
+   "y": 2013,
+   "src": "kfdec"
+  },
+  {
+   "title": "Fireflies",
+   "artist": "Owl City",
+   "g": "electronic",
+   "y": 2009,
+   "src": "kfdec"
+  },
+  {
+   "title": "Say Something",
+   "artist": "A Great Big World & Christina Aguilera",
+   "g": "pop",
+   "y": 2013,
+   "src": "kfdec"
+  },
+  {
+   "title": "Happy",
+   "artist": "Pharrell Williams",
+   "g": "pop",
+   "y": 2013,
+   "src": "kfdec"
+  },
+  {
+   "title": "All About That Bass",
+   "artist": "Meghan Trainor",
+   "g": "pop",
+   "y": 2014,
+   "src": "kfdec"
+  },
+  {
+   "title": "Pumped Up Kicks",
+   "artist": "Foster the People",
+   "g": "rock",
+   "y": 2010,
+   "src": "kfdec"
+  },
+  {
+   "title": "Scars to Your Beautiful",
+   "artist": "Alessia Cara",
+   "g": "pop",
+   "y": 2015,
+   "src": "kfdec"
   }
  ]
 }
