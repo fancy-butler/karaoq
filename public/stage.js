@@ -78,6 +78,55 @@
     set('.next', nxt ? KQ.esc(nxt.text) : '');
   })();
 
+  // ---------- 🎤 microphones (see mic.js) ----------
+  const micS = () => ({ on: false, vol: [0.8, 0.8], reverb: 0.25, echo: 0.1, master: 0.9, ...((KQ.state && KQ.state.settings.mic) || {}) });
+  let micErr = ['', ''];
+  KQMic.onError = (i, e) => { micErr[i] = e.name === 'NotAllowedError' ? 'not allowed to use the mic' : e.name === 'NotFoundError' || e.name === 'OverconstrainedError' ? 'device not found — unplugged?' : (e.message || e.name); micNoteUpdate(); };
+  const sendMic = (() => { let t = null, pend = {}; return p => { pend = { ...pend, ...p }; clearTimeout(t); t = setTimeout(() => { KQ.act('settings', { settings: { mic: pend } }); pend = {}; }, 120); }; })();
+  KQ.on('state', st => { if (st.settings && st.settings.mic) KQMic.setParams(st.settings.mic); syncMicControls(); });
+  function syncMicControls() {
+    if (!app.classList.contains('mics')) return;
+    const m = micS();
+    $('#micOn').checked = m.on;
+    for (const [id, v] of [['vol0', m.vol[0]], ['vol1', m.vol[1]], ['micRev', m.reverb], ['micEcho', m.echo], ['micMaster', m.master]]) if (document.activeElement !== $('#' + id)) $('#' + id).value = v;
+  }
+  function micNoteUpdate() {
+    const lat = KQMic.latencyMs();
+    $('#micNote').textContent = !KQMic.supported() ? 'Mics only work in the KARAO-Q app on this computer (browsers only allow microphones on secure pages).'
+      : [micErr[0] && `Mic 1: ${micErr[0]}`, micErr[1] && `Mic 2: ${micErr[1]}`, lat != null && micS().on ? `Delay through the computer: about ${lat} ms${lat > 30 ? ' — noticeable; use direct monitoring for the dry voice' : ''}` : ''].filter(Boolean).join(' · ');
+  }
+  async function micRefresh() {
+    syncMicControls(); micNoteUpdate();
+    if (!KQMic.supported()) return;
+    const { inputs, outputs } = await KQMic.devices();
+    const c = KQMic.cfg;
+    const opts = (list, sel, first) => first + list.map(d => `<option value="${KQ.esc(d.deviceId)}" ${d.deviceId === sel ? 'selected' : ''}>${KQ.esc(d.label || 'Unnamed device')}</option>`).join('');
+    $('#mic1').innerHTML = opts(inputs.filter(d => d.deviceId !== 'communications'), c.slots[0].id, `<option value="" ${!c.slots[0].id ? 'selected' : ''}>Default input</option>`);
+    $('#mic2').innerHTML = opts(inputs.filter(d => d.deviceId !== 'communications' && d.deviceId !== 'default'), c.slots[1].id, `<option value="" ${!c.slots[1].id ? 'selected' : ''}>— off —</option>`);
+    $('#mic1ch').value = c.slots[0].ch || 'both'; $('#mic2ch').value = c.slots[1].ch || 'both';
+    $('#micOut').innerHTML = opts(outputs.filter(d => d.deviceId !== 'communications'), c.out, `<option value="" ${!c.out ? 'selected' : ''}>System default</option>`);
+  }
+  (function meterLoop() {
+    requestAnimationFrame(meterLoop);
+    if (!app.classList.contains('mics')) return;
+    KQMic.levels().forEach((v, i) => { const el = $('#lv' + i); if (el) el.style.width = `${Math.round((v || 0) * 100)}%`; });
+  })();
+  $('#micOn').onchange = e => sendMic({ on: e.target.checked });
+  $('#vol0').oninput = e => sendMic({ vol: [Number(e.target.value), micS().vol[1]] });
+  $('#vol1').oninput = e => sendMic({ vol: [micS().vol[0], Number(e.target.value)] });
+  $('#micRev').oninput = e => sendMic({ reverb: Number(e.target.value) });
+  $('#micEcho').oninput = e => sendMic({ echo: Number(e.target.value) });
+  $('#micMaster').oninput = e => sendMic({ master: Number(e.target.value) });
+  $('#mic1').onchange = e => { micErr[0] = ''; KQMic.setSlot(0, { id: e.target.value }).then(micNoteUpdate); };
+  $('#mic2').onchange = e => { micErr[1] = ''; KQMic.setSlot(1, { id: e.target.value }).then(micNoteUpdate); };
+  $('#mic1ch').onchange = e => KQMic.setSlot(0, { ch: e.target.value });
+  $('#mic2ch').onchange = e => KQMic.setSlot(1, { ch: e.target.value });
+  // speakers: everything (song, key change, mics, chime) goes to the chosen output
+  const outTargets = () => [vid, keyCtx, audioCtx].filter(Boolean);
+  $('#micOut').onchange = e => KQMic.setOutput(e.target.value, outTargets());
+  if (KQMic.cfg.out) setTimeout(() => KQMic.setOutput(KQMic.cfg.out, outTargets()), 500);
+  $('#micPanel').onclick = e => { if (e.target.closest('[data-micx]')) app.classList.remove('mics'); };
+
   // ---------- 💾 karaoke library (folders on this computer) ----------
   const inApp = /Electron/.test(navigator.userAgent);
   let libTimer = null;
@@ -174,7 +223,7 @@
   }
 
   // A little two-note chime when the next singer is called
-  function unlockAudio() { try { audioCtx ||= new (window.AudioContext || window.webkitAudioContext)(); audioCtx.resume(); } catch { } }
+  function unlockAudio() { try { if (!audioCtx) { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (window.KQMic && KQMic.cfg.out && audioCtx.setSinkId) audioCtx.setSinkId(KQMic.cfg.out).catch(() => { }); } audioCtx.resume(); } catch { } }
   function chime() {
     if (!audioCtx) return;
     const t0 = audioCtx.currentTime;
@@ -195,6 +244,7 @@
     if (keyBuilding) return keyBuilding;
     keyBuilding = (async () => {
       keyCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (window.KQMic && KQMic.cfg.out && keyCtx.setSinkId) keyCtx.setSinkId(KQMic.cfg.out).catch(() => { });
       await keyCtx.audioWorklet.addModule('/pitch-worklet.js');
       const src = keyCtx.createMediaElementSource(vid);
       keyNode = new AudioWorkletNode(keyCtx, 'key-shift', { outputChannelCount: [2] });
@@ -393,6 +443,7 @@
     if (m === 'full') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => { });
     if (m === 'update') return restartToUpdate();
     if (m === 'library') { app.classList.add('lib'); libRefresh(); }
+    if (m === 'mics') { app.classList.add('mics'); micRefresh(); }
     if (m === 'quit') { if (confirm('Quit KARAO-Q? The queue is saved.')) window.close(); }
   };
 
@@ -416,7 +467,7 @@
     const st = KQ.state; if (!st) return;
     const k = e.key;
     if ((k === ',' || k === '.') && lyr) { lyrOffset += k === '.' ? 0.5 : -0.5; return toast(`Lyrics timing ${lyrOffset > 0 ? '+' : ''}${lyrOffset.toFixed(1)} s`); }
-    if (k === 'Escape') { app.classList.remove('lib'); app.classList.remove('awards'); setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
+    if (k === 'Escape') { app.classList.remove('mics'); app.classList.remove('lib'); app.classList.remove('awards'); setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
     if (k === 'm' || k === 'M') { setMenu(!app.classList.contains('menu')); return; }
     if (k === 'a' || k === 'A' || k === '/') { e.preventDefault(); setDrawer(!drawerOpen); return; }
     if (k === 'q' || k === 'Q') { sidePinned = !sidePinned; render(st); toast(sidePinned ? 'Queue pinned' : 'Queue hides during songs'); return; }

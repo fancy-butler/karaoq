@@ -66,6 +66,7 @@
     <button data-m="add">🔍 Add songs <kbd>A</kbd></button>
     <button data-m="settings">⚙ Party settings</button>
     <button data-m="awards">🏆 Tonight's awards</button>
+    <button data-m="mics">🎤 Microphones</button>
     <button data-m="library">💾 Karaoke library</button>
     <button data-m="queue">📋 Show / hide queue <kbd>Q</kbd></button>
     <button data-m="help">⌨ Help &amp; keys <kbd>?</kbd></button>
@@ -82,6 +83,17 @@
   <div id="awardsShow"><h1>🏆 Tonight's Awards</h1><p class="asub" id="awardsSub"></p><div id="awardsGrid"></div><p class="keys">Press <kbd>Esc</kbd> or click to close</p></div>
   <div id="drawer"><iframe id="drawerFrame" title="Add songs"></iframe></div>
   <div id="unlock"><div><b>Click anywhere to start</b><span>(browsers need one click before they'll play sound)</span></div></div>
+  <div id="micPanel" class="panel">
+    <button class="x" data-micx title="Close">✕</button>
+    <h2>🎤 Microphones <label class="sw"><input type="checkbox" id="micOn"> <span>On</span></label></h2>
+    <p class="fine">Plug mics into this computer's sound card (or a USB mic) and they play through the speakers with the song, with reverb and echo. The host can also change all of this from their phone: ☰ → 🎤 Mics.</p>
+    <div class="mrow"><b>Mic 1</b><select id="mic1"></select><select id="mic1ch"><option value="both">both channels</option><option value="L">input 1 / left only</option><option value="R">input 2 / right only</option></select><div class="meter"><i id="lv0"></i></div><input type="range" id="vol0" min="0" max="1.5" step="0.05"></div>
+    <div class="mrow"><b>Mic 2</b><select id="mic2"></select><select id="mic2ch"><option value="both">both channels</option><option value="L">input 1 / left only</option><option value="R">input 2 / right only</option></select><div class="meter"><i id="lv1"></i></div><input type="range" id="vol1" min="0" max="1.5" step="0.05"></div>
+    <div class="mrow fx"><b>Reverb</b><input type="range" id="micRev" min="0" max="1" step="0.05"><b>Echo</b><input type="range" id="micEcho" min="0" max="1" step="0.05"><b>All mics</b><input type="range" id="micMaster" min="0" max="1.5" step="0.05"></div>
+    <div class="mrow"><b>Speakers</b><select id="micOut"></select></div>
+    <p class="fine" id="micNote"></p>
+    <p class="fine">Tip: two mics on one interface (Mbox, UR44, Audio Kontrol…)? Pick the same device for both, with "input 1" and "input 2". If singers hear themselves late, use your interface's direct-monitor knob for the dry voice and keep reverb/echo here.</p>
+  </div>
   <div id="libPanel">
     <button class="x" data-libx title="Close">✕</button>
     <h2>💾 Karaoke library</h2>
@@ -114,6 +126,7 @@
   </div>
 </div>
 <script src="/common.js"></script>
+<script src="/mic.js"></script>
 <script src="/stage.js"></script>
 </body>
 </html>

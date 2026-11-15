@@ -58,7 +58,7 @@ async function until(fn, ms, what) {
     const res = await (await fetch(BASE + '/api/search?q=' + encodeURIComponent("don't stop believin"))).json();
     ok(Array.isArray(res) && res.length > 0, `search returns results (${res.length})`);
 
-    browser = await puppeteer.launch({ executablePath: chrome, headless: true, args: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--mute-audio'] });
+    browser = await puppeteer.launch({ executablePath: chrome, headless: true, args: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--mute-audio', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] });
     const errors = [];
     const watch = (page, label) => {
       page.on('pageerror', e => errors.push(`${label}: ${e.message}`));
@@ -169,6 +169,12 @@ async function until(fn, ms, what) {
     await until(() => state && state.phase === 'playing' && state.current && state.current.singer === 'Zip Fan', 30000, 'zipped CD+G song to start');
     ok(true, 'zipped CD+G converted and started');
     ok((await act('skip')).ok, 'skip'); await until(() => state && state.phase === 'idle', 10000, 'idle');
+
+    // 🎤 mics: turning them on from a phone opens the TV computer's audio input and audio flows
+    ok((await act('settings', { settings: { mic: { on: true, reverb: 0.5 } } })).ok, 'host turns mics on');
+    const lvl = await until(() => tv.evaluate(() => { const l = KQMic.levels()[0]; return l > 0.05 && l; }), 10000, 'mic signal');
+    ok(lvl > 0.05, `mic audio reaches the TV's mixer (peak ${lvl.toFixed(2)})`);
+    await act('settings', { settings: { mic: { on: false } } });
 
     const tvErr = await tv.evaluate(() => !!document.querySelector('#idle, .idle, body'));
     ok(tvErr, 'TV idle screen renders');

@@ -1,7 +1,7 @@
 'use strict';
 // KARAO-Q desktop app (Electron). Everything is bundled: Node (Electron's own), yt-dlp, ffmpeg, deno and
 // cloudflared. Double-click → the TV screen opens fullscreen with the join QR. Close the window → it all shuts down.
-const { app, BrowserWindow, Menu, dialog, shell, Notification } = require('electron');
+const { app, BrowserWindow, Menu, dialog, shell, Notification, session, systemPreferences } = require('electron');
 const { spawn, execFile } = require('child_process');
 const path = require('path');
 const fs = require('fs');
@@ -90,7 +90,19 @@ function stopServer() {
 }
 
 let port = 8080;
+// 🎤 mics: allow the TV page to use audio inputs/outputs; on a Mac, ask macOS for microphone access first
+function allowMedia() {
+  session.defaultSession.setPermissionRequestHandler((wc, permission, cb, details) => {
+    if (permission !== 'media') return cb(true);
+    const wantsAudio = !details || !details.mediaTypes || details.mediaTypes.includes('audio');
+    if (process.platform === 'darwin' && wantsAudio) return systemPreferences.askForMediaAccess('microphone').then(cb, () => cb(false));
+    cb(true);
+  });
+  session.defaultSession.setPermissionCheckHandler(() => true);
+}
+
 async function start() {
+  allowMedia();
   fs.mkdirSync(dataDir, { recursive: true });
   const ytdlp = prepareYtdlp();
   port = await freePort(8080);

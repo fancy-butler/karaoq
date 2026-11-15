@@ -276,10 +276,10 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #updPill b { color: var(--cyan); } #updPill:hover { border-color: var(--gold); }
 #menuPanel .upd { color: var(--cyan); font-weight: 800; }
 
-#libPanel { max-height: 90vh; overflow: auto; width: min(900px, 92vw); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.96); background: #110a1bf7; border: 1px solid var(--line); border-radius: 22px; padding: 26px 34px; z-index: 31; opacity: 0; pointer-events: none; transition: .2s; box-shadow: 0 30px 80px #000c; font-size: 18px; }
-.lib #libPanel { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
-#libPanel h2 { margin: 0 0 8px; } #libPanel .fine { color: var(--dim); font-size: 16px; line-height: 1.45; }
-#libPanel .x { position: absolute; top: 14px; right: 16px; background: none; border: 0; color: var(--dim); font-size: 22px; cursor: pointer; }
+#micPanel, #libPanel { max-height: 90vh; overflow: auto; width: min(900px, 92vw); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.96); background: #110a1bf7; border: 1px solid var(--line); border-radius: 22px; padding: 26px 34px; z-index: 31; opacity: 0; pointer-events: none; transition: .2s; box-shadow: 0 30px 80px #000c; font-size: 18px; }
+.mics #micPanel, .lib #libPanel { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
+#micPanel h2, #libPanel h2 { margin: 0 0 8px; } #micPanel .fine, #libPanel .fine { color: var(--dim); font-size: 16px; line-height: 1.45; }
+#micPanel .x, #libPanel .x { position: absolute; top: 14px; right: 16px; background: none; border: 0; color: var(--dim); font-size: 22px; cursor: pointer; }
 #libDirs .d { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #ffffff0d; margin: 8px 0; }
 #libDirs .d .p { flex: 1; font: 600 16px ui-monospace, monospace; word-break: break-all; } #libDirs .d .n { color: var(--cyan); font-weight: 800; white-space: nowrap; }
 #libDirs .d.bad .n { color: #ff6b6b; } #libDirs .d button { background: none; border: 1px solid var(--line); color: var(--text); border-radius: 8px; padding: 4px 10px; cursor: pointer; }
@@ -296,3 +296,15 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #lyrics .src { font-size: 13px; color: #ffffff60; margin-top: 8px; text-shadow: 0 1px 0 #000; }
 #lyrics .bar { display: block; height: 5px; margin: 6px auto 0; width: 40%; border-radius: 3px; background: #ffffff22; overflow: hidden; }
 #lyrics .bar i { display: block; height: 100%; background: var(--gold); }
+
+#micPanel h2 { display: flex; align-items: center; gap: 18px; }
+#micPanel .sw { font-size: 18px; display: inline-flex; align-items: center; gap: 8px; background: #ffffff12; padding: 6px 14px; border-radius: 999px; cursor: pointer; }
+#micPanel .sw input { width: 22px; height: 22px; accent-color: var(--pink); }
+#micPanel .mrow { display: grid; grid-template-columns: 90px 1fr 190px 120px 140px; gap: 12px; align-items: center; margin: 10px 0; }
+#micPanel .mrow.fx { grid-template-columns: 70px 1fr 60px 1fr 90px 1fr; }
+#micPanel .mrow:has(#micOut) { grid-template-columns: 90px 1fr; }
+#micPanel select { background: #ffffff10; color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 8px; font-size: 15px; min-width: 0; }
+#micPanel select option { background: #1a1028; }
+#micPanel input[type=range] { accent-color: var(--pink); width: 100%; }
+#micPanel .meter { height: 12px; border-radius: 6px; background: #ffffff14; overflow: hidden; }
+#micPanel .meter i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #4dff9c 0 60%, #ffd23f 60% 85%, #ff4b4b 85%); transition: width .06s; }

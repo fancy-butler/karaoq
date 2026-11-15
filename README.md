@@ -150,6 +150,14 @@ KARAO-Q reads the artist from the karaoke title and looks up the genre and decad
 - **📝 Lyrics for non-karaoke videos:** when a song isn't a karaoke version (or its vocals are removed), KARAO-Q looks up synced lyrics on [LRCLIB](https://lrclib.net) and scrolls them on the TV. Press `,` / `.` on the keyboard to nudge the timing. ⋯ → *Show/Hide lyrics* per song; turn it off in *More settings*.
 - **⬇ Download ahead:** the Faves tab has a button that downloads that person's favourites in the background, so they start instantly later. This is handy before people arrive or on slow internet.
 
+## 🎤 Microphones
+Plug mics into the TV computer's sound card (an audio interface like an Mbox, UR44 or Audio Kontrol, or a USB mic) and KARAO-Q plays them through the speakers with the song, with reverb and echo.
+
+- **Setup, on the TV computer:** ☰ Menu → **🎤 Microphones**. Turn them on, then pick Mic 1 (and Mic 2). For two mics on one interface, pick the same device twice with *input 1* and *input 2*. There are level meters, plus a **Speakers** choice that sends everything (song + mics) to that output.
+- **On the night:** the host adjusts mic volumes, reverb and echo from their phone: Queue tab → 🎤 Mics.
+- **Latency:** the panel shows how late the voice comes out of the computer. Past ~30 ms singers notice. Then use the interface's **direct monitor** for the dry voice and keep reverb/echo here.
+- **What works:** anything the operating system sees as an audio input, including USB, FireWire (Linux FireWire drivers / FFADO, macOS up to Sequoia) and built-in inputs. It only works in the KARAO-Q app, not a TV browser (browsers only allow mics on secure pages).
+
 ## 💾 Your own karaoke files (KJ hard drives)
 Got a drive full of karaoke tracks? On the TV computer: ☰ Menu → **💾 Karaoke library** → **Add a folder**. KARAO-Q scans it (subfolders too) and those songs show up in everyone's search, marked 💾, above the YouTube results.
 

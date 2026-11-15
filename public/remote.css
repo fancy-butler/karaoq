@@ -249,3 +249,6 @@ body[data-theme="minimal"] button:not(.ghost):not(.av) { color: #111; }
 #fyBox h5 { margin: 14px 2px 6px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
 
 .keyrow button.on { background: var(--pink); color: #fff; border-color: transparent; }
+
+.mic-sl { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 10px; margin: 12px 2px; font-weight: 700; }
+.mic-sl input { width: 100%; accent-color: var(--pink); }
