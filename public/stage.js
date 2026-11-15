@@ -78,6 +78,49 @@
     set('.next', nxt ? KQ.esc(nxt.text) : '');
   })();
 
+  // ---------- ✅ pre-party check ----------
+  let pf = null, pfBusy = false, toneHeard = null;
+  async function runPreflight() {
+    if (pfBusy) return; pfBusy = true;
+    $('#pfList').innerHTML = '<div class="c wait"><span class="i">⏳</span><b>Checking… (YouTube takes up to a minute)</b></div>';
+    try { pf = await (await fetch('/api/preflight')).json(); } catch (e) { pf = { checks: [{ id: 'server', ok: false, title: 'KARAO-Q server', detail: e.message, fix: 'Restart KARAO-Q.' }] }; }
+    pfBusy = false; renderPreflight();
+  }
+  function renderPreflight() {
+    if (!pf || !app.classList.contains('pf')) return;
+    const st = KQ.state || {}, split = st.phoneSplit || { wifi: 0, net: 0 };
+    const rows = pf.checks.map(c => {
+      let ok = c.ok, detail = c.detail;
+      if (c.id === 'wifi' && split.wifi > 0) { ok = true; detail = `${split.wifi} phone${split.wifi > 1 ? 's' : ''} joined over Wi-Fi ✓`; }
+      if (c.id === 'net' && c.ok === true && split.net > 0) detail += ` · ${split.net} phone${split.net > 1 ? 's' : ''} using it`;
+      return { ...c, ok, detail };
+    });
+    // things only the TV can check
+    const out = KQMic.cfg.out ? 'chosen speakers' : 'system default speakers';
+    rows.push({ id: 'speakers', ok: toneHeard === null ? 'wait' : toneHeard, title: 'Speakers', detail: toneHeard === null ? `Press "🔊 Test the speakers" — you should hear a chord from the ${out}` : toneHeard ? 'Heard ✓' : 'Not heard', fix: toneHeard === false ? 'Check the cable/volume, or pick the right output in ☰ → 🎤 Microphones → Speakers.' : '' });
+    const m = (st.settings || {}).mic || {};
+    if (m.on) rows.push({ id: 'mics', ok: 'wait', title: 'Microphones', detail: 'On — press "🎤 Check the mics" to see their levels', fix: '' });
+    const icon = ok => ok === true ? '✅' : ok === 'skip' ? '➖' : ok === 'wait' ? '👉' : '❌';
+    const cls = ok => ok === true ? 'ok' : ok === 'wait' ? 'wait' : ok === 'skip' ? '' : 'bad';
+    $('#pfList').innerHTML = rows.map(c => `<div class="c ${cls(c.ok)}"><span class="i">${icon(c.ok)}</span><b>${KQ.esc(c.title)}</b><span class="d">${KQ.esc(c.detail || '')}</span>${c.fix && (c.ok === false || c.ok === 'wait') ? `<span class="f">${KQ.esc(c.fix)}</span>` : ''}</div>`).join('');
+  }
+  KQ.on('state', renderPreflight);
+  $('#pfRun').onclick = runPreflight;
+  $('#pfMics').onclick = () => { app.classList.remove('pf'); app.classList.add('mics'); micRefresh(); };
+  $('#pfTone').onclick = async () => {
+    unlockAudio();
+    if (!audioCtx) return;
+    const t0 = audioCtx.currentTime + 0.05;
+    for (const f of [261.6, 329.6, 392, 523.3]) { // C major chord, 1.5 s
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'triangle'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.05); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.5);
+      o.connect(g).connect(audioCtx.destination); o.start(t0); o.stop(t0 + 1.6);
+    }
+    setTimeout(() => { toneHeard = confirm('Did you hear the chord from the speakers?\n\nOK = yes, Cancel = no'); renderPreflight(); }, 1800);
+  };
+  $('#pfPanel').onclick = e => { if (e.target.closest('[data-pfx]')) app.classList.remove('pf'); };
+
   // ---------- 🎤 microphones (see mic.js) ----------
   const micS = () => ({ on: false, vol: [0.8, 0.8], reverb: 0.25, echo: 0.1, master: 0.9, ...((KQ.state && KQ.state.settings.mic) || {}) });
   let micErr = ['', ''];
@@ -444,6 +487,7 @@
     if (m === 'update') return restartToUpdate();
     if (m === 'library') { app.classList.add('lib'); libRefresh(); }
     if (m === 'mics') { app.classList.add('mics'); micRefresh(); }
+    if (m === 'preflight') { app.classList.add('pf'); runPreflight(); }
     if (m === 'quit') { if (confirm('Quit KARAO-Q? The queue is saved.')) window.close(); }
   };
 
@@ -467,7 +511,7 @@
     const st = KQ.state; if (!st) return;
     const k = e.key;
     if ((k === ',' || k === '.') && lyr) { lyrOffset += k === '.' ? 0.5 : -0.5; return toast(`Lyrics timing ${lyrOffset > 0 ? '+' : ''}${lyrOffset.toFixed(1)} s`); }
-    if (k === 'Escape') { app.classList.remove('mics'); app.classList.remove('lib'); app.classList.remove('awards'); setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
+    if (k === 'Escape') { app.classList.remove('pf'); app.classList.remove('mics'); app.classList.remove('lib'); app.classList.remove('awards'); setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
     if (k === 'm' || k === 'M') { setMenu(!app.classList.contains('menu')); return; }
     if (k === 'a' || k === 'A' || k === '/') { e.preventDefault(); setDrawer(!drawerOpen); return; }
     if (k === 'q' || k === 'Q') { sidePinned = !sidePinned; render(st); toast(sidePinned ? 'Queue pinned' : 'Queue hides during songs'); return; }

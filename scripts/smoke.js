@@ -55,6 +55,8 @@ async function until(fn, ms, what) {
     for (const p of ['/api/popular', '/api/more', '/api/classics', '/api/house', '/api/join']) {
       const r = await fetch(BASE + p); ok(r.ok, `${p} responds`);
     }
+    const pfr = await (await fetch(BASE + '/api/preflight')).json();
+    ok(pfr.checks.find(c => c.id === 'youtube')?.ok === true && pfr.checks.find(c => c.id === 'ffmpeg')?.ok === true, `pre-party check runs (${pfr.checks.length} checks)`);
     const res = await (await fetch(BASE + '/api/search?q=' + encodeURIComponent("don't stop believin"))).json();
     ok(Array.isArray(res) && res.length > 0, `search returns results (${res.length})`);
 

@@ -276,15 +276,15 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #updPill b { color: var(--cyan); } #updPill:hover { border-color: var(--gold); }
 #menuPanel .upd { color: var(--cyan); font-weight: 800; }
 
-#micPanel, #libPanel { max-height: 90vh; overflow: auto; width: min(900px, 92vw); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.96); background: #110a1bf7; border: 1px solid var(--line); border-radius: 22px; padding: 26px 34px; z-index: 31; opacity: 0; pointer-events: none; transition: .2s; box-shadow: 0 30px 80px #000c; font-size: 18px; }
-.mics #micPanel, .lib #libPanel { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
-#micPanel h2, #libPanel h2 { margin: 0 0 8px; } #micPanel .fine, #libPanel .fine { color: var(--dim); font-size: 16px; line-height: 1.45; }
-#micPanel .x, #libPanel .x { position: absolute; top: 14px; right: 16px; background: none; border: 0; color: var(--dim); font-size: 22px; cursor: pointer; }
+#pfPanel, #micPanel, #libPanel { max-height: 90vh; overflow: auto; width: min(900px, 92vw); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.96); background: #110a1bf7; border: 1px solid var(--line); border-radius: 22px; padding: 26px 34px; z-index: 31; opacity: 0; pointer-events: none; transition: .2s; box-shadow: 0 30px 80px #000c; font-size: 18px; }
+.pf #pfPanel, .mics #micPanel, .lib #libPanel { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
+#pfPanel h2, #micPanel h2, #libPanel h2 { margin: 0 0 8px; } #pfPanel .fine, #micPanel .fine, #libPanel .fine { color: var(--dim); font-size: 16px; line-height: 1.45; }
+#pfPanel .x, #micPanel .x, #libPanel .x { position: absolute; top: 14px; right: 16px; background: none; border: 0; color: var(--dim); font-size: 22px; cursor: pointer; }
 #libDirs .d { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #ffffff0d; margin: 8px 0; }
 #libDirs .d .p { flex: 1; font: 600 16px ui-monospace, monospace; word-break: break-all; } #libDirs .d .n { color: var(--cyan); font-weight: 800; white-space: nowrap; }
 #libDirs .d.bad .n { color: #ff6b6b; } #libDirs .d button { background: none; border: 1px solid var(--line); color: var(--text); border-radius: 8px; padding: 4px 10px; cursor: pointer; }
-#libPanel .row { display: flex; gap: 12px; margin: 14px 0 4px; } #libPanel .row button { font-size: 18px; padding: 10px 18px; border-radius: 12px; border: 1px solid var(--line); background: #ffffff10; color: var(--text); cursor: pointer; }
-#libPanel .row .gold { background: var(--gold); color: #111; border: 0; font-weight: 800; }
+#pfPanel .row, #libPanel .row { display: flex; gap: 12px; margin: 14px 0 4px; } #pfPanel .row button, #libPanel .row button { font-size: 18px; padding: 10px 18px; border-radius: 12px; border: 1px solid var(--line); background: #ffffff10; color: var(--text); cursor: pointer; }
+#pfPanel .row .gold, #libPanel .row .gold { background: var(--gold); color: #111; border: 0; font-weight: 800; }
 
 /* 📝 synced lyrics over non-karaoke videos */
 #lyrics { position: absolute; left: 50%; bottom: 7vh; transform: translateX(-50%); width: min(1500px, 90vw); text-align: center; z-index: 12; pointer-events: none; }
@@ -308,3 +308,9 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #micPanel input[type=range] { accent-color: var(--pink); width: 100%; }
 #micPanel .meter { height: 12px; border-radius: 6px; background: #ffffff14; overflow: hidden; }
 #micPanel .meter i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #4dff9c 0 60%, #ffd23f 60% 85%, #ff4b4b 85%); transition: width .06s; }
+
+#pfList .c { display: grid; grid-template-columns: 34px 1fr; gap: 4px 12px; padding: 12px 14px; border-radius: 12px; background: #ffffff0b; margin: 8px 0; }
+#pfList .c .i { font-size: 24px; line-height: 1; grid-row: span 3; }
+#pfList .c b { font-size: 19px; } #pfList .c .d { color: var(--dim); font-size: 15px; word-break: break-word; }
+#pfList .c .f { color: var(--gold); font-size: 15px; }
+#pfList .c.ok { box-shadow: inset 3px 0 0 #4dff9c; } #pfList .c.bad { box-shadow: inset 3px 0 0 #ff4b4b; } #pfList .c.wait { box-shadow: inset 3px 0 0 var(--gold); }

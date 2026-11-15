@@ -118,6 +118,57 @@ app.post('/api/library/remove', express.json(), (req, res) => {
   library.removeDir(String((req.body || {}).dir || '')); res.json(library.info());
 });
 app.post('/api/library/rescan', (req, res) => { if (viaNet(req)) return res.status(403).end(); library.scan(); res.json({ ok: true }); });
+// ✅ Pre-party check: everything that can go wrong before guests arrive, with a one-line fix for each.
+// (Phones / speakers / mics are checked live on the TV; this covers the computer's side.)
+const withTimeout = (p, ms, what) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(`${what} took too long`)), ms))]);
+app.get('/api/preflight', async (req, res) => {
+  if (viaNet(req)) return res.status(403).end();
+  const out = [];
+  const add = (id, ok, title, detail = '', fix = '') => out.push({ id, ok, title, detail, fix });
+  // network address phones will use
+  const lan = BASE_URL.replace(/^https?:\/\//, '').split(':')[0];
+  const lanOk = lan && !/^(127\.|localhost|0\.0\.0\.0)/.test(lan);
+  add('wifi', lanOk ? 'wait' : false, 'Wi-Fi address for phones', lanOk ? `${BASE_URL} — scan the TV's QR with a phone; this turns green when a phone joins over Wi-Fi` : 'No network address found',
+    lanOk ? 'If no phone can join over Wi-Fi: the router may keep devices apart (guest network / "AP isolation"), or a firewall is blocking port ' + PORT + ' — use the "Can\'t connect?" code instead.' : 'Connect this computer to the same Wi-Fi as the phones.');
+  add('net', netUrl ? true : (USE_TUNNEL ? false : 'skip'), '"Can\'t connect?" internet link', netUrl || (USE_TUNNEL ? 'Not up yet' : 'Turned off (TUNNEL=0)'),
+    netUrl ? '' : 'Usually means no internet, or it\'s still starting — wait 30 s and re-run.');
+  const tasks = [
+    (async () => {
+      const v = await withTimeout(yt.version(), 20000, 'yt-dlp');
+      const r = await withTimeout(yt.search('dancing queen abba', true), 30000, 'YouTube search');
+      if (!r.length) throw new Error('no results');
+      await withTimeout(yt.streamUrl(r[0].videoId), 45000, 'YouTube video check');
+      add('youtube', true, 'YouTube search & playback', `yt-dlp ${v || '?'} · found "${r[0].title}" and got its video`);
+    })().catch(e => add('youtube', false, 'YouTube search & playback', e.message, 'Check the internet connection. If it\'s fine, YouTube may have changed something: restart KARAO-Q (the downloader updates itself on start).')),
+    (async () => {
+      const { execFile } = require('child_process');
+      const v = await withTimeout(new Promise((r, j) => execFile('ffmpeg', ['-hide_banner', '-version'], (e, so) => e ? j(e) : r(so.split('\n')[0]))), 10000, 'ffmpeg');
+      add('ffmpeg', true, 'Audio/video tools', v.replace(/Copyright.*/, '').trim());
+    })().catch(e => add('ffmpeg', false, 'Audio/video tools', e.message, 'Reinstall KARAO-Q — ffmpeg is missing.')),
+    (async () => {
+      const st = await fs.promises.statfs(path.join(DATA_DIR, 'cache'));
+      const gb = st.bavail * st.bsize / 1e9;
+      add('disk', gb > 2, 'Free disk space', `${gb.toFixed(1)} GB free`, gb > 2 ? '' : 'Free up a few GB, or lower "Space for downloaded songs" in settings.');
+    })().catch(() => { }),
+    (async () => {
+      const q = [party.s.current, ...party.s.queue, ...party.s.held].filter(Boolean);
+      const faves = Object.values(party.s.faves || {}).flatMap(f => f.songs || []);
+      const ready = list => list.filter(i => yt.status(i.videoId).state === 'ready').length;
+      add('songs', true, 'Songs downloaded ahead', `Queue: ${ready(q)}/${q.length} ready · Faves: ${ready(faves)}/${faves.length} ready`,
+        faves.length && ready(faves) < faves.length ? 'Faves tab → "Download … faves now" so they start instantly.' : '');
+    })().catch(() => { }),
+  ];
+  const lib = library.info();
+  if (lib.dirs.length) {
+    const missing = lib.dirs.filter(d => !d.ok);
+    add('library', missing.length ? false : true, 'Karaoke library', `${lib.total.toLocaleString()} songs in ${lib.dirs.length} folder(s)${missing.length ? ` · missing: ${missing.map(d => d.dir).join(', ')}` : ''}`, missing.length ? 'Plug the drive in, then ☰ → Karaoke library → Rescan.' : '');
+  }
+  add('vocals', true, 'Vocal remover', vocals.engine === 'demucs' ? 'AI (Demucs) installed' : 'Quick (built in)', vocals.engine === 'demucs' ? '' : 'Optional: install Demucs for much better vocal removal (see README).');
+  await Promise.all(tasks);
+  const order = ['wifi', 'net', 'youtube', 'ffmpeg', 'disk', 'songs', 'library', 'vocals'];
+  out.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+  res.json({ checks: out, version: VERSION, phones: phoneCounts() });
+});
 app.get('/api/foryou', (req, res) => res.json(party.forYou(String(req.query.name || '').slice(0, 40))));
 app.get('/api/classics', (req, res) => res.json(require('./lib/classics.json')));
 app.get('/api/house', (req, res) => res.json(party.houseFaves()));
@@ -133,10 +184,11 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server, path: '/ws' });
 const isLoopback = a => a === '127.0.0.1' || a === '::1' || a === '::ffff:127.0.0.1';
 const send = (ws, m) => { if (ws.readyState === 1) ws.send(JSON.stringify(m)); };
+const phoneCounts = () => { const w = new Set(), n = new Set(); for (const c of wss.clients) if (c.role === 'remote' && c.readyState === 1 && c.clientId && !c.local) (c.viaNet ? n : w).add(c.clientId); return { wifi: w.size, net: n.size }; };
 const phones = () => new Set([...wss.clients].filter(c => c.role === 'remote' && c.readyState === 1 && c.clientId).map(c => c.clientId)).size;
 // Host rights: the party computer always; a HOST_PIN if one is set; otherwise the party's host mode decides.
 const isHost = ws => ws.local || (HOST_PIN ? !!ws.pinOk : party.isHostClient(ws.clientId, ws.viaNet));
-const stateMsg = ws => ({ type: 'state', state: { ...party.publicState(), phones: phones(), netUrl }, you: { isHost: isHost(ws), pinRequired: !!HOST_PIN, viaNet: ws.viaNet, hostMode: party.s.settings.hostMode }, serverNow: Date.now() });
+const stateMsg = ws => ({ type: 'state', state: { ...party.publicState(), phones: phones(), phoneSplit: phoneCounts(), netUrl }, you: { isHost: isHost(ws), pinRequired: !!HOST_PIN, viaNet: ws.viaNet, hostMode: party.s.settings.hostMode }, serverNow: Date.now() });
 const broadcast = () => { for (const c of wss.clients) send(c, stateMsg(c)); };
 
 wss.on('connection', (ws, req) => {

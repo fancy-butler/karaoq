@@ -66,6 +66,7 @@
     <button data-m="add">🔍 Add songs <kbd>A</kbd></button>
     <button data-m="settings">⚙ Party settings</button>
     <button data-m="awards">🏆 Tonight's awards</button>
+    <button data-m="preflight">✅ Pre-party check</button>
     <button data-m="mics">🎤 Microphones</button>
     <button data-m="library">💾 Karaoke library</button>
     <button data-m="queue">📋 Show / hide queue <kbd>Q</kbd></button>
@@ -83,6 +84,13 @@
   <div id="awardsShow"><h1>🏆 Tonight's Awards</h1><p class="asub" id="awardsSub"></p><div id="awardsGrid"></div><p class="keys">Press <kbd>Esc</kbd> or click to close</p></div>
   <div id="drawer"><iframe id="drawerFrame" title="Add songs"></iframe></div>
   <div id="unlock"><div><b>Click anywhere to start</b><span>(browsers need one click before they'll play sound)</span></div></div>
+  <div id="pfPanel" class="panel">
+    <button class="x" data-pfx title="Close">✕</button>
+    <h2>✅ Pre-party check</h2>
+    <p class="fine">Run this when you set up, before guests arrive. Green = good to go. Anything else tells you what to do.</p>
+    <div id="pfList"></div>
+    <div class="row"><button id="pfRun" class="gold">↻ Check again</button><button id="pfTone">🔊 Test the speakers</button><button id="pfMics">🎤 Check the mics</button></div>
+  </div>
   <div id="micPanel" class="panel">
     <button class="x" data-micx title="Close">✕</button>
     <h2>🎤 Microphones <label class="sw"><input type="checkbox" id="micOn"> <span>On</span></label></h2>
