@@ -81,7 +81,7 @@
     classics = list;
     const gs = [...new Set(list.map(c => c.g))];
     $('#spinGenre').innerHTML += gs.map(g => `<option value="${g}">${esc((GENRES[g] || [g])[0])}</option>`).join('');
-    const ds = [...new Set(list.map(c => Math.floor(c.y / 10) * 10))].sort();
+    const ds = [...new Set(list.filter(c => c.y).map(c => Math.floor(c.y / 10) * 10))].sort();
     $('#spinDecade').innerHTML += ds.map(d => `<option value="${d}">${d}s</option>`).join('');
     renderClassics();
   }).catch(() => { });
@@ -89,7 +89,7 @@
   $('#reshuffle').onclick = e => { e.stopPropagation(); renderClassics(); };
   $('#spinBtn').onclick = () => {
     const g = $('#spinGenre').value, d = $('#spinDecade').value;
-    const pool = classics.filter(c => (!g || c.g === g) && (!d || Math.floor(c.y / 10) * 10 === Number(d)));
+    const pool = classics.filter(c => (!g || c.g === g) && (!d || (c.y && Math.floor(c.y / 10) * 10 === Number(d))));  // songs with no known year skip the decade filter
     if (!pool.length) return toast('Nothing in that combo — try another', 'bad');
     const c = pool[Math.floor(Math.random() * pool.length)];
     toast(`🎲 The wheel says: ${c.title} — ${c.artist}`);
