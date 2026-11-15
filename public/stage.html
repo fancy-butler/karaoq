@@ -11,6 +11,7 @@
 <body>
 <div id="app">
   <video id="vid" playsinline preload="auto"></video>
+  <div id="lyrics" hidden><div class="l prev"></div><div class="l cur"></div><div class="l next"></div><div class="src"></div></div>
 
   <!-- Nobody in line -->
   <section id="idle" class="screen">
@@ -65,6 +66,7 @@
     <button data-m="add">🔍 Add songs <kbd>A</kbd></button>
     <button data-m="settings">⚙ Party settings</button>
     <button data-m="awards">🏆 Tonight's awards</button>
+    <button data-m="library">💾 Karaoke library</button>
     <button data-m="queue">📋 Show / hide queue <kbd>Q</kbd></button>
     <button data-m="help">⌨ Help &amp; keys <kbd>?</kbd></button>
     <button data-m="about">ⓘ About &amp; credits</button>
@@ -80,11 +82,20 @@
   <div id="awardsShow"><h1>🏆 Tonight's Awards</h1><p class="asub" id="awardsSub"></p><div id="awardsGrid"></div><p class="keys">Press <kbd>Esc</kbd> or click to close</p></div>
   <div id="drawer"><iframe id="drawerFrame" title="Add songs"></iframe></div>
   <div id="unlock"><div><b>Click anywhere to start</b><span>(browsers need one click before they'll play sound)</span></div></div>
+  <div id="libPanel">
+    <button class="x" data-libx title="Close">✕</button>
+    <h2>💾 Karaoke library</h2>
+    <p class="fine">Got a hard drive of karaoke files? Point KARAO-Q at the folder and those songs show up in everyone's search, marked 💾. Works with <b>CD+G</b> (.cdg + .mp3, loose or zipped) and <b>karaoke videos</b> (.mp4, .mkv, .avi…). Each song is converted the first time it's queued — a second or two.</p>
+    <div id="libDirs"></div>
+    <div class="row"><button id="libAdd" class="gold">＋ Add a folder</button><button id="libScan">↻ Rescan</button></div>
+    <p class="fine" id="libNote"></p>
+  </div>
   <div id="help">
     <h2>Keys</h2>
     <dl>
       <dt>A or /</dt><dd>Search &amp; add songs (keyboard + mouse)</dd>
       <dt>Q</dt><dd>Show / hide queue sidebar</dd>
+      <dt>, and .</dt><dd>Nudge on-screen lyrics earlier / later (half a second)</dd>
       <dt>Enter</dt><dd>Start the next song now</dd>
       <dt>N</dt><dd>Not here — swap the next singer back one spot</dd>
       <dt>H</dt><dd>Stepped out — park their song until they're back</dd>

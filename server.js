@@ -2,6 +2,7 @@
 const express = require('express');
 const http = require('http');
 const path = require('path');
+const fs = require('fs');
 const os = require('os');
 const { WebSocketServer } = require('ws');
 const QRCode = require('qrcode');
@@ -26,9 +27,18 @@ function lanAddress() {
 const BASE_URL = process.env.BASE_URL || `http://${lanAddress()}:${PORT}`;
 
 const yt = new YT({ cacheDir: path.join(DATA_DIR, 'cache'), bin: process.env.YTDLP || 'yt-dlp', mock: MOCK });
+const { Library } = require('./lib/library');
+const library = new Library({ dataDir: DATA_DIR });
+yt.library = library;
+if (library.dirs.length) setTimeout(() => library.scan(), 2000).unref();
 const genres = new Genres({ file: path.join(DATA_DIR, 'genres.json'), mock: MOCK });
 const people = new People({ dir: DATA_DIR });
-const party = new Party({ file: path.join(DATA_DIR, 'party.json'), yt, genres, people });
+const { Vocals } = require('./lib/vocals');
+const vocals = new Vocals({ cacheDir: path.join(DATA_DIR, 'cache') });
+yt.on('pruned-nv', id => vocals.st.delete(id));
+const { Lyrics } = require('./lib/lyrics');
+const lyrics = new Lyrics({ cacheDir: path.join(DATA_DIR, 'cache'), mock: MOCK });
+const party = new Party({ file: path.join(DATA_DIR, 'party.json'), yt, genres, people, vocals, lyrics });
 
 const app = express();
 const pub = path.join(__dirname, 'public');
@@ -82,8 +92,9 @@ app.post('/api/avatar', express.json({ limit: '900kb' }), (req, res) => {
 app.get('/api/search', async (req, res) => {
   const q = String(req.query.q || '').trim().slice(0, 200);
   if (!q) return res.json([]);
-  try { res.json(await yt.search(q, req.query.karaoke !== '0')); }
-  catch (e) { res.status(502).json({ error: e.message }); }
+  const local = library.search(q); // 💾 songs from the karaoke library come first
+  try { res.json([...local, ...await yt.search(q, req.query.karaoke !== '0')]); }
+  catch (e) { local.length ? res.json(local) : res.status(502).json({ error: e.message }); }
 });
 app.get('/api/lookup', async (req, res) => {
   try { res.json(await yt.lookup(String(req.query.url || ''))); }
@@ -93,12 +104,26 @@ const qr = url => QRCode.toString(url, { type: 'svg', margin: 1, errorCorrection
 let qrSvg = null, netUrl = null, netSvg = null;
 const VERSION = require('./package.json').version;
 app.get('/api/stats', (req, res) => res.json(party.personalStats(String(req.query.name || '').slice(0, 40))));
+// 💾 karaoke library management. Adding/removing folders only from the TV machine itself (or KQ_LIBRARY in Docker).
+const reqLocal = req => isLoopback(req.socket.remoteAddress) && !viaNet(req);
+app.get('/api/library', (req, res) => res.json(library.info()));
+app.post('/api/library/add', express.json(), async (req, res) => {
+  if (!reqLocal(req)) return res.status(403).json({ error: 'Add folders from the TV computer' });
+  const dir = String((req.body || {}).dir || '');
+  if (!dir || !fs.existsSync(dir)) return res.status(400).json({ error: 'Folder not found' });
+  library.addDir(dir); res.json(library.info());
+});
+app.post('/api/library/remove', express.json(), (req, res) => {
+  if (!reqLocal(req)) return res.status(403).json({ error: 'Remove folders from the TV computer' });
+  library.removeDir(String((req.body || {}).dir || '')); res.json(library.info());
+});
+app.post('/api/library/rescan', (req, res) => { if (viaNet(req)) return res.status(403).end(); library.scan(); res.json({ ok: true }); });
 app.get('/api/foryou', (req, res) => res.json(party.forYou(String(req.query.name || '').slice(0, 40))));
 app.get('/api/classics', (req, res) => res.json(require('./lib/classics.json')));
 app.get('/api/house', (req, res) => res.json(party.houseFaves()));
 app.get('/api/more', (req, res) => res.json(require('./lib/more.json')));
 app.get('/api/popular', (req, res) => res.json(require('./lib/popular.json')));
-app.get('/api/about', (req, res) => res.json({ version: VERSION, ytdlp: yt.ytVersion }));
+app.get('/api/about', (req, res) => res.json({ version: VERSION, ytdlp: yt.ytVersion, vocals: vocals.info() }));
 app.get('/api/join', async (req, res) => {
   if (!qrSvg) qrSvg = await qr(BASE_URL);
   res.json({ url: BASE_URL, svg: qrSvg, netUrl, netSvg });

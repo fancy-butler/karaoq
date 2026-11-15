@@ -144,6 +144,39 @@ KARAO-Q reads the artist from the karaoke title and looks up the genre and decad
 - **Duets:** tap 👤 when adding to enter a duet partner, or ⋯ → "Make it a duet" on a queued song. Shows as "Stan & Priya" and counts for both.
 - **Reactions:** everyone gets 🔥👏😂❤️🎉🤘 buttons while someone sings. They float up the side of the TV.
 
+- **🎤✂ Vocal remover:** ⋯ → *Remove the vocals* on any song, or the *Vocals* button while it plays. It switches over mid-song once the copy is ready. Songs that aren't karaoke videos offer it when you add them. There are two engines:
+  - **Quick** is built in. It cancels whatever is panned to the centre (usually the lead vocal) and keeps the bass, in a few seconds. It's great on older stereo mixes and so-so on modern ones.
+  - **AI (Demucs)** is used automatically if it's installed on the TV computer. It sounds like a real backing track and takes about as long as the song on a normal CPU. To install it, run `pipx install demucs` (Linux/Mac) or `pip install demucs` (Windows, with Python installed), then restart KARAO-Q. It looks in the usual places, or you can set `KQ_DEMUCS=/path/to/demucs`. The first run downloads the AI model (~80 MB).
+- **📝 Lyrics for non-karaoke videos:** when a song isn't a karaoke version (or its vocals are removed), KARAO-Q looks up synced lyrics on [LRCLIB](https://lrclib.net) and scrolls them on the TV. Press `,` / `.` on the keyboard to nudge the timing. ⋯ → *Show/Hide lyrics* per song; turn it off in *More settings*.
+- **⬇ Download ahead:** the Faves tab has a button that downloads that person's favourites in the background, so they start instantly later. This is handy before people arrive or on slow internet.
+
+## 💾 Your own karaoke files (KJ hard drives)
+Got a drive full of karaoke tracks? On the TV computer: ☰ Menu → **💾 Karaoke library** → **Add a folder**. KARAO-Q scans it (subfolders too) and those songs show up in everyone's search, marked 💾, above the YouTube results.
+
+- **CD+G:** `song.cdg` + `song.mp3` (or .ogg/.wav/.flac/.m4a) side by side, or both inside a `.zip`. This is the classic Sound Choice / Sunfly / Party Tyme disc rip format.
+- **Karaoke videos:** .mp4 .mkv .avi .mov .m4v .webm .mpg .vob .wmv .flv .ts.
+- **Names:** artist and title come from file names like `SC8123-05 - Bon Jovi - Livin On A Prayer.zip`. Disc codes are recognised and searchable.
+- **Converting:** each song is converted once, when it's first queued, which takes a second or two. Your files are only ever read, never changed or moved.
+- **Unplugged drive:** if the drive isn't plugged in, those songs just say so. Plug it back in and press ↻ Rescan.
+- **Not supported yet:** .kar/.mid (MIDI karaoke) and KaraFun .kfn files.
+
+## 📦 NAS / home server (Docker)
+Run KARAO-Q on an always-on box and use any TV's browser as the screen: no laptop by the TV.
+
+```
+docker run -d --name karaoq --network host --restart unless-stopped \
+  -v karaoq-data:/data -v /path/to/karaoke/files:/library:ro \
+  ghcr.io/fancy-butler/karaoq:latest
+```
+Or grab [`docker-compose.yml`](docker-compose.yml) and run `docker compose up -d`.
+
+- **The TV:** open `http://<box-address>:8080/stage` in the TV's browser (or a Fire TV / Chromecast browser). Press Enter or click once so it's allowed to play sound.
+- **Phones:** they scan the QR code as usual.
+- **Your karaoke files:** mount them at `/library` and they're scanned on start.
+- **Images:** amd64 and arm64 (Synology/QNAP Intel and ARM boxes, Raspberry Pi 4/5, any Linux server).
+- **Updates:** with `docker compose pull && docker compose up -d`, or Watchtower. yt-dlp inside keeps itself current.
+- **Without host networking:** publish port 8080 and set `BASE_URL=http://<box-address>:8080` so the QR code points at the right place.
+
 ## Phone remote
 - Search adds "karaoke" automatically and ranks real karaoke channels first. You can also paste a YouTube link.
 - **＋** adds a song under your name. **👤** adds one for someone else, which is handy when one phone queues for a few people.
@@ -166,6 +199,8 @@ KARAO-Q reads the artist from the karaoke title and looks up the genre and decad
 Downloaded songs are cached in `data/cache/`, so repeat requests start instantly. Delete the folder whenever you like.
 
 ## Credits
+Synced lyrics come from [LRCLIB](https://lrclib.net), a free, community-run lyrics database. AI vocal removal is [Demucs](https://github.com/adefossez/demucs) by Alexandre Défossez / Meta AI (MIT), when installed. CD+G graphics are drawn by [FFmpeg](https://ffmpeg.org).
+
 The idea of a QR-joined, phone-fed queue owes a lot to [PiKaraoke](https://github.com/vicwomg/pikaraoke) and [yt-kara](https://github.com/Zeletochoy/yt-kara). The video plumbing is all [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
 Downloading from YouTube is against YouTube's terms of service. This is meant for private home use.

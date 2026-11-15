@@ -35,7 +35,10 @@ async function until(fn, ms, what) {
   const puppeteer = require('puppeteer-core');
   const chrome = findChrome();
   if (!chrome) { console.error('No Chrome found (set CHROME=…)'); process.exit(2); }
-  const env = { ...process.env, MOCK: '1', TUNNEL: '0', PORT: String(PORT), DATA_DIR: DATA, MOCK_DL_STEP: '20' };
+  const LIB = path.join(DATA, 'library-src');
+  const fd0 = ffmpegDir();
+  require('./make-test-library').build(LIB, fd0 ? path.join(fd0, process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg') : 'ffmpeg');
+  const env = { ...process.env, KQ_LIBRARY: LIB, MOCK: '1', TUNNEL: '0', PORT: String(PORT), DATA_DIR: DATA, MOCK_DL_STEP: '20' };
   const fd = ffmpegDir(); if (fd) env.PATH = fd + path.delimiter + env.PATH;
   // ffmpeg-static ships the binary as "ffmpeg" (or ffmpeg.exe) — fine for PATH lookup
   const srv = spawn(process.execPath, [path.join(ROOT, 'server.js')], { env, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -130,6 +133,42 @@ async function until(fn, ms, what) {
     await until(() => state && !state.current && state.queue[0] && state.queue[0].singer === 'Unlucky Streamer', 10000, 'requeue after stream error');
     ok(state.queue[0].streamFailed === true, 'failed stream → back to the front, waiting for the download');
     await act('remove', { id: state.queue[0].id });
+
+    // 🎤✂ vocal remover: song added with vocals removed waits for the backing-track copy and plays it
+    const vr = await (await fetch(BASE + '/api/search?q=' + encodeURIComponent('vocal test song'))).json();
+    ok((await act('add', { video: vr[0], singer: 'No Vox', novox: true })).ok, 'song added with vocals removed');
+    await until(() => state && state.phase === 'playing' && state.current && state.current.singer === 'No Vox', 30000, 'vocals-removed song to start');
+    ok(state.current.nv && state.current.nv.state === 'ready', 'backing-track copy was made before it started');
+    const vp = await until(() => tv.evaluate(() => { const v = document.querySelector('video'); return v && v.currentTime > 0.3 && v.getAttribute('src'); }), 15000, 'vocals-removed video to play');
+    ok(/\.nv\.mp4$/.test(vp), `TV plays the vocals-removed copy (${vp})`);
+    ok((await act('novox', { id: state.current.id, on: false })).ok, 'vocals back on mid-song');
+    const back = await until(() => tv.evaluate(() => { const v = document.querySelector('video'); return v && !/\.nv\./.test(v.getAttribute('src')) && v.currentTime > 0.5 && v.getAttribute('src'); }), 10000, 'swap back to original');
+    ok(!!back, 'TV swapped back to the original mid-song');
+    ok((await act('skip')).ok, 'skip'); await until(() => state && state.phase === 'idle', 10000, 'idle');
+
+    // 📝 a music video (not karaoke) gets synced lyrics on screen
+    const mv = await (await fetch(BASE + '/api/search?q=' + encodeURIComponent('music video test'))).json();
+    ok((await act('add', { video: { ...mv[0], title: 'Rick Astley - Never Gonna Give You Up (Official Video)' }, singer: 'Lyric Fan' })).ok, 'music video added');
+    await until(() => state && state.phase === 'playing' && state.current && state.current.singer === 'Lyric Fan', 30000, 'music video to start');
+    ok(state.current.lyr === 'ready', 'lyrics were found for it');
+    const lyrText = await until(() => tv.evaluate(() => { const el = document.querySelector('#lyrics'); return el && !el.hidden && /lyric line/.test(el.textContent) && el.textContent; }), 10000, 'lyrics on the TV');
+    ok(!!lyrText, 'TV scrolls the lyrics');
+    ok((await act('skip')).ok, 'skip'); await until(() => state && state.phase === 'idle', 10000, 'idle');
+
+    // 💾 local karaoke library: CD+G pair, zipped CD+G, mkv video — searchable, convert on queue, play on TV
+    await until(async () => (await (await fetch(BASE + '/api/library')).json()).total === 4, 15000, 'library scan');
+    ok(true, 'karaoke library scanned (4 songs)');
+    const lr = await (await fetch(BASE + '/api/search?q=' + encodeURIComponent('bon jovi prayer'))).json();
+    ok(lr[0] && lr[0].local && lr[0].videoId.startsWith('lc_'), `library song comes first in search (${lr[0] && lr[0].title})`);
+    const zr = await (await fetch(BASE + '/api/search?q=africa')).json();
+    ok((await act('add', { video: lr[0], singer: 'CDG Fan' })).ok && (await act('add', { video: zr[0], singer: 'Zip Fan' })).ok, 'CD+G and zipped CD+G songs queued');
+    await until(() => state && state.phase === 'playing' && state.current && state.current.singer === 'CDG Fan', 30000, 'CD+G song to start');
+    const lp = await until(() => tv.evaluate(() => { const v = document.querySelector('video'); return v && v.currentTime > 0.3 && v.getAttribute('src'); }), 15000, 'CD+G video to play');
+    ok(/lc_/.test(lp), `TV plays the converted CD+G (${lp})`);
+    ok((await act('skip')).ok, 'skip');
+    await until(() => state && state.phase === 'playing' && state.current && state.current.singer === 'Zip Fan', 30000, 'zipped CD+G song to start');
+    ok(true, 'zipped CD+G converted and started');
+    ok((await act('skip')).ok, 'skip'); await until(() => state && state.phase === 'idle', 10000, 'idle');
 
     const tvErr = await tv.evaluate(() => !!document.querySelector('#idle, .idle, body'));
     ok(tvErr, 'TV idle screen renders');

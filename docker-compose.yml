@@ -1,0 +1,18 @@
+# KARAO-Q on a NAS or home server:  docker compose up -d
+# Then on the TV's browser open  http://<this-box-ip>:8080/stage   (phones scan the QR code it shows)
+services:
+  karaoq:
+    image: ghcr.io/fancy-butler/karaoq:latest
+    container_name: karaoq
+    restart: unless-stopped
+    network_mode: host                   # so the join QR shows this box's real Wi-Fi/LAN address
+    # (if you can't use host networking: swap it for  ports: ["8080:8080"]  and set BASE_URL below)
+    volumes:
+      - ./karaoq-data:/data              # queue, faves, stats, downloaded songs
+      # - /volume1/Karaoke:/library:ro   # optional: your folder of CD+G / karaoke video files
+    environment:
+      - TZ=America/Toronto
+      # - BASE_URL=http://192.168.1.50:8080   # only needed without host networking: this box's LAN address
+      # - PORT=8080
+      # - TUNNEL=0                       # turn off the "Can't connect?" internet link
+      # - HOST_PIN=1234                  # require a PIN to become host

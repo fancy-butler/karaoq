@@ -51,13 +51,13 @@ window.KQ = (() => {
   const fmt = sec => { if (!sec && sec !== 0) return ''; sec = Math.max(0, Math.round(sec)); const m = Math.floor(sec / 60), s = sec % 60; return `${m}:${String(s).padStart(2, '0')}`; };
   // Strip the karaoke-channel noise so titles read like songs
   const clean = t => String(t || '').replace(/\s*[\(\[][^\)\]]*(karaoke|instrumental|lyrics|version|official)[^\)\]]*[\)\]]/gi, '').replace(/\s*[|–-]\s*(karaoke|sing king|karafun).*$/i, '').replace(/\bkaraoke\b/gi, '').replace(/\s{2,}/g, ' ').trim() || t;
-  const thumb = it => it.thumb || (it.videoId ? `https://i.ytimg.com/vi/${it.videoId}/mqdefault.jpg` : '');
+  const thumb = it => it.thumb || (it.videoId ? (String(it.videoId).startsWith('lc_') ? '/local-song.svg' : `https://i.ytimg.com/vi/${it.videoId}/mqdefault.jpg`) : '');
 
   function dlLabel(dl) {
     if (!dl) return '';
     if (dl.state === 'ready') return '<span class="dl ok">● ready</span>';
-    if (dl.state === 'downloading') return `<span class="dl busy">↓ ${dl.pct || 0}%</span>`;
-    if (dl.state === 'error') return '<span class="dl bad">✕ download failed</span>';
+    if (dl.state === 'downloading') return `<span class="dl busy">${dl.note === 'removing vocals' ? '🎤✂' : dl.note === 'converting' ? '💾' : '↓'} ${dl.pct || 0}%</span>`;
+    if (dl.state === 'error') return `<span class="dl bad" title="${esc(dl.error || '')}">✕ ${dl.note === 'removing vocals' ? 'vocal removal' : 'download'} failed</span>`;
     return '<span class="dl wait">… queued</span>';
   }
 
@@ -139,6 +139,9 @@ window.KQ = (() => {
     ['FFmpeg', 'https://ffmpeg.org', 'video & audio processing', 'GPL — source at ffmpeg.org; static builds via the ffmpeg-static project'],
     ['Deno', 'https://deno.com', 'JavaScript runtime used by yt-dlp', 'MIT'],
     ['cloudflared', 'https://github.com/cloudflare/cloudflared', 'the “Can’t connect?” link', 'Apache-2.0'],
+    ['LRCLIB', 'https://lrclib.net', 'synced lyrics for non-karaoke videos', 'community database, free API'],
+    ['Demucs', 'https://github.com/adefossez/demucs', 'AI vocal removal (if installed)', 'MIT'],
+    ['yauzl', 'https://github.com/thejoshwolfe/yauzl', 'reads zipped CD+G files', 'MIT'],
     ['Electron', 'https://www.electronjs.org', 'desktop app shell', 'MIT'],
     ['Node.js', 'https://nodejs.org', 'server runtime', 'MIT'],
     ['Express', 'https://expressjs.com', 'web server', 'MIT'],

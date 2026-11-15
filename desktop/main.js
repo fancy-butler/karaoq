@@ -89,10 +89,11 @@ function stopServer() {
   }
 }
 
+let port = 8080;
 async function start() {
   fs.mkdirSync(dataDir, { recursive: true });
   const ytdlp = prepareYtdlp();
-  const port = await freePort(8080);
+  port = await freePort(8080);
   await linuxFirewall(port);
 
   const env = {
@@ -129,11 +130,25 @@ async function start() {
   win.loadURL(`http://localhost:${port}/stage`);
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('karaoq:update')) installNow();
+    else if (url.startsWith('karaoq:pickfolder')) pickLibraryFolder();
     else if (url.startsWith('karaoq:check')) tellStage();
     else shell.openExternal(url);
     return { action: 'deny' };
   });
   win.webContents.on('did-finish-load', tellStage);
+}
+
+// ---------- 💾 karaoke library folder picker ----------
+async function pickLibraryFolder() {
+  const r = await dialog.showOpenDialog(win, { title: 'Choose a folder of karaoke files', properties: ['openDirectory', 'multiSelections'] });
+  if (r.canceled) return;
+  for (const dir of r.filePaths) {
+    try {
+      await fetch(`http://127.0.0.1:${port}/api/library/add`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ dir }) });
+      log(`library folder added: ${dir}`);
+    } catch (e) { log(`library add failed: ${e.message}`); }
+  }
+  if (win && !win.isDestroyed()) win.webContents.executeJavaScript('window.KQLibraryChanged && window.KQLibraryChanged()').catch(() => { });
 }
 
 // ---------- updates ----------

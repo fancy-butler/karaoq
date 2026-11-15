@@ -49,16 +49,76 @@
   $('#updPill').onclick = restartToUpdate;
   KQ.on('state', syncUpdPill);
 
+  // ---------- 📝 synced lyrics (LRCLIB) for songs that aren't karaoke videos ----------
+  let lyr = null, lyrFor = null, lyrOffset = 0;
+  function syncLyrics(st) {
+    const c = st.current;
+    const want = c && c.lyr === 'ready' && !c.lyrHide && (st.phase === 'playing' || st.phase === 'paused') ? c.videoId : null;
+    if (want !== lyrFor) {
+      lyrFor = want; lyr = null; lyrOffset = 0; $('#lyrics').hidden = true;
+      if (want) fetch(`/media/${want}.lrc.json`).then(r => r.ok ? r.json() : null).then(j => { if (j && lyrFor === want) { lyr = j; $('#lyrics .src').textContent = `Lyrics: LRCLIB · ${j.source || ''} · , and . to nudge timing`; $('#lyrics').hidden = false; } }).catch(() => { });
+    }
+  }
+  KQ.on('state', syncLyrics);
+  (function lyrLoop() {
+    requestAnimationFrame(lyrLoop);
+    if (!lyr || $('#lyrics').hidden) return;
+    const t = vid.currentTime + lyrOffset, L = lyr.lines;
+    let i = -1; for (let k = 0; k < L.length; k++) { if (L[k].t <= t) i = k; else break; }
+    const cur = i >= 0 ? L[i] : null, nxt = L[i + 1];
+    let curText = cur ? cur.text : '';
+    // long instrumental gap: show a countdown bar to the next line instead of a stale line
+    if ((!curText || (nxt && nxt.t - t > 6 && t - (cur ? cur.t : 0) > 8)) && nxt) {
+      const from = cur ? cur.t : 0, pct = Math.max(0, Math.min(100, 100 * (t - from) / Math.max(1, nxt.t - from)));
+      if (nxt.t - t < 8) curText = `<span class="bar"><i style="width:${pct.toFixed(1)}%"></i></span>`; else curText = '♪';
+    } else curText = KQ.esc(curText);
+    const set = (sel, html) => { const el = $(`#lyrics ${sel}`); if (el._h !== html) { el._h = html; el.innerHTML = html; } };
+    set('.prev', i > 0 ? KQ.esc(L[i - 1].text) : '');
+    set('.cur', curText);
+    set('.next', nxt ? KQ.esc(nxt.text) : '');
+  })();
+
+  // ---------- 💾 karaoke library (folders on this computer) ----------
+  const inApp = /Electron/.test(navigator.userAgent);
+  let libTimer = null;
+  async function libRefresh() {
+    let info; try { info = await (await fetch('/api/library')).json(); } catch { return; }
+    $('#libDirs').innerHTML = info.dirs.length ? info.dirs.map(d => `<div class="d ${d.ok ? '' : 'bad'}"><span class="p">${KQ.esc(d.dir)}</span><span class="n">${d.ok ? `${d.songs.toLocaleString()} songs` : 'not found — drive unplugged?'}</span><button data-librm="${KQ.esc(d.dir)}" title="Stop using this folder (files aren't touched)">Remove</button></div>`).join('')
+      : '<p class="fine">No folders yet.</p>';
+    $('#libNote').textContent = info.scanning ? 'Scanning… songs appear in search as soon as it finishes.' : info.total ? `${info.total.toLocaleString()} songs ready to search.` : '';
+    $('#libAdd').hidden = !inApp;
+    if (!inApp) $('#libNote').textContent += ' To add folders here, open KARAO-Q on this computer — or for Docker/NAS, mount the folder and set KQ_LIBRARY (see README).';
+    clearTimeout(libTimer); if (info.scanning && app.classList.contains('lib')) libTimer = setTimeout(libRefresh, 1500);
+  }
+  window.KQLibraryChanged = libRefresh; // the desktop app calls this after a folder is picked
+  $('#libAdd').onclick = () => window.open('karaoq:pickfolder');
+  $('#libScan').onclick = () => fetch('/api/library/rescan', { method: 'POST' }).then(() => setTimeout(libRefresh, 300));
+  $('#libPanel').onclick = e => {
+    if (e.target.closest('[data-libx]')) return app.classList.remove('lib');
+    const rm = e.target.closest('[data-librm]'); if (!rm) return;
+    if (!confirm(`Stop using ${rm.dataset.librm}? Your files aren't touched.`)) return;
+    fetch('/api/library/remove', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ dir: rm.dataset.librm }) }).then(libRefresh);
+  };
+
   // ---------- player ----------
   function syncPlayer(st) {
     const cur = st.current;
     if ((st.phase === 'playing' || st.phase === 'paused') && cur) {
+      // which file: vocals-removed copy if asked for and ready; a live stream if the download isn't done; else the download
+      const want = cur.novox && cur.nv && cur.nv.state === 'ready' ? `/media/${cur.videoId}.nv.mp4`
+        : cur.stream ? `/stream/${cur.videoId}` : `/media/${cur.videoId}.mp4`;
       if (loaded !== cur.id) {
         loaded = cur.id;
         if (st.settings.introCard !== false) showIntro(cur);
-        vid.src = cur.stream ? `/stream/${cur.videoId}` : `/media/${cur.videoId}.mp4`; // stream-first: plays before the download finishes
+        vid.src = want;
         vid.currentTime = 0;
         flashNowTag();
+      } else if (vid.getAttribute('src') !== want && !cur.stream) {
+        // vocals switched on/off mid-song: swap files at the same spot
+        const t = vid.currentTime, wasPaused = vid.paused;
+        vid.src = want;
+        vid.addEventListener('loadedmetadata', () => { vid.currentTime = t; if (!wasPaused) tryPlay(); }, { once: true });
+        toast(cur.novox ? '🎤✂ Vocals removed' : '🎤 Vocals back');
       }
       if (st.phase === 'playing' && vid.paused) tryPlay();
       if (st.phase === 'paused' && !vid.paused) vid.pause();
@@ -332,6 +392,7 @@
     if (m === 'about') { KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; app.classList.add('help'); setTimeout(() => $('#helpAbout').scrollIntoView({ behavior: 'smooth' }), 50); }); }
     if (m === 'full') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => { });
     if (m === 'update') return restartToUpdate();
+    if (m === 'library') { app.classList.add('lib'); libRefresh(); }
     if (m === 'quit') { if (confirm('Quit KARAO-Q? The queue is saved.')) window.close(); }
   };
 
@@ -354,7 +415,8 @@
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     const st = KQ.state; if (!st) return;
     const k = e.key;
-    if (k === 'Escape') { app.classList.remove('awards'); setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
+    if ((k === ',' || k === '.') && lyr) { lyrOffset += k === '.' ? 0.5 : -0.5; return toast(`Lyrics timing ${lyrOffset > 0 ? '+' : ''}${lyrOffset.toFixed(1)} s`); }
+    if (k === 'Escape') { app.classList.remove('lib'); app.classList.remove('awards'); setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
     if (k === 'm' || k === 'M') { setMenu(!app.classList.contains('menu')); return; }
     if (k === 'a' || k === 'A' || k === '/') { e.preventDefault(); setDrawer(!drawerOpen); return; }
     if (k === 'q' || k === 'Q') { sidePinned = !sidePinned; render(st); toast(sidePinned ? 'Queue pinned' : 'Queue hides during songs'); return; }

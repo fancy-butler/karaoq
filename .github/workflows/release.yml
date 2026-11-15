@@ -84,3 +84,47 @@ jobs:
             dist/*.dmg
             dist/*.AppImage
           if-no-files-found: ignore
+
+  # Docker image for a NAS / home server (amd64 + arm64): ghcr.io/fancy-butler/karaoq
+  docker:
+    needs: check
+    if: needs.check.outputs.mode == 'publish'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: v
+        run: echo "v=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+      # quick check that the image actually starts before pushing it
+      - name: Build + test (amd64)
+        run: |
+          docker buildx build --load -t karaoq:ci .
+          docker run -d --name kq -e MOCK=1 -e TUNNEL=0 -p 8080:8080 karaoq:ci
+          for i in $(seq 1 30); do curl -fs localhost:8080/api/about && break; sleep 1; done
+          curl -fs localhost:8080/api/about | grep -q '"version"'
+          docker exec kq yt-dlp --version
+          docker exec kq ffmpeg -hide_banner -version | head -1
+          docker exec kq deno --version | head -1
+          docker logs kq | tail -5
+      - name: Push (amd64 + arm64)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/fancy-butler/karaoq:latest
+            ghcr.io/fancy-butler/karaoq:${{ steps.v.outputs.v }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=KARAO-Q — YouTube karaoke party queue server
+            org.opencontainers.image.licenses=MIT

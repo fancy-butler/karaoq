@@ -60,13 +60,25 @@
   // "No lyrics" check: a video whose title doesn't look like karaoke / lyrics / instrumental probably has the
   // original vocals and nothing on screen to sing from. Ask once per video (host can turn this off).
   const KARAOKE_RE = /karaoke|instrumental|lyrics?|backing track|minus ?one|off ?vocal|sing ?a?long|videoke|piano version|no vocals?/i;
-  const looksSingable = v => KARAOKE_RE.test(`${v.title || ''} ${v.channel || ''}`);
+  const looksSingable = v => v.local || String(v.videoId || "").startsWith("lc_") || KARAOKE_RE.test(`${v.title || ''} ${v.channel || ''}`);
   const okVids = new Set(JSON.parse(ls.get('kq.okVids') || '[]'));
+  // 🎤✂ vocal remover helpers
+  let vocalEngine = 'quick';
+  fetch('/api/about').then(r => r.json()).then(j => { if (j.vocals) vocalEngine = j.vocals.engine; }).catch(() => { });
+  const vocalHint = () => vocalEngine === 'demucs' ? '(AI — takes about as long as the song)' : '(quick — a few seconds)';
+  const novoxState = nv => nv.state === 'ready' ? 'ready' : nv.state === 'error' ? 'failed — plays original' : nv.state === 'downloading' ? `${nv.pct || 0}%` : 'waiting';
+  const novoxLabel = c => !c.novox ? '🎤✂ Remove' : c.nv && c.nv.state === 'ready' ? '✂ Removed — undo' : `✂ ${novoxState(c.nv || {})}`;
+  // "doesn't look like karaoke" → Add anyway / Add with vocals removed / Cancel
+  const askNoLyrics = v => new Promise(res => sheet(`<h3>Not a karaoke video?</h3><p class="hint">“${esc(v.title)}” doesn't look like a karaoke version — it probably has the original singer's vocals${lyricsOn() ? ' (KARAO-Q will try to show lyrics on screen)' : ' and no lyrics on screen'}.</p>
+      <button data-a="novox" class="gold">🎤✂ Add it with the vocals removed</button><button data-a="plain">Add it as it is</button><button data-a="no" class="ghost">Cancel</button>`, a => res(a || 'no')) || $('#sheet').addEventListener('close', () => res('no'), { once: true }));
+  const lyricsOn = () => KQ.state && KQ.state.settings.autoLyrics !== false;
   async function addSong(data) {
     const v = data.video || {};
     if (KQ.state && KQ.state.settings.lyricsWarn !== false && !data.trusted && v.videoId && !okVids.has(v.videoId) && v.title && !looksSingable(v)) {
-      if (!confirm(`“${v.title}” doesn't look like a karaoke video — it may have the original singer's vocals and no lyrics on screen.\n\nAdd it anyway?`)) return { ok: false, cancelled: true };
-      okVids.add(v.videoId); ls.set('kq.okVids', JSON.stringify([...okVids].slice(-200)));
+      const how = await askNoLyrics(v);
+      if (how === 'no' || how === 'close') return { ok: false, cancelled: true };
+      if (how === 'novox') data = { ...data, novox: true };
+      else { okVids.add(v.videoId); ls.set('kq.okVids', JSON.stringify([...okVids].slice(-200))); }
     }
     let r = await act('add', data);
     if (!r.ok && r.dup && confirm(`${r.error}.\n\nAdd it anyway?`)) r = await act('add', { ...data, force: true });
@@ -300,6 +312,10 @@
       if (can) b += `<button data-a="hold">🚪 Stepped out — keep song, pull from rotation</button>`;
     } else if (can) b += `<button data-a="back">↩ They're back — put them up next</button>`;
     if (can) b += `<button data-a="keyDown">🎚 Key down (now ${keyLabel(it.key) || '0'})</button><button data-a="keyUp">🎚 Key up (now ${keyLabel(it.key) || '0'})</button>`;
+    if (can) b += `<button data-a="novox">${it.novox ? '🎤 Put the vocals back' : '🎤✂ Remove the vocals'}${it.novox && it.nv ? ` <small>(${novoxState(it.nv)})</small>` : ''}</button>`;
+    if (can) b += it.lyr === 'ready' && !it.lyrHide ? `<button data-a="lyrOff">📝 Hide the on-screen lyrics</button>`
+      : it.lyr === 'looking' ? `<button data-a="noop" disabled>📝 Looking for lyrics…</button>`
+      : `<button data-a="lyrOn">📝 ${it.lyr === 'none' ? 'No lyrics found — look again' : 'Show lyrics on screen'}</button>`;
     if (can) b += `<button data-a="genre">🎨 Genre: ${it.genre && GENRES[it.genre] ? esc(GENRES[it.genre][0]) : 'unknown'} — change</button>`;
     if (can) b += `<button data-a="duet">👥 ${it.with ? 'Change / remove duet partner' : 'Make it a duet'}</button>`;
     b += `<button data-a="fave">${isFave(it.singer, it.videoId) ? '★ Remove from' : '⭐ Save to'} ${esc(it.singer)}'s favourites</button>`;
@@ -310,6 +326,9 @@
     sheet(b, async a => {
       if (a === 'keyDown' || a === 'keyUp') return run('key', { id: it.id, delta: a === 'keyUp' ? 1 : -1 });
       if (a === 'genre') return setTimeout(() => pickGenre(it, false), 50);
+      if (a === 'lyrOn' || a === 'lyrOff') return run('lyrics', { id: it.id, on: a === 'lyrOn' }, a === 'lyrOn' ? '📝 Looking for lyrics…' : 'Lyrics hidden');
+      if (a === 'noop') return;
+      if (a === 'novox') return run('novox', { id: it.id, on: !it.novox }, it.novox ? 'Vocals back on' : `Removing vocals ${vocalHint()}`);
       if (a === 'swapv') return setTimeout(() => swapVersion(it), 50);
       if (a === 'fave') return run('fave', { singer: it.singer, video: { ...it } }, isFave(it.singer, it.videoId) ? 'Removed from favourites' : `⭐ Saved to ${it.singer}'s favourites`);
       if (a === 'duet') { const p = prompt(`Who's singing with ${it.singer}? (leave empty for solo)`, it.with || ''); if (p === null) return; return run('duet', { id: it.id, with: p }, p.trim() ? `Duet: ${it.singer} & ${p.trim()}` : 'Back to solo'); }
@@ -335,6 +354,7 @@
     if (a === 'moreReacts') { moreReacts = !moreReacts; return renderNow(st); }
     if (a === 'keyUp' || a === 'keyDown') return run('key', { delta: a === 'keyUp' ? 1 : -1 });
     if (a === 'keyZero') return run('key', { value: 0 }, 'Original key');
+    if (a === 'novoxNow') return run('novox', { id: st.current.id, on: !st.current.novox }, st.current.novox ? 'Vocals back on' : `Removing vocals… ${vocalHint()}`);
     if (a === 'genreNow') return pickGenre(st.current, true);
     if (a === 'fave') { const c = st.current; return run('fave', { singer: c.singer, video: { ...c } }, isFave(c.singer, c.videoId) ? 'Removed from favourites' : `⭐ Saved to ${c.singer}'s favourites`); }
     const msgs = { defer: 'Swapped — next person is up', hold: 'Moved to Stepped out' };
@@ -356,7 +376,7 @@
         <div class="bar"><i id="pbar"></i></div><div class="times"><span id="ptime"></span><span id="pdur">${fmt(c.duration)}</span></div>
         <div class="reacts">${REACTS.slice(0, 6).map(e => `<button data-a="react:${e}">${e}</button>`).join('')}<button data-a="moreReacts" class="more ${moreReacts ? 'on' : ''}">${moreReacts ? '−' : '＋'}</button></div>
         ${moreReacts ? `<div class="reacts all">${REACTS.slice(6).map(e => `<button data-a="react:${e}">${e}</button>`).join('')}</div>` : ''}
-        ${host || mine ? `<div class="keyrow"><span>Key</span><button data-a="keyDown" class="ghost">−</button><b>${keyLabel(c.key) || '0'}</b><button data-a="keyUp" class="ghost">+</button>${c.key ? '<button data-a="keyZero" class="ghost small">reset</button>' : ''}</div>` : ''}
+        ${host || mine ? `<div class="keyrow"><span>Key</span><button data-a="keyDown" class="ghost">−</button><b>${keyLabel(c.key) || '0'}</b><button data-a="keyUp" class="ghost">+</button>${c.key ? '<button data-a="keyZero" class="ghost small">reset</button>' : ''}</div><div class="keyrow"><span>Vocals</span><button data-a="novoxNow" class="ghost ${c.novox ? 'on' : ''}">${novoxLabel(c)}</button></div>` : ''}
         ${host || mine ? `<div class="row">
           ${host ? (st.phase === 'paused' ? '<button data-a="resume" class="cyan">▶ Resume</button>' : '<button data-a="pause" class="ghost">⏸ Pause</button>') : ''}
           ${host ? '<button data-a="restart" class="ghost">⏮ Restart</button>' : ''}
@@ -512,7 +532,14 @@
       <div class="meta"><div class="t">${esc(clean(f.title))}</div><div class="s">${f.key ? `key ${keyLabel(f.key)} · ` : ''}${f.duration ? fmt(f.duration) : ''}</div></div>
       <div class="acts"><button class="ghost" data-unfav="${i}" title="Remove">✕</button><button data-q="${i}" title="Queue it">＋</button></div></div>`).join('')
       : `<div class="empty">No favourites yet.<br>Tap ☆ on the song that's playing, or ⋯ → Save on any queued song.</div>`;
+    if (cur && cur.songs.length) $('#favList').innerHTML += `<button id="favPrefetch" class="ghost wide">⬇ Download ${cur.name === myName ? 'my' : esc(cur.name) + "'s"} faves now, so they start instantly later</button>`;
   }
+  $('#favList').addEventListener('click', async e => {
+    if (!e.target.closest('#favPrefetch')) return;
+    const cur = (KQ.state.faves || {})[String(favFor).toLowerCase()]; if (!cur) return;
+    const r = await act('prefetch', { ids: cur.songs.map(f => f.videoId) });
+    if (r.ok) toast(r.queued ? `⬇ Downloading ${r.queued} song${r.queued > 1 ? 's' : ''} in the background${r.ready ? ` (${r.ready} already ready)` : ''}` : 'All of them are already downloaded ✓');
+  });
   $('#favNames').onclick = e => { const n = e.target.closest('[data-n]')?.dataset.n; if (n) { favFor = n; renderFaves(KQ.state); } };
   $('#favList').onclick = async e => {
     const cur = (KQ.state.faves || {})[String(favFor).toLowerCase()]; if (!cur) return;
@@ -597,10 +624,11 @@
     $('#setOled').checked = s.oledCare !== false;
     $('#setStream').checked = s.streamFirst !== false;
     $('#setLyrics').checked = s.lyricsWarn !== false;
+    $('#setAutoLyr').checked = s.autoLyrics !== false;
     $('#setCache').value = String(s.cacheGB || 5);
     if (!$('#setCache').value) { $('#setCache').insertAdjacentHTML('beforeend', `<option value="${s.cacheGB}">${s.cacheGB} GB</option>`); $('#setCache').value = String(s.cacheGB); }
     $('#cacheUse').textContent = `Using ${(KQ.state.cacheBytes / 1e9).toFixed(1)} GB now. Oldest unplayed songs are deleted first; queued songs are never touched.`;
-    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, oledCare: $('#setOled').checked, streamFirst: $('#setStream').checked, lyricsWarn: $('#setLyrics').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
+    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, oledCare: $('#setOled').checked, streamFirst: $('#setStream').checked, lyricsWarn: $('#setLyrics').checked, autoLyrics: $('#setAutoLyr').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
   $('#newNightBtn').onclick = () => { if (confirm('Start a new night? The queue is cleared (you can restore it from the Queue tab) and song counts reset.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };
