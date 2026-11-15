@@ -152,7 +152,7 @@ app.get('/api/preflight', async (req, res) => {
     })().catch(() => { }),
     (async () => {
       const q = [party.s.current, ...party.s.queue, ...party.s.held].filter(Boolean);
-      const faves = Object.values(party.s.faves || {}).flatMap(f => f.songs || []);
+      const faves = Object.values(party.faves || {}).flatMap(f => f.songs || []);
       const ready = list => list.filter(i => yt.status(i.videoId).state === 'ready').length;
       add('songs', true, 'Songs downloaded ahead', `Queue: ${ready(q)}/${q.length} ready · Faves: ${ready(faves)}/${faves.length} ready`,
         faves.length && ready(faves) < faves.length ? 'Faves tab → "Download … faves now" so they start instantly.' : '');
@@ -284,5 +284,14 @@ server.listen(PORT, () => {
 });
 
 function shutdown() { party.flush(); process.exit(0); }
+// One bad request or a weird file shouldn't end the party: log it and keep going.
+// (Startup problems like the port being taken still exit — that's what they should do.)
+let started = false;
+server.on('listening', () => { started = true; });
+process.on('uncaughtException', e => {
+  console.error('⚠ unexpected error (still running):', e && e.stack || e);
+  if (!started) process.exit(1);
+});
+process.on('unhandledRejection', e => console.error('⚠ unhandled promise rejection (still running):', e && e.stack || e));
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);

@@ -2,7 +2,7 @@
 // KARAO-Q desktop app (Electron). Everything is bundled: Node (Electron's own), yt-dlp, ffmpeg, deno and
 // cloudflared. Double-click → the TV screen opens fullscreen with the join QR. Close the window → it all shuts down.
 const { app, BrowserWindow, Menu, dialog, shell, Notification, session, systemPreferences } = require('electron');
-const { spawn, execFile } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const net = require('net');
@@ -117,14 +117,29 @@ async function start() {
     CLOUDFLARED: path.join(resBin, exe('cloudflared')),
     PATH: [userBin, resBin, process.env.PATH || ''].join(path.delimiter), // yt-dlp finds ffmpeg + deno here
   };
-  server = spawn(process.execPath, [path.join(appRoot, 'server.js')], { env, cwd: appRoot, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
   const out = fs.createWriteStream(logFile, { flags: 'a' });
-  server.stdout.pipe(out); server.stderr.pipe(out);
-  server.on('exit', code => {
-    if (quitting) return;
-    dialog.showErrorBox('KARAO-Q', `KARAO-Q stopped unexpectedly (code ${code}).\n\nDetails are in:\n${logFile}`);
-    app.quit();
-  });
+  // If the server ever falls over mid-party, bring it straight back (the queue is saved on disk) and reload
+  // the TV page. Only give up and say so if it keeps dying.
+  const crashes = [];
+  const launch = () => {
+    server = spawn(process.execPath, [path.join(appRoot, 'server.js')], { env, cwd: appRoot, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true });
+    server.stdout.pipe(out, { end: false }); server.stderr.pipe(out, { end: false });
+    server.on('exit', async code => {
+      if (quitting) return;
+      const now = Date.now();
+      crashes.push(now);
+      while (crashes.length && now - crashes[0] > 5 * 60 * 1000) crashes.shift();
+      log(`server stopped unexpectedly (code ${code}) — restart #${crashes.length}`);
+      if (crashes.length > 3) {
+        dialog.showErrorBox('KARAO-Q', `KARAO-Q keeps stopping (code ${code}).\n\nDetails are in:\n${logFile}`);
+        quitting = true; app.quit(); return;
+      }
+      await new Promise(r => setTimeout(r, 1000));
+      launch();
+      if (await waitForServer(port) && win && !win.isDestroyed()) win.reload();
+    });
+  };
+  launch();
 
   if (!(await waitForServer(port))) {
     dialog.showErrorBox('KARAO-Q', `KARAO-Q couldn't start.\n\nDetails are in:\n${logFile}`);

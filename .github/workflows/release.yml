@@ -25,6 +25,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run lint
+      - run: npm test
       - run: node scripts/smoke.js
         env:
           CHROME: /usr/bin/google-chrome
@@ -108,6 +110,33 @@ jobs:
           curl -fs http://127.0.0.1:8080/api/about | grep -q '"version"' || { cat app.log; exit 1; }
           echo; echo "app started and its server answers"
           pkill -f "KARAO-Q.app" || true
+      # Linux: open the AppImage on a (virtual) screen and check the app's server answers
+      - name: Check the Linux app opens
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq xvfb > /dev/null
+          AI=$(ls dist/*.AppImage | head -1); chmod +x "$AI"; echo "$AI"
+          APPIMAGE_EXTRACT_AND_RUN=1 xvfb-run -a "$AI" --no-sandbox > app.log 2>&1 &
+          for i in $(seq 1 90); do curl -fs http://127.0.0.1:8080/api/about && break; sleep 1; done
+          curl -fs http://127.0.0.1:8080/api/about | grep -q '"version"' || { cat app.log; cat ~/.config/karaoq/data/karaoq.log 2>/dev/null | tail -30; exit 1; }
+          echo; curl -fs "http://127.0.0.1:8080/api/search?q=test" > /dev/null && echo "search endpoint answers"
+          echo "app started and its server answers"
+          pkill -f KARAO-Q || true
+      # Windows: open the unpacked app and check the app's server answers
+      - name: Check the Windows app opens
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem dist/win-unpacked -Filter 'KARAO-Q.exe' | Select-Object -First 1
+          Write-Host $exe.FullName
+          Start-Process -FilePath $exe.FullName
+          $ok = $false
+          for ($i = 0; $i -lt 90; $i++) { try { $r = Invoke-RestMethod http://127.0.0.1:8080/api/about -TimeoutSec 2; if ($r.version) { $ok = $true; break } } catch { }; Start-Sleep 1 }
+          if (-not $ok) { Get-Content "$env:APPDATA/karaoq/data/karaoq.log" -Tail 30 -ErrorAction SilentlyContinue; exit 1 }
+          Write-Host "app started and its server answers (v$($r.version))"
+          & "dist/win-unpacked/resources/bin/yt-dlp.exe" --version
+          & "dist/win-unpacked/resources/bin/ffmpeg.exe" -hide_banner -version | Select-Object -First 1
+          Stop-Process -Name 'KARAO-Q' -Force -ErrorAction SilentlyContinue
       - uses: actions/upload-artifact@v4
         if: needs.check.outputs.mode == 'test'
         with:
