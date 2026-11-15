@@ -18,6 +18,7 @@
     }).catch(() => { });
   }
   loadJoin();
+  fetch('/api/about').then(r => r.json()).then(j => { $('#ver').textContent = `v${j.version} · github.com/fancy-butler/karaoq`; }).catch(() => { });
 
   // ---------- player ----------
   function syncPlayer(st) {
@@ -202,7 +203,7 @@
     if (k === 'Escape') { setDrawer(false); app.classList.remove('help'); return; }
     if (k === 'a' || k === 'A' || k === '/') { e.preventDefault(); setDrawer(!drawerOpen); return; }
     if (k === 'q' || k === 'Q') { sidePinned = !sidePinned; render(st); toast(sidePinned ? 'Queue pinned' : 'Queue hides during songs'); return; }
-    if (k === '?') { app.classList.toggle('help'); return; }
+    if (k === '?') { if (!$('#helpAbout').innerHTML) KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; }); app.classList.toggle('help'); return; }
     if (k === 'u' || k === 'U') { nextHidden = !nextHidden; toast(nextHidden ? '"Next up" hidden' : '"Next up" showing'); return; }
     if (k === 'j' || k === 'J') { joinHidden = !joinHidden; render(st); toast(joinHidden ? 'Join code hidden' : 'Join code showing'); return; }
     if (k === 'f' || k === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => { }); return; }

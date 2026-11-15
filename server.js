@@ -51,6 +51,8 @@ app.get('/api/lookup', async (req, res) => {
 });
 const qr = url => QRCode.toString(url, { type: 'svg', margin: 1, errorCorrectionLevel: 'M' });
 let qrSvg = null, netUrl = null, netSvg = null;
+const VERSION = require('./package.json').version;
+app.get('/api/about', (req, res) => res.json({ version: VERSION }));
 app.get('/api/join', async (req, res) => {
   if (!qrSvg) qrSvg = await qr(BASE_URL);
   res.json({ url: BASE_URL, svg: qrSvg, netUrl, netSvg });

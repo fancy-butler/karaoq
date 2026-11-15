@@ -14,6 +14,7 @@
   <div class="brand">🎤 KARAO<span>-Q</span></div>
   <button id="meBtn" class="chip">Singing as <b id="meName">—</b></button>
   <button id="undoBtn" class="ghost" hidden title="Undo last queue change">↶ Undo</button>
+  <button id="aboutBtn" class="ghost" title="About KARAO-Q" aria-label="About">ⓘ</button>
 </header>
 
 <section id="now"></section>
@@ -62,6 +63,8 @@
     <menu><button value="cancel" class="ghost">Cancel</button><button id="nameOk" value="ok">OK</button></menu>
   </form>
 </dialog>
+
+<dialog id="aboutDlg"><div id="aboutBody"></div><menu><button id="aboutClose">Close</button></menu></dialog>
 
 <dialog id="sheet"><div id="sheetBody"></div></dialog>
 

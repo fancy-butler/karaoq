@@ -82,7 +82,7 @@ kbd { background: #ffffff1c; border: 1px solid #ffffff33; border-bottom-width: 3
 #unlock b { display: block; font-size: 42px; } #unlock span { color: var(--dim); font-size: 20px; }
 .locked #unlock { display: flex; }
 
-#help { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.96); background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 26px 34px; z-index: 30; opacity: 0; pointer-events: none; transition: .2s; }
+#help { max-height: 92vh; overflow: auto; width: min(1100px, 92vw); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.96); background: var(--panel); border: 1px solid var(--line); border-radius: 22px; padding: 26px 34px; z-index: 30; opacity: 0; pointer-events: none; transition: .2s; }
 .help #help { opacity: 1; transform: translate(-50%, -50%); }
 #help h2 { margin: 0 0 12px; } #help dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 22px; margin: 0; font-size: 19px; }
 #help dt { font: 700 17px ui-monospace, monospace; color: var(--gold); } #help dd { margin: 0; }
@@ -132,3 +132,12 @@ kbd { background: #ffffff1c; border: 1px solid #ffffff33; border-bottom-width: 3
 /* emoji reactions drift up the right side, clear of most lyric areas */
 .react { position: absolute; bottom: -80px; z-index: 15; pointer-events: none; animation: floatup 4s ease-out forwards; filter: drop-shadow(0 4px 12px #0008); }
 @keyframes floatup { 0% { transform: translate(0, 0) scale(.6); opacity: 0; } 10% { opacity: 1; transform: translate(0, -10vh) scale(1); } 100% { transform: translate(var(--drift), -95vh) scale(1.1); opacity: 0; } }
+
+.ver { color: #ffffff40; font-size: 14px; margin-top: .6em; font-family: ui-monospace, monospace; }
+#helpAbout .about { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 6px; columns: 2; column-gap: 40px; font-size: 16px; }
+#helpAbout .about h2 { column-span: all; font-size: 26px; margin: 10px 0 4px; } #helpAbout .about h2 span { color: var(--pink); } #helpAbout .about h2 small { font-size: 14px; color: var(--dim); }
+#helpAbout .about h3 { color: var(--cyan); font-size: 14px; letter-spacing: .1em; text-transform: uppercase; margin: 12px 0 4px; }
+#helpAbout .about ul { margin: 0; padding-left: 18px; } #helpAbout .about i { color: var(--dim); font-style: normal; font-size: 13px; }
+#helpAbout .about a { color: var(--cyan); text-decoration: none; } #helpAbout .about p { margin: 4px 0; } #helpAbout .about .fine { color: var(--dim); font-size: 13px; }
+#help { background: #110a1bf7; box-shadow: 0 30px 80px #000c; }
+.help #idle .idle-inner, .help #upnext .up-inner { filter: blur(6px); opacity: .4; }

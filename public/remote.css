@@ -123,3 +123,11 @@ nav button { padding: 10px 6px; font-size: 15px; }
 
 #leftovers { background: #29e0ff18; border: 1px solid #29e0ff55; border-radius: 14px; padding: 12px; margin-bottom: 12px; }
 #leftovers div { display: flex; gap: 8px; margin-top: 10px; } #leftovers button { flex: 1; }
+
+#aboutBtn { padding: 8px 11px; font-size: 16px; }
+.about h2 { font-size: 24px; } .about h2 span { color: var(--pink); } .about h2 small { font-size: 13px; color: var(--dim); font-weight: 600; }
+.about h3 { margin: 16px 0 6px; color: var(--cyan); font-size: 14px; letter-spacing: .08em; text-transform: uppercase; }
+.about p, .about li { color: var(--text); font-size: 14px; line-height: 1.45; }
+.about ul { padding-left: 18px; margin: 0; } .about i { color: var(--dim); font-style: normal; font-size: 12px; }
+.about a { color: var(--cyan); } .about .fine { color: var(--dim); font-size: 12px; margin-top: 14px; }
+#aboutDlg { max-height: 85vh; overflow: auto; }

@@ -313,6 +313,11 @@
 
   $('#leftovers').onclick = e => { const v = e.target.closest('[data-lo]')?.dataset.lo; if (v === undefined) return; run('leftovers', { restore: v === '1' }, v === '1' ? 'Restored' : 'Cleared'); };
 
+  // ---------- about ----------
+  $('#aboutBtn').onclick = async () => { $('#aboutBody').innerHTML = await KQ.aboutHtml(); $('#aboutDlg').showModal(); };
+  $('#aboutClose').onclick = () => $('#aboutDlg').close();
+  dialogDismiss($('#aboutDlg'));
+
   // ---------- host tools ----------
   $('#undoBtn').onclick = () => run('undo', {}, 'Undone');
   $('#shuffleBtn').onclick = () => run('shuffle', {}, 'Shuffled (still fair)');

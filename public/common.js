@@ -72,6 +72,32 @@ window.KQ = (() => {
   const who = it => it ? (it.with ? `${it.singer} & ${it.with}` : it.singer) : '';
   const keyLabel = k => !k ? '' : (k > 0 ? `+${k}` : `−${-k}`);
 
-  Object.assign(api, { who, keyLabel, connect, act, send, now, esc, fmt, clean, thumb, dlLabel, toast });
+  // About / credits, shared by the TV screen and the phones
+  const CREDITS = [
+    ['yt-dlp', 'https://github.com/yt-dlp/yt-dlp', 'fetches the songs', 'Unlicense'],
+    ['FFmpeg', 'https://ffmpeg.org', 'video & audio processing', 'GPL — source at ffmpeg.org; static builds via the ffmpeg-static project'],
+    ['Deno', 'https://deno.com', 'JavaScript runtime used by yt-dlp', 'MIT'],
+    ['cloudflared', 'https://github.com/cloudflare/cloudflared', 'the “Can’t connect?” link', 'Apache-2.0'],
+    ['Electron', 'https://www.electronjs.org', 'desktop app shell', 'MIT'],
+    ['Node.js', 'https://nodejs.org', 'server runtime', 'MIT'],
+    ['Express', 'https://expressjs.com', 'web server', 'MIT'],
+    ['ws', 'https://github.com/websockets/ws', 'live sync between phones and TV', 'MIT'],
+    ['node-qrcode', 'https://github.com/soldair/node-qrcode', 'QR codes', 'MIT'],
+  ];
+  async function aboutHtml() {
+    let v = '';
+    try { v = (await (await fetch('/api/about')).json()).version; } catch { }
+    return `<div class="about">
+      <h2>🎤 KARAO-<span>Q</span> <small>v${esc(v)}</small></h2>
+      <p>Party karaoke with a shared queue from everyone's phones.<br>Made by <b>fancy-butler</b> · <a href="https://github.com/fancy-butler/karaoq" target="_blank" rel="noopener">github.com/fancy-butler/karaoq</a></p>
+      <h3>Built on</h3>
+      <ul>${CREDITS.map(([n, u, what, lic]) => `<li><a href="${u}" target="_blank" rel="noopener">${n}</a> — ${what} <i>(${esc(lic)})</i></li>`).join('')}</ul>
+      <h3>Inspired by</h3>
+      <p><a href="https://github.com/vicwomg/pikaraoke" target="_blank" rel="noopener">PiKaraoke</a> and <a href="https://github.com/Zeletochoy/yt-kara" target="_blank" rel="noopener">yt-kara</a>.</p>
+      <p class="fine">KARAO-Q is free and open source (MIT). Videos come from YouTube via yt-dlp for private, at-home use; YouTube's terms apply.</p>
+    </div>`;
+  }
+
+  Object.assign(api, { aboutHtml, who, keyLabel, connect, act, send, now, esc, fmt, clean, thumb, dlLabel, toast });
   return api;
 })();

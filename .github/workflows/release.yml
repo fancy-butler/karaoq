@@ -1,11 +1,9 @@
 # Builds the one-download installers (Windows .exe, macOS .dmg, Linux .AppImage).
 # Publish a release on GitHub (Releases → Draft a new release → new tag like v0.3.0 → Publish)
-# or push a v* tag → all three installers get attached to that release automatically (~15 min).
+# → all three installers get attached to that release automatically (~15 min).
 # Run it by hand from the Actions tab → the installers appear as downloadable artifacts (no release).
 name: Build installers
 on:
-  push:
-    tags: ['v*']
   release:
     types: [published]
   workflow_dispatch:
