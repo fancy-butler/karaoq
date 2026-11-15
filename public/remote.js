@@ -273,6 +273,9 @@
       <div class="meta"><div class="t">${esc(clean(h.title))}</div><div class="s">${esc(who(h))}${h.skipped ? ' · <span class="skip">skipped</span>' : ''}</div></div>
       <div class="acts"><button data-again="${i}" title="Queue again">＋</button></div></div>`).join('') : '<div class="empty">Nothing sung yet tonight.</div>';
     renderFaves(st);
+    const lo = st.leftovers;
+    $('#leftovers').hidden = !(lo && KQ.you.isHost);
+    if (lo && KQ.you.isHost) $('#leftovers').innerHTML = `<b>${lo.count} song${lo.count > 1 ? 's' : ''} left over from last time</b><div><button data-lo="1" class="cyan">Restore</button><button data-lo="0" class="ghost">Clear</button></div>`;
     // Only redraw search results when what's queued actually changed (not on every download tick)
     const sig = [...st.queue, ...st.held].map(i => i.videoId).sort().join();
     if (sig !== render.sig) { render.sig = sig; if (lastResults.length) renderResults(); }
@@ -308,6 +311,8 @@
     if (u !== undefined) run('fave', { singer: cur.name, video: cur.songs[u], on: false }, 'Removed');
   };
 
+  $('#leftovers').onclick = e => { const v = e.target.closest('[data-lo]')?.dataset.lo; if (v === undefined) return; run('leftovers', { restore: v === '1' }, v === '1' ? 'Restored' : 'Cleared'); };
+
   // ---------- host tools ----------
   $('#undoBtn').onclick = () => run('undo', {}, 'Undone');
   $('#shuffleBtn').onclick = () => run('shuffle', {}, 'Shuffled (still fair)');
@@ -318,7 +323,10 @@
     $('#setFair').checked = s.fair;
     $('#setQr').checked = s.showQr !== false;
     $('#setNext').checked = s.showNext !== false;
-    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked } }, 'Saved'); };
+    $('#setCache').value = String(s.cacheGB || 5);
+    if (!$('#setCache').value) { $('#setCache').insertAdjacentHTML('beforeend', `<option value="${s.cacheGB}">${s.cacheGB} GB</option>`); $('#setCache').value = String(s.cacheGB); }
+    $('#cacheUse').textContent = `Using ${(KQ.state.cacheBytes / 1e9).toFixed(1)} GB now. Oldest unplayed songs are deleted first; queued songs are never touched.`;
+    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
   $('#newNightBtn').onclick = () => { if (confirm('Reset everyone\'s song counts for a new night? The queue stays.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };

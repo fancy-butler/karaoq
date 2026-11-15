@@ -6,6 +6,23 @@ There are no ads to block. Songs are fetched with **yt-dlp** and played from a l
 
 Works on **Linux, Windows and macOS**.
 
+## ⬇ Download (easiest)
+Grab the installer for your computer from the **[latest release](https://github.com/fancy-butler/karaoq/releases/latest)**. Everything is built in, so there's nothing else to install:
+
+| | File | First launch |
+|---|---|---|
+| **Windows** | `KARAO-Q-…-win-x64.exe` | If a blue "Windows protected your PC" box shows, click **More info → Run anyway**. Allow the firewall prompt so phones can connect. |
+| **macOS** | `KARAO-Q-…-mac-arm64.dmg` | Drag to Applications, then **right-click → Open** the first time (the app isn't Apple-signed). |
+| **Linux** | `KARAO-Q-…-linux-x86_64.AppImage` | Right-click → Properties → allow executing, then double-click. You may be asked for your password once so phones can get through the firewall. |
+
+Plug the computer into the TV, open KARAO-Q, and everyone scans the QR code. Close the window to quit.
+
+Downloaded songs are capped at 5 GB by default (change it in ⚙ Settings on a phone). The oldest unplayed songs get deleted first, and queued songs are never touched. If KARAO-Q has been closed for 6+ hours, it starts with an empty queue and offers to restore last time's leftovers.
+
+---
+
+## Run from source (for tinkering)
+
 ---
 
 ## Setup (one time)
