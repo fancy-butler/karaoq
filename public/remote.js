@@ -234,10 +234,10 @@
   KQ.on('progress', m => { progress = { ...m, at: Date.now() }; });
 
   // "You're up in N" banner
-  function renderEta(st) {
-    const el = $('#eta');
-    const idx = st.queue.findIndex(i => i.clientId === KQ.clientId);
-    if (idx < 0 || (idx === 0 && st.phase === 'upnext')) { el.hidden = true; return; }
+  // "You're up" goes by WHO IS SINGING (your name, or you as duet partner), not who tapped add.
+  // Songs you queued for other people get their own nudge so you can go find them.
+  const isMe = it => { const me = String(myName || '').trim().toLowerCase(); return !!me && [it.singer, it.with].some(n => String(n || '').trim().toLowerCase() === me); };
+  function etaSecs(st, idx) {
     let secs = 0;
     if (st.current) {
       const d = (progress && progress.itemId === st.current.id ? progress.d : 0) || st.current.duration || 0;
@@ -245,10 +245,28 @@
       secs += Math.max(0, d - t);
     }
     for (let i = 0; i < idx; i++) secs += (st.queue[i].duration || 210) + st.settings.countdown;
-    const ahead = idx + (st.phase === 'upnext' ? 0 : 0);
-    el.hidden = false;
-    el.className = ahead <= 1 ? 'soon' : '';
-    el.textContent = ahead === 0 ? `🎤 You're next, ${st.queue[idx].singer}! Get to the mic.` : `🎤 ${st.queue[idx].singer}: ${ahead} song${ahead > 1 ? 's' : ''} ahead of you · ~${Math.max(1, Math.round(secs / 60))} min`;
+    return secs;
+  }
+  function renderEta(st) {
+    const el = $('#eta');
+    const upnow = st.phase === 'upnext';
+    const idx = st.queue.findIndex(isMe);
+    if (idx >= 0 && !(idx === 0 && upnow)) {
+      const mins = Math.max(1, Math.round(etaSecs(st, idx) / 60));
+      el.hidden = false;
+      el.className = idx <= 1 ? 'soon' : '';
+      el.textContent = idx === 0 ? `🎤 You're next, ${myName}! Get to the mic.` : `🎤 ${myName}: ${idx} song${idx > 1 ? 's' : ''} ahead of you · ~${mins} min`;
+      return;
+    }
+    // a song you added for someone else is about to come up
+    const pi = st.queue.findIndex(it => it.clientId === KQ.clientId && !isMe(it));
+    if (pi >= 0 && pi <= 1) {
+      el.hidden = false;
+      el.className = 'proxy';
+      el.textContent = pi === 0 ? `📣 Your pick for ${who(st.queue[pi])} is ${upnow ? 'up now' : 'up next'} — go find them!` : `📣 Your pick for ${who(st.queue[pi])} is 2nd in line`;
+      return;
+    }
+    el.hidden = true;
   }
 
   // ---------- queue / held / done ----------

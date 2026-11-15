@@ -148,3 +148,5 @@ nav button { padding: 10px 6px; font-size: 15px; }
 .q.tinted { border-left: 6px solid var(--g); background: linear-gradient(90deg, color-mix(in srgb, var(--g) 30%, #1a1026) 0%, color-mix(in srgb, var(--g) 10%, #1a1026) 45%, #1a1026 85%); }
 .q.tinted.mine { background: linear-gradient(90deg, color-mix(in srgb, var(--g) 30%, #10243a) 0%, color-mix(in srgb, var(--g) 10%, #10243a) 45%, #10243a 85%); }
 .q.tinted.up { border-color: var(--gold); border-left-color: var(--g); }
+
+#eta.proxy { background: #29e0ff22; color: var(--cyan); }
