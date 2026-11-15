@@ -19,7 +19,7 @@ Plug the computer into the TV, open KARAO-Q, and everyone scans the QR code. Clo
 
 **Updates:** on Windows and Linux, KARAO-Q updates itself, downloading in the background and installing when you close it. On a Mac, you'll get a notification with a link to the new version.
 
-Downloaded songs are capped at 5 GB by default (change it in ⚙ Settings on a phone). The oldest unplayed songs get deleted first, and queued songs are never touched. If KARAO-Q has been closed for 6+ hours, it starts with an empty queue and offers to restore last time's leftovers.
+Downloaded songs are capped at 5 GB by default (change it in ⚙ Settings on a phone). The oldest unplayed songs get deleted first, and queued songs are never touched. After 6+ hours with nothing happening (whether KARAO-Q was closed or left open), it starts a new night: empty queue, fresh counts, and a Restore/Clear banner for last time's leftovers.
 
 ---
 
