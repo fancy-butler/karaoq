@@ -91,6 +91,14 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
 
 **Between songs** the TV shows a big **UP NEXT: NAME** screen with a countdown (15 s by default, adjustable in ⚙ Settings) and a chime. Set the countdown to "None" if you'd rather the host hit Start every time.
 
+## Look & sound
+- **Themes** (⚙ Settings → Look): Neon, **Synthwave '84** (sunset + neon grid), Dive Bar, Retro Arcade, Minimal. Phones follow the TV's theme.
+- **Title card:** each song opens with a 3-second card (face, name, song, genre) and a little ta-da.
+- **Even volumes:** new downloads are loudness-matched (EBU R128, −14 LUFS), so songs play at the same level.
+- **Attract mode:** the idle screen keeps the QR up and rotates through tonight's leaderboard, the genre mix, *Haven't sung yet 👀*, and tips.
+- **OLED care:** on-screen cards drift a few pixels every 90 s, and after 5 idle minutes the screen goes dark with a small drifting "scan to sing" card.
+- **Reactions:** 20 emoji, with six in the quick row and ＋ for the rest.
+
 ## Genres & tonight's mix
 KARAO-Q reads the artist from the karaoke title and looks up the genre and decade on [MusicBrainz](https://musicbrainz.org), a free public music database. Every song gets a colour chip, the TV glows in the current song's genre colour, and **Tonight's mix** shows the night's split ("40% Pop · 25% Rock…") plus decades. Wrong guess? Tap the chip (or ⋯ → Genre) on a phone to fix it. Your pick is remembered.
 
@@ -98,7 +106,7 @@ KARAO-Q reads the artist from the karaoke title and looks up the genre and decad
 - **Joining:** the first time a phone opens KARAO-Q, it asks *Who's singing?* Tap your name if you've been before, or type a new one. Then pick a look: one of 24 avatars, or **📸 take a selfie**. Faces show up on the TV's UP NEXT screen, the queue, the sidebar and the leaderboard. Selfies are wiped at the start of a new night unless you tick *Keep my photo*. Change it any time from ☰.
 - **Open party** (default): every phone can manage the queue.
 - **Hosted party:** ☰ → **👑 Be the host**. Now only the host, co-hosts and the party computer can skip, reorder or remove other people's songs. Everyone can still add songs and manage their own. The host can add co-hosts, hand off the crown, or end host mode from ☰.
-- **Songs per person:** ⚙ Settings can cap how many songs each person has in line (hosts aren't limited).
+- **Songs per person:** ⚙ Settings can cap how many songs each person has *waiting in line at once*. It's not a nightly limit: once one is sung they can add another. Hosts aren't limited.
 - **Duplicate check:** adding a song that's already queued, or was sung in the last 90 minutes, asks "add anyway?"
 
 ## Singing features

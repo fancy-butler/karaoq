@@ -197,3 +197,58 @@ kbd { background: #ffffff1c; border: 1px solid #ffffff33; border-bottom-width: 3
 #ticker > div { min-width: 0; }
 .stats .st { display: inline-flex; align-items: center; gap: 6px; }
 #sideList .w .av { margin-right: 4px; vertical-align: -6px; }
+
+/* ---------- intro title card ---------- */
+#intro { position: absolute; inset: 0; z-index: 30; display: grid; place-items: center; text-align: center; background: radial-gradient(60% 60% at 50% 45%, color-mix(in srgb, var(--accent) 35%, #07030d), #07030df2 70%); opacity: 0; pointer-events: none; transition: opacity .6s; }
+.intro #intro { opacity: 1; }
+.intro-inner { transform: scale(.85); transition: transform .6s cubic-bezier(.2,1.4,.4,1); }
+.intro .intro-inner { transform: none; }
+#intro small { display: block; margin-top: 2vh; font-size: clamp(16px, 1.6vw, 26px); font-weight: 900; letter-spacing: .4em; color: var(--accent); }
+#intro h1 { margin: .1em 0 0; font-size: clamp(56px, 8vw, 150px); font-weight: 900; letter-spacing: -.03em; line-height: 1; }
+#intro h2 { margin: .3em auto; font-size: clamp(22px, 2.6vw, 44px); color: var(--cyan); max-width: 80vw; }
+#intro .gchip { font-size: 22px; }
+
+/* ---------- attract mode ---------- */
+#attract { min-height: 120px; margin: 1.2em auto 0; max-width: 72vw; font-size: 20px; transition: opacity .5s; }
+#attract.fade { opacity: 0; }
+#attract .tip { color: var(--dim); font-size: clamp(18px, 1.6vw, 26px); } #attract .tip b { color: var(--text); }
+.notyet h3 { margin: 0 0 10px; font-size: .9em; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); }
+.notyet div { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; }
+.notyet span { display: inline-flex; align-items: center; gap: 8px; } .notyet b { font-size: 1em; }
+
+/* ---------- OLED care: overlays drift; screensaver ---------- */
+#joinCorner, #ticker, #nowTag, #side, .idle-inner, .up-inner, #menuPill { translate: var(--px, 0) var(--py, 0); transition-property: opacity, transform, translate, right; transition-duration: .5s, .5s, 3s, .35s; }
+#saver { position: absolute; inset: 0; z-index: 35; background: #000; opacity: 0; pointer-events: none; transition: opacity 2s; }
+.saver #saver { opacity: 1; }
+#saverCard { position: absolute; left: 40vw; top: 40vh; display: flex; gap: 14px; align-items: center; opacity: .55; transition: left 3s ease-in-out, top 3s ease-in-out; }
+#saverCard .qr { width: 110px; height: 110px; background: #fff; padding: 6px; border-radius: 10px; }
+#saverCard b { display: block; font-size: 26px; } #saverCard b span { color: var(--pink); } #saverCard small { color: var(--dim); font-size: 16px; }
+
+/* ================= THEMES ================= */
+/* Synthwave '84 */
+body[data-theme="synthwave"] { --bg: #120424; --panel: #1d0b3ad6; --line: #4a2575; --pink: #ff2a6d; --cyan: #05d9e8; --gold: #ffc857; --dim: #c9a7f0; }
+body[data-theme="synthwave"] #idle, body[data-theme="synthwave"] #upnext { background: linear-gradient(#120424 0%, #2b0b4f 42%, #5a1365 52%, #120424 52.2%); }
+body[data-theme="synthwave"] #idle::before, body[data-theme="synthwave"] #upnext::before { content: ''; position: absolute; left: 50%; top: 28%; width: 46vh; height: 46vh; translate: -50% 0; border-radius: 50%; background: repeating-linear-gradient(#0000 0 62%, #120424 62% 66%), linear-gradient(#ffd23f, #ff2a6d 70%); -webkit-mask: linear-gradient(#000 0 52%, #0000 52%); mask: linear-gradient(#000 0 52%, #0000 52%); opacity: .55; }
+body[data-theme="synthwave"] #idle::after { content: ''; position: absolute; left: -50%; right: -50%; bottom: 0; height: 48%; background: repeating-linear-gradient(90deg, #ff2a6d66 0 2px, #0000 2px 80px), repeating-linear-gradient(#ff2a6d66 0 2px, #0000 2px 50px); transform: perspective(300px) rotateX(60deg); transform-origin: bottom; animation: grid 2s linear infinite; pointer-events: none; }
+@keyframes grid { to { background-position: 0 50px, 0 50px; } }
+body[data-theme="synthwave"] .idle-inner, body[data-theme="synthwave"] .up-inner { position: relative; z-index: 1; }
+body[data-theme="synthwave"] .logo, body[data-theme="synthwave"] #upSinger, body[data-theme="synthwave"] #intro h1 { font-style: italic; background: linear-gradient(#fff 0%, #ffd6ff 45%, #b14cff 50%, #ff7ad9 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: none !important; filter: drop-shadow(0 0 18px #ff2a6daa); }
+body[data-theme="synthwave"] .logo span { -webkit-text-fill-color: transparent; }
+/* Dive Bar */
+body[data-theme="divebar"] { --bg: #140d08; --panel: #24170fe0; --line: #4a3020; --pink: #ff4e3a; --cyan: #ffb347; --gold: #ffd27a; --dim: #c2a68c; }
+body[data-theme="divebar"] #idle, body[data-theme="divebar"] #upnext { background: radial-gradient(80% 60% at 50% 40%, #3a2212, #140d08 75%), #140d08; }
+body[data-theme="divebar"] .logo, body[data-theme="divebar"] #upSinger, body[data-theme="divebar"] #intro h1, body[data-theme="divebar"] h2 { font-family: Rockwell, "Roboto Slab", Georgia, serif; }
+body[data-theme="divebar"] .logo span, body[data-theme="divebar"] .up-label { color: #ff4e3a; text-shadow: 0 0 10px #ff4e3a, 0 0 40px #ff2200aa; }
+/* Retro Arcade */
+body[data-theme="arcade"] { --bg: #000; --panel: #0b0b1ee8; --line: #2a2a6a; --pink: #ff00ff; --cyan: #00ffff; --gold: #ffff00; --dim: #9a9ad0; }
+body[data-theme="arcade"] .logo, body[data-theme="arcade"] #upSinger, body[data-theme="arcade"] #intro h1, body[data-theme="arcade"] .up-label, body[data-theme="arcade"] .big, body[data-theme="arcade"] #side h2 { font-family: "Courier New", ui-monospace, monospace; text-transform: uppercase; letter-spacing: .02em; }
+body[data-theme="arcade"] #idle::after, body[data-theme="arcade"] #upnext::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(#0000 0 2px, #00000059 2px 4px); z-index: 2; }
+body[data-theme="arcade"] #idle, body[data-theme="arcade"] #upnext { background: radial-gradient(70% 60% at 50% 45%, #10104a, #000 75%); }
+/* Minimal */
+body[data-theme="minimal"] { --bg: #111; --panel: #1b1b1bf0; --line: #333; --pink: #f2f2f2; --cyan: #b8c7d9; --gold: #e9d8a6; --dim: #8a8a8a; }
+body[data-theme="minimal"] #idle, body[data-theme="minimal"] #upnext { background: #111; }
+body[data-theme="minimal"] * { text-shadow: none !important; }
+body[data-theme="minimal"] .big-qr { box-shadow: none; }
+
+/* song-only overlays never linger once the song is over */
+.idle #nowTag, .upnext #nowTag, .idle #intro, .upnext #intro { opacity: 0 !important; }

@@ -174,6 +174,7 @@
     const st = KQ.state;
     if (a === 'skip') { if (!confirm(`Skip ${who(st.current)}'s song?`)) return; }
     if (a.startsWith('react:')) { KQ.send({ type: 'react', emoji: a.slice(6) }); const b = e.target.closest('button'); b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); return; }
+    if (a === 'moreReacts') { moreReacts = !moreReacts; return renderNow(st); }
     if (a === 'keyUp' || a === 'keyDown') return run('key', { delta: a === 'keyUp' ? 1 : -1 });
     if (a === 'keyZero') return run('key', { value: 0 }, 'Original key');
     if (a === 'genreNow') return pickGenre(st.current, true);
@@ -182,6 +183,8 @@
     run(a, {}, msgs[a]);
   };
 
+  const REACTS = ['🔥', '👏', '😂', '❤️', '🎉', '🤘', '😍', '😭', '🤯', '🙌', '💃', '🕺', '🎤', '⭐', '💯', '🍻', '🥂', '👑', '🦄', '💀'];
+  let moreReacts = false;
   function renderNow(st) {
     const el = $('#now'), host = KQ.you.isHost;
     el.className = '';
@@ -193,7 +196,8 @@
         <div class="whorow">${avatars(c, 'l')}<div><div class="who">${esc(who(c))}</div><div class="song">${esc(clean(c.title))}</div></div></div>
         ${host || mine ? `<button class="gbtn" data-a="genreNow">${genreChip(c) || '<span class="gchip unknown">＋ genre</span>'}</button>` : genreChip(c)}
         <div class="bar"><i id="pbar"></i></div><div class="times"><span id="ptime"></span><span id="pdur">${fmt(c.duration)}</span></div>
-        <div class="reacts">${['🔥', '👏', '😂', '❤️', '🎉', '🤘'].map(e => `<button data-a="react:${e}">${e}</button>`).join('')}</div>
+        <div class="reacts">${REACTS.slice(0, 6).map(e => `<button data-a="react:${e}">${e}</button>`).join('')}<button data-a="moreReacts" class="more ${moreReacts ? 'on' : ''}">${moreReacts ? '−' : '＋'}</button></div>
+        ${moreReacts ? `<div class="reacts all">${REACTS.slice(6).map(e => `<button data-a="react:${e}">${e}</button>`).join('')}</div>` : ''}
         ${host || mine ? `<div class="keyrow"><span>Key</span><button data-a="keyDown" class="ghost">−</button><b>${keyLabel(c.key) || '0'}</b><button data-a="keyUp" class="ghost">+</button>${c.key ? '<button data-a="keyZero" class="ghost small">reset</button>' : ''}</div>` : ''}
         ${host || mine ? `<div class="row">
           ${host ? (st.phase === 'paused' ? '<button data-a="resume" class="cyan">▶ Resume</button>' : '<button data-a="pause" class="ghost">⏸ Pause</button>') : ''}
@@ -296,6 +300,7 @@
   }
 
   function render(st) {
+    document.body.dataset.theme = st.settings.theme || 'neon';
     const host = KQ.you.isHost;
     renderNow(st);
     renderEta(st);
@@ -410,10 +415,14 @@
     $('#setNext').checked = s.showNext !== false;
     $('#setRows').checked = s.genreRows !== false;
     $('#setMax').value = String(s.maxPerPerson || 0);
+    $('#setTheme').value = s.theme || 'neon';
+    $('#setLevel').checked = s.levelVolume !== false;
+    $('#setIntro').checked = s.introCard !== false;
+    $('#setOled').checked = s.oledCare !== false;
     $('#setCache').value = String(s.cacheGB || 5);
     if (!$('#setCache').value) { $('#setCache').insertAdjacentHTML('beforeend', `<option value="${s.cacheGB}">${s.cacheGB} GB</option>`); $('#setCache').value = String(s.cacheGB); }
     $('#cacheUse').textContent = `Using ${(KQ.state.cacheBytes / 1e9).toFixed(1)} GB now. Oldest unplayed songs are deleted first; queued songs are never touched.`;
-    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), cacheGB: Number($('#setCache').value) } }, 'Saved'); };
+    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, oledCare: $('#setOled').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
   $('#newNightBtn').onclick = () => { if (confirm('Start a new night? The queue is cleared (you can restore it from the Queue tab) and song counts reset.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };

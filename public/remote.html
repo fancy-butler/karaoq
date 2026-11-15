@@ -89,6 +89,9 @@
 <dialog id="settingsDlg">
   <form method="dialog">
     <h2>Party settings</h2>
+    <label>Look
+      <select id="setTheme"><option value="neon">Neon (default)</option><option value="synthwave">Synthwave '84</option><option value="divebar">Dive Bar</option><option value="arcade">Retro Arcade</option><option value="minimal">Minimal</option></select>
+    </label>
     <label>Countdown before each song
       <select id="setCountdown">
         <option value="0">None — host taps Start</option>
@@ -101,9 +104,12 @@
     <label class="toggle"><input type="checkbox" id="setQr"> Show join QR code on screen during songs</label>
     <label class="toggle"><input type="checkbox" id="setNext"> Show "Next up" on screen during songs</label>
     <label class="toggle"><input type="checkbox" id="setRows"> Colour rows by genre</label>
-    <label>Songs each person can have in line
+    <label class="toggle"><input type="checkbox" id="setIntro"> Title card + ta-da when each song starts</label>
+    <label class="toggle"><input type="checkbox" id="setLevel"> Even out song volumes (new downloads)</label>
+    <label class="toggle"><input type="checkbox" id="setOled"> OLED care (drift overlays, screensaver when idle)</label>
+    <label>Songs each person can have waiting in line at once
       <select id="setMax"><option value="0">No limit</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
-      <small style="display:block;margin-top:4px">Hosts aren't limited.</small>
+      <small style="display:block;margin-top:4px">Not a limit for the night: once one is sung, they can add another. Hosts aren't limited.</small>
     </label>
     <label>Space for downloaded songs
       <select id="setCache"><option value="2">2 GB</option><option value="5">5 GB</option><option value="10">10 GB</option><option value="20">20 GB</option><option value="50">50 GB</option></select>

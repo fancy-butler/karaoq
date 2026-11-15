@@ -114,9 +114,9 @@ wss.on('connection', (ws, req) => {
       }
       case 'react': { // emoji reactions → float up on the TV. Light rate limit per phone.
         const now = Date.now();
-        if (now - (ws.lastReact || 0) < 350) break;
+        if (now - (ws.lastReact || 0) < 250) break;
         ws.lastReact = now;
-        const emoji = ['🔥', '👏', '😂', '❤️', '🎉', '🤘'].includes(m.emoji) ? m.emoji : null;
+        const emoji = ['🔥', '👏', '😂', '❤️', '🎉', '🤘', '😍', '😭', '🤯', '🙌', '💃', '🕺', '🎤', '⭐', '💯', '🍻', '🥂', '👑', '🦄', '💀'].includes(m.emoji) ? m.emoji : null;
         if (!emoji) break;
         for (const c of wss.clients) if (c.role === 'stage') send(c, { type: 'react', emoji });
         break;

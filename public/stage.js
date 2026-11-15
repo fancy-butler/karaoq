@@ -35,6 +35,7 @@
     if ((st.phase === 'playing' || st.phase === 'paused') && cur) {
       if (loaded !== cur.id) {
         loaded = cur.id;
+        if (st.settings.introCard !== false) showIntro(cur);
         vid.src = `/media/${cur.videoId}.mp4`;
         vid.currentTime = 0;
         flashNowTag();
@@ -43,6 +44,7 @@
       if (st.phase === 'paused' && !vid.paused) vid.pause();
     } else if (loaded) {
       loaded = null;
+      app.classList.remove('intro', 'showtag');
       vid.pause(); vid.removeAttribute('src'); vid.load();
     }
   }
@@ -55,6 +57,26 @@
   vid.addEventListener('ended', () => { if (loaded) send({ type: 'ended', itemId: loaded }); });
   vid.addEventListener('error', () => { if (loaded && vid.getAttribute('src')) { send({ type: 'playerError', itemId: loaded, message: vid.error ? `media error ${vid.error.code}` : 'error' }); toast("That video wouldn't play — skipping", 'bad'); } });
   setInterval(() => { if (loaded && !vid.paused) send({ type: 'progress', itemId: loaded, t: vid.currentTime, d: vid.duration || 0 }); }, 1000);
+
+  function showIntro(it) {
+    $('#introAv').innerHTML = avatars(it, 'xl');
+    $('#introName').textContent = who(it);
+    $('#introSong').textContent = clean(it.title);
+    $('#introGenre').innerHTML = genreChip(it);
+    app.classList.add('intro'); tada();
+    clearTimeout(showIntro.t); showIntro.t = setTimeout(() => app.classList.remove('intro'), 3500);
+  }
+  // little "ta-da" for the title card
+  function tada() {
+    if (!audioCtx) return;
+    const t0 = audioCtx.currentTime;
+    [[523, 0], [659, .09], [784, .18], [1047, .3]].forEach(([f, dt], i) => {
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = i === 3 ? 'triangle' : 'square'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t0 + dt); g.gain.exponentialRampToValueAtTime(i === 3 ? 0.12 : 0.05, t0 + dt + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dt + (i === 3 ? 0.9 : 0.15));
+      o.connect(g).connect(audioCtx.destination); o.start(t0 + dt); o.stop(t0 + dt + 1);
+    });
+  }
 
   function flashNowTag() {
     app.classList.add('showtag');
@@ -168,15 +190,65 @@
     app.style.setProperty('--accent', accentFrom && accentFrom.genre ? gColor(accentFrom.genre) : '#ff3d9a');
     $('#upGenre').innerHTML = st.phase === 'upnext' && st.queue[0] ? genreChip(st.queue[0]) : '';
     const mixH = mixHtml(st.mix);
-    $('#idleMix').innerHTML = mixH; $('#sideMix').innerHTML = mixH;
+    $('#sideMix').innerHTML = mixH;
+
+    document.body.dataset.theme = st.settings.theme || 'neon';
+    renderAttract(st);
 
     // songs sung tonight
     const statsHtml = (st.stats || []).map((x, i) => `<span class="st ${i === 0 && x.sung > 1 ? 'top' : ''}">${avatar(x.singer, 's')} ${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');
-    $('#idleStats').innerHTML = statsHtml; $('#sideStats').innerHTML = statsHtml;
+    $('#sideStats').innerHTML = statsHtml;
     const phones = st.phones ? `📱 ${st.phones} connected` : '';
     $('#phonesSide').textContent = phones; $('#phonesCorner').textContent = phones;
     app.classList.toggle('showjoin', st.phase === 'playing' && st.settings.showQr !== false && !joinHidden);
   }
+
+  // ---------- attract mode: the idle screen rotates through what's going on tonight ----------
+  const TIPS = [
+    "Tap 🙋 <b>Not here</b> if someone's missing — they keep their spot",
+    'Tap ☆ on a song to save it to your <b>Faves</b>',
+    'Too high? Too low? Use <b>Key − / +</b> on your phone while you sing',
+    'Tap 👤 when adding a song to queue it for a friend — or a <b>duet</b>',
+    'Mash 🔥 👏 😂 on your phone while someone sings',
+  ];
+  let attractPanels = [], attractI = 0;
+  function renderAttract(st) {
+    const panels = [];
+    if ((st.stats || []).length) panels.push(`<div class="stats">${(st.stats || []).map((x, i) => `<span class="st ${i === 0 && x.sung > 1 ? 'top' : ''}">${avatar(x.singer, 's')} ${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('')}</div>`);
+    if (st.mix && st.mix.genres && st.mix.genres.length) panels.push(mixHtml(st.mix));
+    const sung = new Set((st.stats || []).map(x => x.singer.toLowerCase()));
+    const notYet = Object.values(st.people || {}).filter(p => p.seen >= st.nightStartedAt && !sung.has(p.name.toLowerCase())).slice(0, 10);
+    if (notYet.length) panels.push(`<div class="notyet"><h3>Haven't sung yet 👀</h3><div>${notYet.map(p => `<span>${avatar(p.name, 'm')}<b>${esc(p.name)}</b></span>`).join('')}</div></div>`);
+    TIPS.forEach(t => panels.push(`<div class="tip">💡 ${t}</div>`));
+    attractPanels = panels;
+    if (attractI >= panels.length) attractI = 0;
+    $('#attract').innerHTML = panels[attractI] || '';
+  }
+  setInterval(() => {
+    if (!KQ.state || KQ.state.phase !== 'idle' || !attractPanels.length) return;
+    const el = $('#attract'); el.classList.add('fade');
+    setTimeout(() => { attractI = (attractI + 1) % attractPanels.length; el.innerHTML = attractPanels[attractI]; el.classList.remove('fade'); }, 500);
+  }, 8000);
+
+  // ---------- OLED care: overlays drift a few pixels; a dark screensaver after 5 idle minutes ----------
+  let lastWake = Date.now(), lastSig = '';
+  const wake = () => { lastWake = Date.now(); app.classList.remove('saver'); };
+  document.addEventListener('mousemove', wake); document.addEventListener('keydown', wake);
+  KQ.on('state', st => { const sig = st.phase + st.queue.length + (st.current ? st.current.id : ''); if (sig !== lastSig) { lastSig = sig; wake(); } });
+  setInterval(() => {
+    const st = KQ.state; if (!st) return;
+    const care = st.settings.oledCare !== false;
+    app.style.setProperty('--px', care ? `${Math.round(Math.random() * 12 - 6)}px` : '0px');
+    app.style.setProperty('--py', care ? `${Math.round(Math.random() * 12 - 6)}px` : '0px');
+  }, 90000);
+  setInterval(() => {
+    const st = KQ.state; if (!st) return;
+    if (st.settings.oledCare !== false && st.phase === 'idle' && Date.now() - lastWake > 5 * 60 * 1000) {
+      app.classList.add('saver');
+      const c = $('#saverCard');
+      c.style.left = `${5 + Math.random() * 70}vw`; c.style.top = `${5 + Math.random() * 70}vh`;
+    }
+  }, 20000);
 
   // Countdown ring + ticker timing, ~4×/s
   setInterval(() => {

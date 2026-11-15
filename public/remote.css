@@ -186,3 +186,15 @@ nav button { padding: 10px 6px; font-size: 15px; }
 /* selfies in list rows: beat the old .item img thumbnail rule */
 .item img.av { border-radius: 50%; object-fit: cover; }
 .item img.av-s { width: 28px; height: 28px; } .item img.av-m { width: 44px; height: 44px; } .item img.av-l { width: 72px; height: 72px; }
+
+.reacts { flex-wrap: wrap; } .reacts .more { flex: 0 0 44px; font-size: 20px; font-weight: 900; color: var(--dim); }
+.reacts.all { margin-top: 6px; } .reacts.all button { flex: 0 0 calc(14.28% - 4px); font-size: 22px; }
+dialog#settingsDlg { max-height: 88vh; overflow: auto; }
+/* themes (phones follow the TV's look) */
+body[data-theme="synthwave"] { --bg: #120424; --panel: #1d0b3a; --panel2: #2a1250; --line: #4a2575; --pink: #ff2a6d; --cyan: #05d9e8; --gold: #ffc857; --dim: #c9a7f0; }
+body[data-theme="divebar"] { --bg: #140d08; --panel: #24170f; --panel2: #33200f; --line: #4a3020; --pink: #ff4e3a; --cyan: #ffb347; --gold: #ffd27a; --dim: #c2a68c; }
+body[data-theme="divebar"] .brand, body[data-theme="divebar"] .who, body[data-theme="divebar"] #join h1 { font-family: Rockwell, "Roboto Slab", Georgia, serif; }
+body[data-theme="arcade"] { --bg: #000; --panel: #0b0b1e; --panel2: #15153a; --line: #2a2a6a; --pink: #ff00ff; --cyan: #00ffff; --gold: #ffff00; --dim: #9a9ad0; }
+body[data-theme="arcade"] .brand, body[data-theme="arcade"] .who, body[data-theme="arcade"] .singer, body[data-theme="arcade"] #join h1 { font-family: "Courier New", ui-monospace, monospace; text-transform: uppercase; }
+body[data-theme="minimal"] { --bg: #111; --panel: #1b1b1b; --panel2: #262626; --line: #333; --pink: #e8e8e8; --cyan: #b8c7d9; --gold: #e9d8a6; --dim: #8a8a8a; }
+body[data-theme="minimal"] button:not(.ghost):not(.av) { color: #111; }
