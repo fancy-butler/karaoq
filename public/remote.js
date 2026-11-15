@@ -111,18 +111,27 @@
     const label = [g && (GENRES[g] || [g])[0], d && `${d}s`].filter(Boolean).join(' · ');
     $('#popHead').textContent = filtering ? `🎵 ${label} — ${pool.length} song${pool.length === 1 ? '' : 's'}` : '🔥 Most sung karaoke songs';
     $('#popMore').hidden = filtering;
-    if (!list.length) { $('#popular').innerHTML = '<li class="empty">Nothing in that combo — try another genre or decade.</li>'; return; }
+    // filtered lists always end with a live YouTube search, so there's never a dead end
+    const ytQuery = [d && `${d}s`, g && (GENRES[g] || [g])[0].replace(' / ', ' '), 'karaoke'].filter(Boolean).join(' ');
+    $('#popYT').hidden = !filtering;
+    $('#popYT').textContent = `🔎 More ${label} karaoke on YouTube`;
+    $('#popYT').dataset.q = ytQuery;
+    if (!list.length) { $('#popular').innerHTML = '<li class="empty">Nothing in our lists for that combo — try YouTube below.</li>'; return; }
     $('#popular').innerHTML = list.map(c => `<li><button data-q="${esc(c.artist + ' ' + c.title)}" style="--g:${KQ.gColor(c.g)}"><em>${c.rank || (c.y ? `’${String(c.y).slice(2)}` : '•')}</em><span>${esc(c.title)}<small>${esc(c.artist)}</small></span></button></li>`).join('');
     $('#popMore').textContent = popAll ? 'Show fewer' : `Show all ${popular.length}`;
   }
   $('#spinGenre').onchange = $('#spinDecade').onchange = () => renderPopular();
+  $('#popYT').onclick = e => { e.stopPropagation(); $('#karaoke').checked = false; searchFor(e.target.dataset.q); };
   $('#popMore').onclick = e => { e.stopPropagation(); popAll = !popAll; renderPopular(); };
-  Promise.all([fetch('/api/popular').then(r => r.json()), fetch('/api/classics').then(r => r.json())]).then(([pop, list]) => {
+  const songKey = c => c.title.toLowerCase().replace(/[^a-z0-9]/g, '') + '|' + c.artist.toLowerCase().replace(/^the /, '').split(' ')[0].replace(/[^a-z0-9]/g, '');
+  Promise.all([fetch('/api/popular').then(r => r.json()), fetch('/api/more').then(r => r.json()), fetch('/api/classics').then(r => r.json())]).then(([pop, more, list]) => {
     popular = pop.songs;
-    $('#popCredit').innerHTML = `Ranking: <a href="${esc(pop.url)}" target="_blank" rel="noopener">${esc(pop.source)}</a>`;
+    const srcs = [{ name: pop.source, url: pop.url }, ...Object.values(more.sources)];
+    $('#popCredit').innerHTML = 'Song lists: ' + srcs.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.name)}</a>`).join(' · ');
     renderPopular();
-    const seen = new Set(popular.map(c => (c.artist + c.title).toLowerCase()));
-    classics = [...popular, ...list.filter(c => !seen.has((c.artist + c.title).toLowerCase()))];
+    // browse/spin pool = chart (ranked) + more real lists + our classics, de-duplicated by title + artist
+    const seen = new Set(); classics = [];
+    for (const c of [...popular, ...more.songs, ...list]) { const k = songKey(c); if (!seen.has(k)) { seen.add(k); classics.push(c); } }
     renderPopular();
     const gs = [...new Set(classics.map(c => c.g))];
     $('#spinGenre').innerHTML += gs.map(g => `<option value="${g}">${esc((GENRES[g] || [g])[0])}</option>`).join('');

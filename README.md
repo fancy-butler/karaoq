@@ -103,7 +103,7 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
 - **Can't decide what to sing?** The Search tab shows:
   - **🏠 Popular at this party:** the songs sung most on this computer across every night. It builds itself, no accounts needed.
   - **🔥 Most sung karaoke songs:** the top 100 most-sung karaoke songs in Canada from the [Singa karaoke app](https://singa.com/blog/most-popular-karaoke-songs-in-canada/) (2026 ranking).
-  - **Browse by genre and decade:** pick e.g. *Country* + *1970s* and the list shows every matching song.
+  - **Browse by genre and decade:** pick e.g. *Country* + *1970s* to see every matching song (~420 songs from Singa's Canada, US, pop and rock lists, StemSplit's country list, and our classics). Every filtered list ends with **🔎 More … on YouTube** for a live search.
   - **🎲 Spin for me:** a random pick from the same pool, using the same genre/decade filters.
   - Your recent searches, plus a shuffle of more party classics.
 - **Wrong version?** ⋯ on a queued song → pick another karaoke version. The singer keeps their spot.
