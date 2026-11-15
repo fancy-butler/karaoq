@@ -150,3 +150,39 @@ nav button { padding: 10px 6px; font-size: 15px; }
 .q.tinted.up { border-color: var(--gold); border-left-color: var(--g); }
 
 #eta.proxy { background: #29e0ff22; color: var(--cyan); }
+
+/* avatars */
+.av { display: inline-grid; place-items: center; flex: none; border-radius: 50%; object-fit: cover; background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--avc, #ff3d9a) 85%, #fff), var(--avc, #ff3d9a)); color: #0d0716; font-weight: 900; box-shadow: 0 0 0 2px #ffffff22; vertical-align: middle; line-height: 1; }
+.av.emo { background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--avc) 35%, #2a1840), #1a1026); }
+.av-s { width: 28px; height: 28px; font-size: 12px; } .av-s.emo { font-size: 17px; }
+.av-m { width: 44px; height: 44px; font-size: 17px; } .av-m.emo { font-size: 26px; }
+.av-l { width: 72px; height: 72px; font-size: 26px; } .av-l.emo { font-size: 42px; }
+.av-xl { width: 220px; height: 220px; font-size: 80px; box-shadow: 0 0 0 6px #ffffff22, 0 0 80px color-mix(in srgb, var(--accent, #ff3d9a) 60%, transparent); } .av-xl.emo { font-size: 130px; }
+.avpair { display: inline-flex; } .avpair .av + .av { margin-left: -0.35em; box-shadow: 0 0 0 3px #0d0716; }
+
+/* join screen */
+#join { position: fixed; inset: 0; z-index: 40; background: radial-gradient(120% 80% at 20% 0%, #3b0d4d, transparent 60%), radial-gradient(100% 70% at 100% 100%, #08324a, transparent 60%), var(--bg); overflow: auto; padding: 24px 18px 40px; }
+#join h1 { text-align: center; font-size: 34px; margin: 6px 0 4px; letter-spacing: -.03em; } #join h1 span { color: var(--pink); }
+#join h2 { text-align: center; font-size: 22px; margin: 14px 0; color: var(--cyan); }
+#jPeople { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; margin-bottom: 16px; }
+#jPeople button { background: var(--panel); display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px 6px; font-weight: 700; font-size: 14px; border-radius: 16px; word-break: break-word; }
+#jPeople button .av { margin: 0 auto; }
+#jNewForm { display: flex; gap: 8px; } #jNewForm button { flex: none; }
+#jPreview { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 10px 0; font-size: 22px; font-weight: 900; }
+.selfie { display: block; text-align: center; background: var(--pink); color: #fff; font-weight: 800; font-size: 18px; padding: 16px; border-radius: 16px; margin-bottom: 14px; cursor: pointer; }
+.selfie input { display: none; }
+#jPresets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+#jPresets button { background: var(--panel); font-size: 30px; padding: 8px 0; border-radius: 14px; }
+#jPresets button.on { outline: 3px solid var(--cyan); background: var(--panel2); }
+.jrow { display: flex; gap: 10px; margin-top: 18px; } .jrow button { flex: 1; padding: 14px; font-size: 17px; }
+.hostline { color: var(--gold); font-size: 13px; font-weight: 700; }
+.q .av { margin-right: -2px; }
+#meBtn .av { margin-right: 6px; }
+
+.whorow { display: flex; align-items: center; gap: 12px; margin: 4px 0 2px; } .whorow .who { margin: 0; }
+.personbtn { display: flex !important; align-items: center; gap: 10px; }
+#board span .av { margin-right: 2px; }
+#meBtn { display: flex; align-items: center; gap: 4px; }
+/* selfies in list rows: beat the old .item img thumbnail rule */
+.item img.av { border-radius: 50%; object-fit: cover; }
+.item img.av-s { width: 28px; height: 28px; } .item img.av-m { width: 44px; height: 44px; } .item img.av-l { width: 72px; height: 72px; }

@@ -9,6 +9,7 @@ const { Party } = require('./lib/party');
 const { YT } = require('./lib/yt');
 const { Tunnel } = require('./lib/tunnel');
 const { Genres } = require('./lib/genre');
+const { People } = require('./lib/people');
 
 const PORT = Number(process.env.PORT) || 8080;
 const HOST_PIN = String(process.env.HOST_PIN || '').trim();   // empty = everyone can manage the queue
@@ -26,7 +27,8 @@ const BASE_URL = process.env.BASE_URL || `http://${lanAddress()}:${PORT}`;
 
 const yt = new YT({ cacheDir: path.join(DATA_DIR, 'cache'), bin: process.env.YTDLP || 'yt-dlp', mock: MOCK });
 const genres = new Genres({ file: path.join(DATA_DIR, 'genres.json'), mock: MOCK });
-const party = new Party({ file: path.join(DATA_DIR, 'party.json'), yt, genres });
+const people = new People({ dir: DATA_DIR });
+const party = new Party({ file: path.join(DATA_DIR, 'party.json'), yt, genres, people });
 
 const app = express();
 const pub = path.join(__dirname, 'public');
@@ -41,6 +43,19 @@ app.get('/stage', (req, res) => { res.setHeader('Cache-Control', 'no-cache'); re
 // no-cache = phones re-check files every load, so an updated KARAO-Q never runs with stale page code
 app.use(express.static(pub, { index: false, setHeaders: res => res.setHeader('Cache-Control', 'no-cache') }));
 app.use('/media', express.static(yt.cacheDir, { fallthrough: false, maxAge: '1h' }));
+app.use('/avatars', express.static(people.avatarDir, { fallthrough: false, maxAge: '1d' }));
+// Selfie upload: the phone crops + shrinks it to a small JPEG first, so this stays tiny.
+app.post('/api/avatar', express.json({ limit: '900kb' }), (req, res) => {
+  const name = String(req.body.name || '').trim().slice(0, 40);
+  const m = String(req.body.data || '').match(/^data:image\/(jpeg|png|webp);base64,(.+)$/);
+  if (!name || !m) return res.status(400).json({ error: 'Bad photo' });
+  const buf = Buffer.from(m[2], 'base64');
+  if (buf.length > 600 * 1024) return res.status(413).json({ error: 'Photo too big' });
+  people.setPhoto(name, buf, String(req.body.clientId || '').slice(0, 64) || null);
+  if (req.body.keep !== undefined) people.setKeep(name, !!req.body.keep);
+  party._emit();
+  res.json({ ok: true });
+});
 
 app.get('/api/search', async (req, res) => {
   const q = String(req.query.q || '').trim().slice(0, 200);
@@ -66,13 +81,14 @@ const wss = new WebSocketServer({ server, path: '/ws' });
 const isLoopback = a => a === '127.0.0.1' || a === '::1' || a === '::ffff:127.0.0.1';
 const send = (ws, m) => { if (ws.readyState === 1) ws.send(JSON.stringify(m)); };
 const phones = () => new Set([...wss.clients].filter(c => c.role === 'remote' && c.readyState === 1 && c.clientId).map(c => c.clientId)).size;
-const stateMsg = ws => ({ type: 'state', state: { ...party.publicState(), phones: phones(), netUrl }, you: { isHost: ws.isHost, pinRequired: !!HOST_PIN, viaNet: ws.viaNet }, serverNow: Date.now() });
+// Host rights: the party computer always; a HOST_PIN if one is set; otherwise the party's host mode decides.
+const isHost = ws => ws.local || (HOST_PIN ? !!ws.pinOk : party.isHostClient(ws.clientId, ws.viaNet));
+const stateMsg = ws => ({ type: 'state', state: { ...party.publicState(), phones: phones(), netUrl }, you: { isHost: isHost(ws), pinRequired: !!HOST_PIN, viaNet: ws.viaNet, hostMode: party.s.settings.hostMode }, serverNow: Date.now() });
 const broadcast = () => { for (const c of wss.clients) send(c, stateMsg(c)); };
 
 wss.on('connection', (ws, req) => {
   ws.viaNet = viaNet(req);                            // came in over the internet link (cloudflared connects from localhost!)
   ws.local = !ws.viaNet && isLoopback(req.socket.remoteAddress);   // the party box itself is always host
-  ws.isHost = ws.local || (!HOST_PIN && !ws.viaNet);  // internet guests are never host without the PIN
   ws.clientId = null;
   ws.role = 'remote';
   ws.on('message', raw => {
@@ -81,18 +97,18 @@ wss.on('connection', (ws, req) => {
       case 'hello':
         ws.clientId = String(m.clientId || '').slice(0, 64) || null;
         ws.role = m.role === 'stage' ? 'stage' : 'remote';
-        if (HOST_PIN && m.pin === HOST_PIN) ws.isHost = true;
+        if (HOST_PIN && m.pin === HOST_PIN) ws.pinOk = true;
         broadcast(); // phone count changed
         break;
       case 'pin': {
-        const ok = HOST_PIN ? m.pin === HOST_PIN : !ws.viaNet;
-        if (ok) ws.isHost = true;
+        const ok = HOST_PIN ? m.pin === HOST_PIN : false;
+        if (ok) ws.pinOk = true;
         send(ws, { type: 'pinResult', ok });
         send(ws, stateMsg(ws));
         break;
       }
       case 'action': {
-        const r = party.act(String(m.action || ''), m, { clientId: ws.clientId, isHost: ws.isHost });
+        const r = party.act(String(m.action || ''), m, { clientId: ws.clientId, isHost: isHost(ws), viaNet: ws.viaNet });
         if (m.reqId) send(ws, { type: 'ack', reqId: m.reqId, ...r });
         break;
       }

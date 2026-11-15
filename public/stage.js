@@ -1,5 +1,5 @@
 (() => {
-  const { act, esc, clean, thumb, dlLabel, toast, now, send, who, keyLabel, gColor, genreChip, mixHtml } = KQ;
+  const { act, esc, clean, thumb, dlLabel, toast, now, send, who, keyLabel, gColor, genreChip, mixHtml, avatar, avatars } = KQ;
   const $ = s => document.querySelector(s);
   const app = $('#app'), vid = $('#vid');
   let loaded = null;          // item id currently loaded in the <video>
@@ -126,7 +126,7 @@
     app.classList.add(st.phase);
     app.classList.toggle('side', st.phase === 'upnext' || sidePinned);
     syncPlayer(st);
-    if (st.current) { $('#nowSinger').textContent = who(st.current); $('#nowKey').textContent = st.current.key ? `key ${keyLabel(st.current.key)}` : ''; }
+    if (st.current) { $('#nowAv').innerHTML = avatars(st.current, 'l'); $('#nowSinger').textContent = who(st.current); $('#nowKey').textContent = st.current.key ? `key ${keyLabel(st.current.key)}` : ''; }
     applyKey(st.current && (st.phase === 'playing' || st.phase === 'paused') ? st.current.key || 0 : 0);
 
     // idle
@@ -139,6 +139,7 @@
         $('#upSinger').dataset.id = head.id;
         const el = $('#upSinger'); el.style.animation = 'none'; void el.offsetWidth; el.style.animation = '';
       }
+      $('#upAvatar').innerHTML = avatars(head, 'xl');
       $('#upSinger').textContent = who(head);
       $('#upSinger').classList.toggle('long', who(head).length > 12);
       $('#upSong').textContent = clean(head.title);
@@ -150,6 +151,7 @@
     // ticker (during song)
     const next = st.queue[0];
     $('#tickSinger').textContent = next ? who(next) : '';
+    $('#tickAv').innerHTML = next ? avatars(next, 'm') : '';
     $('#tickSong').textContent = next ? clean(next.title) : '';
 
     // sidebar
@@ -157,7 +159,7 @@
     $('#sideList').innerHTML = st.queue.length ? st.queue.map((it, i) => {
       const up = i === 0 && st.phase === 'upnext';
       const tint = st.settings.genreRows !== false && it.genre;
-      return `<li class="${up ? 'up' : ''} ${tint ? 'tinted' : ''}" style="--g:${it.genre ? gColor(it.genre) : 'transparent'}"><span class="n">${up ? '★' : i + 1}</span><span class="w">${esc(who(it))}${it.key ? `<span class="k">${keyLabel(it.key)}</span>` : ''}${sungBy(st, it.singer) ? `<span class="c">🎤${sungBy(st, it.singer)}</span>` : ''}${it.dl?.state !== 'ready' ? dlLabel(it.dl) : ''}</span><span class="t">${esc(clean(it.title))}</span></li>`;
+      return `<li class="${up ? 'up' : ''} ${tint ? 'tinted' : ''}" style="--g:${it.genre ? gColor(it.genre) : 'transparent'}"><span class="n">${up ? '★' : i + 1}</span><span class="w">${avatars(it, 's')} ${esc(who(it))}${it.key ? `<span class="k">${keyLabel(it.key)}</span>` : ''}${sungBy(st, it.singer) ? `<span class="c">🎤${sungBy(st, it.singer)}</span>` : ''}${it.dl?.state !== 'ready' ? dlLabel(it.dl) : ''}</span><span class="t">${esc(clean(it.title))}</span></li>`;
     }).join('') : '<li><span class="empty">Nobody in line. Scan the code below!</span></li>';
     $('#sideHeld').textContent = st.held.length ? `🚪 Stepped out: ${st.held.map(h => who(h)).join(', ')}` : '';
 
@@ -169,7 +171,7 @@
     $('#idleMix').innerHTML = mixH; $('#sideMix').innerHTML = mixH;
 
     // songs sung tonight
-    const statsHtml = (st.stats || []).map((x, i) => `<span class="st ${i === 0 && x.sung > 1 ? 'top' : ''}">${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');
+    const statsHtml = (st.stats || []).map((x, i) => `<span class="st ${i === 0 && x.sung > 1 ? 'top' : ''}">${avatar(x.singer, 's')} ${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');
     $('#idleStats').innerHTML = statsHtml; $('#sideStats').innerHTML = statsHtml;
     const phones = st.phones ? `📱 ${st.phones} connected` : '';
     $('#phonesSide').textContent = phones; $('#phonesCorner').textContent = phones;

@@ -64,6 +64,24 @@
   </form>
 </dialog>
 
+<!-- First visit / "change my look": pick your name, then your avatar or a selfie -->
+<div id="join" hidden>
+  <div class="jstep" id="jName">
+    <h1>🎤 KARAO<span>-Q</span></h1>
+    <h2>Who's singing?</h2>
+    <div id="jPeople"></div>
+    <form id="jNewForm" autocomplete="off"><input id="jNew" maxlength="40" placeholder="New here? Type your name" enterkeyhint="next"><button>Next</button></form>
+  </div>
+  <div class="jstep" id="jLook" hidden>
+    <div id="jPreview"></div>
+    <h2>Pick your look</h2>
+    <label class="selfie">📸 Take a selfie<input type="file" id="jPhoto" accept="image/*" capture="user"></label>
+    <div id="jPresets"></div>
+    <label class="toggle"><input type="checkbox" id="jKeep"> Keep my photo for next time</label>
+    <div class="jrow"><button id="jBack" class="ghost">Back</button><button id="jDone">Let's sing →</button></div>
+  </div>
+</div>
+
 <dialog id="aboutDlg"><div id="aboutBody"></div><menu><button id="aboutClose">Close</button></menu></dialog>
 
 <dialog id="sheet"><div id="sheetBody"></div></dialog>
@@ -83,6 +101,10 @@
     <label class="toggle"><input type="checkbox" id="setQr"> Show join QR code on screen during songs</label>
     <label class="toggle"><input type="checkbox" id="setNext"> Show "Next up" on screen during songs</label>
     <label class="toggle"><input type="checkbox" id="setRows"> Colour rows by genre</label>
+    <label>Songs each person can have in line
+      <select id="setMax"><option value="0">No limit</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+      <small style="display:block;margin-top:4px">Hosts aren't limited.</small>
+    </label>
     <label>Space for downloaded songs
       <select id="setCache"><option value="2">2 GB</option><option value="5">5 GB</option><option value="10">10 GB</option><option value="20">20 GB</option><option value="50">50 GB</option></select>
       <small id="cacheUse" style="display:block;margin-top:4px"></small>

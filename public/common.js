@@ -72,6 +72,23 @@ window.KQ = (() => {
   const who = it => it ? (it.with ? `${it.singer} & ${it.with}` : it.singer) : '';
   const keyLabel = k => !k ? '' : (k > 0 ? `+${k}` : `−${-k}`);
 
+  // ---------- avatars ----------
+  const PRESETS = ['🦊', '🐙', '🦄', '🐸', '🐼', '🦁', '🐯', '🐨', '🐵', '🐧', '🐱', '🐶', '🦉', '🐝', '👽', '🤖', '👻', '🦖', '🎸', '🎤', '🍕', '🌮', '🌈', '⭐'];
+  const AV_COLORS = ['#ff3d9a', '#29e0ff', '#ffd23f', '#a66bff', '#4dff9c', '#ff7a3d', '#3b82ff', '#ff4b4b'];
+  const nkey = n => String(n || '').trim().toLowerCase();
+  const person = name => (api.state && api.state.people || {})[nkey(name)] || null;
+  function avColor(name) { let h = 0; for (const c of nkey(name)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return AV_COLORS[h % AV_COLORS.length]; }
+  function initials(name) { const w = String(name || '?').trim().split(/\s+/); return (w[0][0] + (w[1] ? w[1][0] : '')).toUpperCase(); }
+  // size: s 28px · m 44px · l 72px · xl (TV up-next)
+  function avatar(name, size = 'm') {
+    const p = person(name);
+    if (p && p.photo) return `<img class="av av-${size}" src="${esc(p.photo)}" alt="">`;
+    if (p && p.preset) return `<span class="av av-${size} emo" style="--avc:${avColor(name)}">${p.preset}</span>`;
+    return `<span class="av av-${size}" style="--avc:${avColor(name)}">${esc(initials(name))}</span>`;
+  }
+  const avatars = (it, size) => it ? (it.with ? `<span class="avpair">${avatar(it.singer, size)}${avatar(it.with, size)}</span>` : avatar(it.singer, size)) : '';
+  const isHostName = name => !!(person(name) || {}).host;
+
   // ---------- genres ----------
   const GENRES = {
     pop: ['Pop', '#ff4fa3'], rock: ['Rock', '#ff4b4b'], metal: ['Metal', '#8f9bb3'], punk: ['Punk', '#b6ff3b'],
@@ -117,6 +134,6 @@ window.KQ = (() => {
     </div>`;
   }
 
-  Object.assign(api, { GENRES, gColor, genreChip, mixHtml, aboutHtml, who, keyLabel, connect, act, send, now, esc, fmt, clean, thumb, dlLabel, toast });
+  Object.assign(api, { PRESETS, avatar, avatars, person, isHostName, GENRES, gColor, genreChip, mixHtml, aboutHtml, who, keyLabel, connect, act, send, now, esc, fmt, clean, thumb, dlLabel, toast });
   return api;
 })();

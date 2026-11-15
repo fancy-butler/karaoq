@@ -1,5 +1,5 @@
 (() => {
-  const { act, esc, fmt, clean, thumb, dlLabel, toast, ls, now, who, keyLabel, genreChip, mixHtml, GENRES } = KQ;
+  const { act, esc, fmt, clean, thumb, dlLabel, toast, ls, now, who, keyLabel, genreChip, mixHtml, GENRES, avatar, avatars, PRESETS } = KQ;
   const isFave = (singer, videoId) => !!((KQ.state?.faves || {})[String(singer || '').trim().toLowerCase()]?.songs || []).find(f => f.videoId === videoId);
   const $ = s => document.querySelector(s);
   if (new URLSearchParams(location.search).has('embed')) document.body.classList.add('embed');
@@ -11,8 +11,12 @@
 
   // ---------- name ----------
   function setName(n) {
-    myName = n; ls.set('kq.name', n); $('#meName').textContent = n || 'set name';
+    myName = n; ls.set('kq.name', n); renderMe();
     remember(n);
+  }
+  function renderMe() {
+    const host = KQ.you && KQ.you.isHost && KQ.you.hostMode === 'hosted';
+    $('#meBtn').innerHTML = myName ? `${avatar(myName, 's')}<b id="meName">${esc(myName)}</b>${host ? ' 👑' : ''}` : 'Singing as <b id="meName">set name</b>';
   }
   function remember(n) {
     if (!n) return;
@@ -41,7 +45,7 @@
       setTimeout(() => $('#nameInput').focus(), 50);
     });
   }
-  $('#meBtn').onclick = async () => { const n = await askName('Who are you?', myName); if (n) setName(n); };
+  $('#meBtn').onclick = () => showJoin();
   $('#nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#nameDlg').close('ok'); } });
   setName(myName);
 
@@ -50,6 +54,13 @@
   function showTab(t) {
     document.querySelectorAll('nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
     document.querySelectorAll('.tab').forEach(el => el.classList.toggle('on', el.id === 'tab-' + t));
+  }
+
+  // add with a friendly "already queued / just sung — add anyway?" check
+  async function addSong(data) {
+    let r = await act('add', data);
+    if (!r.ok && r.dup && confirm(`${r.error}.\n\nAdd it anyway?`)) r = await act('add', { ...data, force: true });
+    return r;
   }
 
   // ---------- search ----------
@@ -91,7 +102,7 @@
       const r = await askName('Who is singing this one?', '', true); if (!r) return;
       singer = r.name; partner = r.partner; remember(singer); if (partner) remember(partner);
     } else if (!singer) { singer = await askName("What's your name?", ''); if (!singer) return; setName(singer); }
-    const r = await act('add', { video: v, singer, with: partner });
+    const r = await addSong({ video: v, singer, with: partner });
     if (r.ok) toast(`Added for ${partner ? singer + ' & ' + partner : singer} — #${r.position} in line`);
     else toast(r.error, 'bad');
   };
@@ -179,7 +190,7 @@
       el.innerHTML = `
         <div class="label">${st.phase === 'paused' ? '⏸ PAUSED' : '● NOW SINGING'}</div>
         <button class="star ${isFave(c.singer, c.videoId) ? 'on' : ''}" data-a="fave" title="Save to favourites">${isFave(c.singer, c.videoId) ? '★' : '☆'}</button>
-        <div class="who">${esc(who(c))}</div><div class="song">${esc(clean(c.title))}</div>
+        <div class="whorow">${avatars(c, 'l')}<div><div class="who">${esc(who(c))}</div><div class="song">${esc(clean(c.title))}</div></div></div>
         ${host || mine ? `<button class="gbtn" data-a="genreNow">${genreChip(c) || '<span class="gchip unknown">＋ genre</span>'}</button>` : genreChip(c)}
         <div class="bar"><i id="pbar"></i></div><div class="times"><span id="ptime"></span><span id="pdur">${fmt(c.duration)}</span></div>
         <div class="reacts">${['🔥', '👏', '😂', '❤️', '🎉', '🤘'].map(e => `<button data-a="react:${e}">${e}</button>`).join('')}</div>
@@ -194,7 +205,7 @@
       el.innerHTML = `
         <span class="count" id="cd"></span>
         <div class="label up">★ UP NEXT</div>
-        <div class="who">${esc(who(u))}</div><div class="song">${esc(clean(u.title))}</div>${genreChip(u) ? `<div style="margin-top:6px">${genreChip(u)}</div>` : ''}
+        <div class="whorow">${avatars(u, 'l')}<div><div class="who">${esc(who(u))}</div><div class="song">${esc(clean(u.title))}</div></div></div>${genreChip(u) ? `<div style="margin-top:6px">${genreChip(u)}</div>` : ''}
         <div class="song" id="upStatus"></div>
         ${can ? `<div class="row">
           ${host ? '<button data-a="startNow" class="gold">▶ Start now</button>' : ''}
@@ -278,7 +289,7 @@
     const tint = st.settings.genreRows !== false && it.genre && KQ.GENRES[it.genre];
     return `<div class="item q ${up ? 'up' : ''} ${mine ? 'mine' : ''} ${tint ? 'tinted' : ''}" data-id="${it.id}" ${tint ? `style="--g:${KQ.gColor(it.genre)}"` : ''}>
       <div class="pos">${up ? '★' : i + 1}</div>
-      <img loading="lazy" src="${esc(thumb(it))}" alt="">
+      ${avatars(it, 'm')}
       <div class="meta"><div class="singer">${esc(who(it))}${it.key ? `<span class="keyb">${keyLabel(it.key)}</span>` : ''}${isFave(it.singer, it.videoId) ? '<span class="favb">★</span>' : ''}${sungBy(st, it.singer) ? `<span class="sung">🎤${sungBy(st, it.singer)}</span>` : ''}${it.deferred ? `<span class="badge">passed ${it.deferred}×</span>` : ''}</div>
         <div class="t">${esc(clean(it.title))}</div><div class="s">${genreChip(it)}${dlLabel(it.dl)}${it.duration ? ' · ' + fmt(it.duration) : ''}</div></div>
       <div class="acts"><button class="ghost" aria-label="Options">⋯</button></div></div>`;
@@ -299,7 +310,7 @@
       <div class="meta"><div class="singer">${esc(who(it))}</div><div class="t">${esc(clean(it.title))}</div></div>
       <div class="acts">${host || it.clientId === KQ.clientId ? '<button class="cyan back">↩ Back</button>' : ''}<button class="ghost">⋯</button></div></div>`).join('');
     $('#mixBox').innerHTML = mixHtml(st.mix);
-    $('#board').innerHTML = (st.stats || []).map((x, i) => `<span class="${i === 0 && x.sung > 1 ? 'top' : ''}">${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');
+    $('#board').innerHTML = (st.stats || []).map((x, i) => `<span class="${i === 0 && x.sung > 1 ? 'top' : ''}">${avatar(x.singer, 's')} ${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');
     $('#doneList').innerHTML = st.history.length ? st.history.map((h, i) => `<div class="item done">
       <img loading="lazy" src="${esc(thumb(h))}" alt="">
       <div class="meta"><div class="t">${esc(clean(h.title))}</div><div class="s">${esc(who(h))}${h.skipped ? ' · <span class="skip">skipped</span>' : ''}</div></div>
@@ -317,7 +328,7 @@
     const i = e.target.closest('[data-again]')?.dataset.again; if (i === undefined) return;
     const h = KQ.state.history[i];
     const singer = await askName('Who is singing this one?', myName); if (!singer) return;
-    const r = await act('add', { video: h, singer });
+    const r = await addSong({ video: h, singer });
     r.ok ? toast(`Added for ${singer} — #${r.position} in line`) : toast(r.error, 'bad');
   };
 
@@ -339,7 +350,7 @@
   $('#favList').onclick = async e => {
     const cur = (KQ.state.faves || {})[String(favFor).toLowerCase()]; if (!cur) return;
     const q = e.target.closest('[data-q]')?.dataset.q, u = e.target.closest('[data-unfav]')?.dataset.unfav;
-    if (q !== undefined) { const f = cur.songs[q]; const r = await act('add', { video: f, singer: cur.name, key: f.key }); r.ok ? toast(`Added for ${cur.name} — #${r.position} in line`) : toast(r.error, 'bad'); }
+    if (q !== undefined) { const f = cur.songs[q]; const r = await addSong({ video: f, singer: cur.name, key: f.key }); r.ok ? toast(`Added for ${cur.name} — #${r.position} in line`) : toast(r.error, 'bad'); }
     if (u !== undefined) run('fave', { singer: cur.name, video: cur.songs[u], on: false }, 'Removed');
   };
 
@@ -350,11 +361,19 @@
   // ☰ menu: everything that used to be buried at the bottom of the Queue tab
   $('#menuBtn').onclick = () => {
     const host = KQ.you.isHost;
-    let b = `<div class="h"><b>KARAO-Q</b><div>${host ? 'You can manage the party' : 'Guest: you can add songs and manage your own'}</div></div>`;
+    const hosted = KQ.you.hostMode === 'hosted';
+    const hostNames = Object.values(KQ.state.people || {}).filter(p => p.host).map(p => p.name);
+    let sub = host ? (hosted ? "👑 You're hosting" : 'Open party: everyone can manage the queue') : `Guest: you can add songs and manage your own${hostNames.length ? ` · 👑 ${hostNames.join(', ')} hosting` : ''}`;
+    let b = `<div class="h"><b>KARAO-Q</b><div>${esc(sub)}</div></div>`;
     if (host) b += `<button data-a="settings">⚙ Party settings</button><button data-a="undo">↶ Undo last queue change</button><button data-a="shuffle">🔀 Fair shuffle the queue</button>`;
+    if (!hosted && !KQ.you.viaNet && !KQ.you.pinRequired) b += `<button data-a="claim">👑 Be the host <small>(only you + co-hosts manage the queue)</small></button>`;
+    if (hosted && host) b += `<button data-a="cohosts">👑 Co-hosts…</button><button data-a="handoff">🤝 Hand off hosting…</button><button data-a="endhost">🔓 End host mode (everyone manages)</button>`;
     if (!host && KQ.you.pinRequired) b += `<button data-a="pin">🔑 Enter host PIN</button>`;
-    b += `<button data-a="name">👤 Change my name</button><button data-a="about">ⓘ About & credits</button>`;
+    b += `<button data-a="name">🙂 Change my name or look</button><button data-a="about">ⓘ About & credits</button>`;
     sheet(b, a => {
+      if (a === 'claim') run('claimHost', {});
+      if (a === 'endhost' && confirm('End host mode? Everyone will be able to manage the queue again.')) run('endHosting', {}, 'Open party: everyone can manage');
+      if (a === 'cohosts' || a === 'handoff') setTimeout(() => pickPerson(a), 50);
       if (a === 'settings') $('#settingsBtn').onclick();
       if (a === 'undo') $('#undoBtn').onclick();
       if (a === 'shuffle') $('#shuffleBtn').onclick();
@@ -363,6 +382,19 @@
       if (a === 'about') openAbout();
     });
   };
+  // choose a person for co-host / hand-off
+  function pickPerson(mode) {
+    const ppl = Object.values(KQ.state.people || {}).filter(p => p.name.toLowerCase() !== String(myName).toLowerCase());
+    if (!ppl.length) return toast('Nobody else has joined yet', 'bad');
+    const head = mode === 'handoff' ? 'Hand the crown to…' : 'Tap to make co-host (or remove)';
+    sheet(`<div class="h"><b>${head}</b><div>They need to have joined on their own phone.</div></div>` +
+      ppl.map(p => `<button data-a="${esc(p.name)}" class="personbtn">${avatar(p.name, 's')} ${esc(p.name)} ${p.host ? '👑' : ''}</button>`).join(''),
+      name => {
+        const p = ppl.find(x => x.name === name); if (!p) return;
+        if (mode === 'handoff') run('handOff', { name }, `👑 ${name} is hosting now`);
+        else run('setHost', { name, on: !p.host }, p.host ? `${name} is a guest again` : `👑 ${name} is a co-host`);
+      });
+  }
   $('#aboutClose').onclick = () => $('#aboutDlg').close();
   dialogDismiss($('#aboutDlg'));
 
@@ -377,17 +409,76 @@
     $('#setQr').checked = s.showQr !== false;
     $('#setNext').checked = s.showNext !== false;
     $('#setRows').checked = s.genreRows !== false;
+    $('#setMax').value = String(s.maxPerPerson || 0);
     $('#setCache').value = String(s.cacheGB || 5);
     if (!$('#setCache').value) { $('#setCache').insertAdjacentHTML('beforeend', `<option value="${s.cacheGB}">${s.cacheGB} GB</option>`); $('#setCache').value = String(s.cacheGB); }
     $('#cacheUse').textContent = `Using ${(KQ.state.cacheBytes / 1e9).toFixed(1)} GB now. Oldest unplayed songs are deleted first; queued songs are never touched.`;
-    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
+    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
   $('#newNightBtn').onclick = () => { if (confirm('Start a new night? The queue is cleared (you can restore it from the Queue tab) and song counts reset.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };
   $('#pinBtn').onclick = () => { const p = prompt('Host PIN'); if (p) { ls.set('kq.pin', p); KQ.send({ type: 'pin', pin: p }); } };
   KQ.on('pinResult', m => toast(m.ok ? "You're a host now" : 'Wrong PIN', m.ok ? '' : 'bad'));
 
+  // ---------- join: tap your name, pick a look (avatar or selfie) ----------
+  let jName = '', jPreset, jPhoto = null;
+  function showJoin() {
+    $('#join').hidden = false; $('#jName').hidden = false; $('#jLook').hidden = true;
+    const ppl = Object.values((KQ.state && KQ.state.people) || {});
+    $('#jPeople').innerHTML = ppl.map(p => `<button data-n="${esc(p.name)}">${avatar(p.name, 'l')}<span>${esc(p.name)}</span></button>`).join('');
+    $('#jNew').value = '';
+  }
+  function lookStep(name) {
+    jName = name; jPhoto = null;
+    const p = KQ.person(name);
+    jPreset = p ? p.preset : undefined;
+    $('#jKeep').checked = !!(p && p.keep);
+    $('#jName').hidden = true; $('#jLook').hidden = false;
+    renderLook();
+  }
+  function renderLook() {
+    const prev = jPhoto ? `<img class="av av-xl" src="${jPhoto}" alt="">` : jPreset ? `<span class="av av-xl emo">${jPreset}</span>` : avatar(jName, 'xl');
+    $('#jPreview').innerHTML = `${prev}<span>${esc(jName)}</span>`;
+    $('#jPresets').innerHTML = PRESETS.map(e => `<button data-e="${e}" class="${!jPhoto && e === jPreset ? 'on' : ''}">${e}</button>`).join('');
+  }
+  $('#jPeople').onclick = e => { const n = e.target.closest('[data-n]')?.dataset.n; if (n) lookStep(n); };
+  $('#jNewForm').onsubmit = e => { e.preventDefault(); const n = $('#jNew').value.trim(); if (n) lookStep(n); };
+  $('#jPresets').onclick = e => { const em = e.target.closest('[data-e]')?.dataset.e; if (em) { jPreset = em; jPhoto = null; renderLook(); } };
+  $('#jBack').onclick = () => showJoin();
+  $('#jPhoto').onchange = async () => {
+    const f = $('#jPhoto').files[0]; if (!f) return;
+    try {
+      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(f); });
+      const S = 360, k = Math.min(img.naturalWidth, img.naturalHeight);
+      const c = document.createElement('canvas'); c.width = c.height = S;
+      c.getContext('2d').drawImage(img, (img.naturalWidth - k) / 2, (img.naturalHeight - k) / 2, k, k, 0, 0, S, S); // centre square crop
+      jPhoto = c.toDataURL('image/jpeg', 0.82);
+      renderLook();
+    } catch { toast("Couldn't read that photo", 'bad'); }
+    $('#jPhoto').value = '';
+  };
+  $('#jDone').onclick = async () => {
+    const keep = $('#jKeep').checked;
+    setName(jName);
+    if (jPhoto) {
+      const r = await fetch('/api/avatar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: jName, data: jPhoto, clientId: KQ.clientId, keep }) }).catch(() => null);
+      if (!r || !r.ok) toast("Photo didn't upload — try again from ☰", 'bad');
+      await act('profile', { name: jName, keep });
+    } else await act('profile', { name: jName, keep, ...(jPreset !== undefined ? { preset: jPreset } : {}) });
+    $('#join').hidden = true;
+    toast(`Hi ${jName}! Search a song to get in line 🎤`);
+  };
+
   KQ.on('state', render);
+  // tell the server which person this phone is (for co-hosting); open the join screen on a first visit
+  let introduced = false;
+  KQ.on('state', () => {
+    renderMe();
+    if (introduced) return; introduced = true;
+    if (myName) act('profile', { name: myName });
+    else if (!new URLSearchParams(location.search).has('embed')) showJoin();
+  });
+  KQ.on('conn', up => { if (up) introduced = false; });
   let openedFromHash = false;
   KQ.on('state', () => {
     if (!openedFromHash && location.hash === '#settings' && KQ.you.isHost) { openedFromHash = true; $('#settingsBtn').onclick(); }

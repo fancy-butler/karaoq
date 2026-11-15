@@ -94,6 +94,13 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
 ## Genres & tonight's mix
 KARAO-Q reads the artist from the karaoke title and looks up the genre and decade on [MusicBrainz](https://musicbrainz.org), a free public music database. Every song gets a colour chip, the TV glows in the current song's genre colour, and **Tonight's mix** shows the night's split ("40% Pop · 25% Rock…") plus decades. Wrong guess? Tap the chip (or ⋯ → Genre) on a phone to fix it. Your pick is remembered.
 
+## People & hosting
+- **Joining:** the first time a phone opens KARAO-Q, it asks *Who's singing?* Tap your name if you've been before, or type a new one. Then pick a look: one of 24 avatars, or **📸 take a selfie**. Faces show up on the TV's UP NEXT screen, the queue, the sidebar and the leaderboard. Selfies are wiped at the start of a new night unless you tick *Keep my photo*. Change it any time from ☰.
+- **Open party** (default): every phone can manage the queue.
+- **Hosted party:** ☰ → **👑 Be the host**. Now only the host, co-hosts and the party computer can skip, reorder or remove other people's songs. Everyone can still add songs and manage their own. The host can add co-hosts, hand off the crown, or end host mode from ☰.
+- **Songs per person:** ⚙ Settings can cap how many songs each person has in line (hosts aren't limited).
+- **Duplicate check:** adding a song that's already queued, or was sung in the last 90 minutes, asks "add anyway?"
+
 ## Singing features
 - **Key change:** the singer (or host) taps **−/+** on their phone to move the song down or up in semitones without changing the speed. It's shown on the TV as "key −2". Starred songs remember the key you last sang them in.
 - **Favourites:** tap ☆ on the song that's playing, or ⋯ → Save on any queued song. The **⭐ Faves** tab lists each person's songs across nights, with one tap to queue (in their key).

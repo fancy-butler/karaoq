@@ -181,3 +181,19 @@ kbd { background: #ffffff1c; border: 1px solid #ffffff33; border-bottom-width: 3
 
 #updated { position: absolute; top: 3vh; left: 50%; transform: translateX(-50%); z-index: 45; background: linear-gradient(135deg, #2a0f3d, #13213a); border: 1px solid var(--gold); color: var(--text); font-size: 24px; padding: 14px 26px; border-radius: 16px; box-shadow: 0 10px 40px #000a; transition: opacity 1s; display: flex; gap: 18px; align-items: center; }
 #updated b { color: var(--gold); } #updated a { color: var(--cyan); font-size: 18px; } #updated.gone { opacity: 0; }
+
+/* avatars */
+.av { display: inline-grid; place-items: center; flex: none; border-radius: 50%; object-fit: cover; background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--avc, #ff3d9a) 85%, #fff), var(--avc, #ff3d9a)); color: #0d0716; font-weight: 900; box-shadow: 0 0 0 2px #ffffff22; vertical-align: middle; line-height: 1; }
+.av.emo { background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--avc) 35%, #2a1840), #1a1026); }
+.av-s { width: 28px; height: 28px; font-size: 12px; } .av-s.emo { font-size: 17px; }
+.av-m { width: 44px; height: 44px; font-size: 17px; } .av-m.emo { font-size: 26px; }
+.av-l { width: 72px; height: 72px; font-size: 26px; } .av-l.emo { font-size: 42px; }
+.av-xl { width: 220px; height: 220px; font-size: 80px; box-shadow: 0 0 0 6px #ffffff22, 0 0 80px color-mix(in srgb, var(--accent, #ff3d9a) 60%, transparent); } .av-xl.emo { font-size: 130px; }
+.avpair { display: inline-flex; } .avpair .av + .av { margin-left: -0.35em; box-shadow: 0 0 0 3px #0d0716; }
+
+#upAvatar { margin: 2vh 0 1vh; min-height: 10px; } #upAvatar .av-xl { width: min(24vh, 220px); height: min(24vh, 220px); }
+#upAvatar .avpair .av + .av { margin-left: -50px; }
+#nowTag, #ticker { display: flex !important; align-items: center; gap: 14px; }
+#ticker > div { min-width: 0; }
+.stats .st { display: inline-flex; align-items: center; gap: 6px; }
+#sideList .w .av { margin-right: 4px; vertical-align: -6px; }
