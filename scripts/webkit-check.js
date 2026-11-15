@@ -20,7 +20,8 @@ const ok = (c, m) => { console.log(`${c ? '  ✓' : '  ✗'} ${m}`); if (!c) fai
 (async () => {
   const { webkit, devices } = require('playwright');
   fs.mkdirSync(SHOTS, { recursive: true });
-  const srv = spawn(process.execPath, [path.join(ROOT, 'server.js')], { env: { ...process.env, MOCK: '1', TUNNEL: '0', PORT: String(PORT), DATA_DIR: DATA }, stdio: ['ignore', 'pipe', 'pipe'] });
+  let ffdir = null; try { ffdir = path.dirname(require('ffmpeg-static')); } catch { }
+  const srv = spawn(process.execPath, [path.join(ROOT, 'server.js')], { env: { ...process.env, PATH: (ffdir ? ffdir + path.delimiter : '') + process.env.PATH, MOCK: '1', TUNNEL: '0', PORT: String(PORT), DATA_DIR: DATA }, stdio: ['ignore', 'pipe', 'pipe'] });
   let log = ''; srv.stdout.on('data', d => { log += d; }); srv.stderr.on('data', d => { log += d; });
   srv.on('exit', c => { log += `\n[server exited ${c}]`; });
   process.on('exit', () => { try { srv.kill(); } catch { } });
