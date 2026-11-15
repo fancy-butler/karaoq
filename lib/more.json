@@ -1,1758 +1,1878 @@
 {
-"sources": {
-"us": {
-"name": "Singa — 100 most popular karaoke songs in the US (2026)",
-"url": "https://singa.com/blog/100-most-popular-karaoke-songs-united-states/"
-},
-"pop": {
-"name": "Singa — 100 most popular pop karaoke songs (2026)",
-"url": "https://singa.com/blog/pop-karaoke-songs/"
-},
-"rock": {
-"name": "Singa — 100+ best rock karaoke songs",
-"url": "https://singa.com/blog/best-rock-karaoke-songs"
-},
-"country": {
-"name": "StemSplit — best country karaoke songs (KaraFun country chart + fan vote)",
-"url": "https://stemsplit.io/blog/country-karaoke-songs"
-}
-},
-"songs": [
-{
-"title": "Valerie",
-"artist": "Mark Ronson & Amy Winehouse",
-"g": "rnb",
-"y": 2007,
-"src": "us"
-},
-{
-"title": "Love",
-"artist": "Keyshia Cole",
-"g": "rnb",
-"y": 2005,
-"src": "us"
-},
-{
-"title": "Can't Help Falling in Love",
-"artist": "Elvis Presley",
-"g": "pop",
-"y": 1961,
-"src": "us"
-},
-{
-"title": "You Oughta Know",
-"artist": "Alanis Morissette",
-"g": "rock",
-"y": 1995,
-"src": "us"
-},
-{
-"title": "A Million Dreams",
-"artist": "The Greatest Showman Cast",
-"g": "musical",
-"y": 2017,
-"src": "us"
-},
-{
-"title": "I Write Sins Not Tragedies",
-"artist": "Panic! at the Disco",
-"g": "punk",
-"y": 2005,
-"src": "us"
-},
-{
-"title": "No Scrubs",
-"artist": "TLC",
-"g": "rnb",
-"y": 1999,
-"src": "us"
-},
-{
-"title": "(Sittin' On) The Dock of the Bay",
-"artist": "Otis Redding",
-"g": "rnb",
-"y": 1968,
-"src": "us"
-},
-{
-"title": "Something in the Orange",
-"artist": "Zach Bryan",
-"g": "country",
-"y": 2022,
-"src": "us"
-},
-{
-"title": "Choosin' Texas",
-"artist": "Treaty Oak Revival",
-"g": "country",
-"y": null,
-"src": "us"
-},
-{
-"title": "Baby Got Back",
-"artist": "Sir Mix-a-Lot",
-"g": "hiphop",
-"y": 1992,
-"src": "us"
-},
-{
-"title": "Jolene",
-"artist": "Dolly Parton",
-"g": "country",
-"y": 1973,
-"src": "us"
-},
-{
-"title": "Misery Business",
-"artist": "Paramore",
-"g": "punk",
-"y": 2007,
-"src": "us"
-},
-{
-"title": "Your Man",
-"artist": "Josh Turner",
-"g": "country",
-"y": 2005,
-"src": "us"
-},
-{
-"title": "Careless Whisper",
-"artist": "George Michael",
-"g": "pop",
-"y": 1984,
-"src": "us"
-},
-{
-"title": "Man I Need",
-"artist": "Olivia Dean",
-"g": "pop",
-"y": 2025,
-"src": "us"
-},
-{
-"title": "Strawberry Wine",
-"artist": "Deana Carter",
-"g": "country",
-"y": 1996,
-"src": "us"
-},
-{
-"title": "...Baby One More Time",
-"artist": "Britney Spears",
-"g": "pop",
-"y": 1998,
-"src": "us"
-},
-{
-"title": "If I Ain't Got You",
-"artist": "Alicia Keys",
-"g": "rnb",
-"y": 2003,
-"src": "us"
-},
-{
-"title": "Stay",
-"artist": "Rihanna & Mikky Ekko",
-"g": "pop",
-"y": 2012,
-"src": "us"
-},
-{
-"title": "All of Me",
-"artist": "John Legend",
-"g": "rnb",
-"y": 2013,
-"src": "us"
-},
-{
-"title": "Santa Baby",
-"artist": "Eartha Kitt",
-"g": "jazz",
-"y": 1953,
-"src": "us"
-},
-{
-"title": "Mama's Broken Heart",
-"artist": "Miranda Lambert",
-"g": "country",
-"y": 2011,
-"src": "us"
-},
-{
-"title": "Since U Been Gone",
-"artist": "Kelly Clarkson",
-"g": "pop",
-"y": 2004,
-"src": "us"
-},
-{
-"title": "White Christmas",
-"artist": "Bing Crosby",
-"g": "jazz",
-"y": 1942,
-"src": "us"
-},
-{
-"title": "Need You Now",
-"artist": "Lady A",
-"g": "country",
-"y": 2009,
-"src": "us"
-},
-{
-"title": "From the Start",
-"artist": "Laufey",
-"g": "jazz",
-"y": 2023,
-"src": "us"
-},
-{
-"title": "A Whole New World",
-"artist": "Aladdin",
-"g": "musical",
-"y": 1992,
-"src": "us"
-},
-{
-"title": "Goodbye Earl",
-"artist": "The Chicks",
-"g": "country",
-"y": 1999,
-"src": "us"
-},
-{
-"title": "New York, New York",
-"artist": "Frank Sinatra",
-"g": "jazz",
-"y": 1979,
-"src": "us"
-},
-{
-"title": "Back to Black",
-"artist": "Amy Winehouse",
-"g": "rnb",
-"y": 2006,
-"src": "us"
-},
-{
-"title": "When I Was Your Man",
-"artist": "Bruno Mars",
-"g": "pop",
-"y": 2012,
-"src": "us"
-},
-{
-"title": "Feeling Good",
-"artist": "Michael Bublé",
-"g": "jazz",
-"y": 2005,
-"src": "us"
-},
-{
-"title": "Crazy Rap",
-"artist": "Afroman",
-"g": "hiphop",
-"y": 2001,
-"src": "us"
-},
-{
-"title": "Ain't No Mountain High Enough",
-"artist": "Marvin Gaye & Tammi Terrell",
-"g": "rnb",
-"y": 1967,
-"src": "us"
-},
-{
-"title": "Bad Romance",
-"artist": "Lady Gaga",
-"g": "pop",
-"y": 2009,
-"src": "us"
-},
-{
-"title": "When We Were Young",
-"artist": "Adele",
-"g": "pop",
-"y": 2015,
-"src": "us"
-},
-{
-"title": "At Last",
-"artist": "Etta James",
-"g": "jazz",
-"y": 1960,
-"src": "us"
-},
-{
-"title": "My Own Worst Enemy",
-"artist": "Lit",
-"g": "rock",
-"y": 1999,
-"src": "us"
-},
-{
-"title": "All the Small Things",
-"artist": "blink-182",
-"g": "punk",
-"y": 1999,
-"src": "us"
-},
-{
-"title": "Como La Flor",
-"artist": "Selena",
-"g": "latin",
-"y": 1992,
-"src": "us"
-},
-{
-"title": "Lips of an Angel",
-"artist": "Hinder",
-"g": "rock",
-"y": 2005,
-"src": "us"
-},
-{
-"title": "The Climb",
-"artist": "Miley Cyrus",
-"g": "country",
-"y": 2009,
-"src": "us"
-},
-{
-"title": "Let Me Love You",
-"artist": "Mario",
-"g": "rnb",
-"y": 2004,
-"src": "us"
-},
-{
-"title": "Ain't It Fun",
-"artist": "Paramore",
-"g": "punk",
-"y": 2013,
-"src": "us"
-},
-{
-"title": "Closing Time",
-"artist": "Semisonic",
-"g": "rock",
-"y": 1998,
-"src": "us"
-},
-{
-"title": "A Thousand Miles",
-"artist": "Vanessa Carlton",
-"g": "pop",
-"y": 2002,
-"src": "us"
-},
-{
-"title": "Gimme! Gimme! Gimme! (A Man After Midnight)",
-"artist": "ABBA",
-"g": "disco",
-"y": 1979,
-"src": "pop"
-},
-{
-"title": "Breaking Free",
-"artist": "High School Musical",
-"g": "musical",
-"y": 2006,
-"src": "pop"
-},
-{
-"title": "Call Me Maybe",
-"artist": "Carly Rae Jepsen",
-"g": "pop",
-"y": 2012,
-"src": "pop"
-},
-{
-"title": "Beauty and a Beat",
-"artist": "Justin Bieber",
-"g": "pop",
-"y": 2012,
-"src": "pop"
-},
-{
-"title": "Don't Look Back in Anger",
-"artist": "Oasis",
-"g": "rock",
-"y": 1996,
-"src": "pop"
-},
-{
-"title": "My Heart Will Go On",
-"artist": "Céline Dion",
-"g": "pop",
-"y": 1997,
-"src": "pop"
-},
-{
-"title": "Barbie Girl",
-"artist": "Aqua",
-"g": "electronic",
-"y": 1997,
-"src": "pop"
-},
-{
-"title": "Toxic",
-"artist": "Britney Spears",
-"g": "pop",
-"y": 2003,
-"src": "pop"
-},
-{
-"title": "Believe",
-"artist": "Cher",
-"g": "electronic",
-"y": 1998,
-"src": "pop"
-},
-{
-"title": "Lush Life",
-"artist": "Zara Larsson",
-"g": "pop",
-"y": 2015,
-"src": "pop"
-},
-{
-"title": "Die with a Smile",
-"artist": "Lady Gaga & Bruno Mars",
-"g": "pop",
-"y": 2024,
-"src": "pop"
-},
-{
-"title": "Boten Anna",
-"artist": "Basshunter",
-"g": "electronic",
-"y": 2006,
-"src": "pop"
-},
-{
-"title": "What Makes You Beautiful",
-"artist": "One Direction",
-"g": "pop",
-"y": 2011,
-"src": "pop"
-},
-{
-"title": "Espresso",
-"artist": "Sabrina Carpenter",
-"g": "pop",
-"y": 2024,
-"src": "pop"
-},
-{
-"title": "Everybody (Backstreet's Back)",
-"artist": "Backstreet Boys",
-"g": "pop",
-"y": 1997,
-"src": "pop"
-},
-{
-"title": "Billie Jean",
-"artist": "Michael Jackson",
-"g": "pop",
-"y": 1982,
-"src": "pop"
-},
-{
-"title": "Fuck You",
-"artist": "CeeLo Green",
-"g": "rnb",
-"y": 2010,
-"src": "pop"
-},
-{
-"title": "Bye Bye Bye",
-"artist": "*NSYNC",
-"g": "pop",
-"y": 2000,
-"src": "pop"
-},
-{
-"title": "Manchild",
-"artist": "Sabrina Carpenter",
-"g": "pop",
-"y": 2025,
-"src": "pop"
-},
-{
-"title": "I Kissed a Girl",
-"artist": "Katy Perry",
-"g": "pop",
-"y": 2008,
-"src": "pop"
-},
-{
-"title": "Shake It Off",
-"artist": "Taylor Swift",
-"g": "pop",
-"y": 2014,
-"src": "pop"
-},
-{
-"title": "Diamonds",
-"artist": "Rihanna",
-"g": "pop",
-"y": 2012,
-"src": "pop"
-},
-{
-"title": "Oops!... I Did It Again",
-"artist": "Britney Spears",
-"g": "pop",
-"y": 2000,
-"src": "pop"
-},
-{
-"title": "Sk8er Boi",
-"artist": "Avril Lavigne",
-"g": "punk",
-"y": 2002,
-"src": "pop"
-},
-{
-"title": "Gnarly",
-"artist": "KATSEYE",
-"g": "kpop",
-"y": 2025,
-"src": "pop"
-},
-{
-"title": "Gotta Go My Own Way",
-"artist": "High School Musical",
-"g": "musical",
-"y": 2007,
-"src": "pop"
-},
-{
-"title": "Dancing On My Own",
-"artist": "Robyn",
-"g": "electronic",
-"y": 2010,
-"src": "pop"
-},
-{
-"title": "Stateside",
-"artist": "PinkPantheress",
-"g": "electronic",
-"y": null,
-"src": "pop"
-},
-{
-"title": "HOT TO GO!",
-"artist": "Chappell Roan",
-"g": "pop",
-"y": 2023,
-"src": "pop"
-},
-{
-"title": "This Is Me",
-"artist": "Keala Settle",
-"g": "musical",
-"y": 2017,
-"src": "pop"
-},
-{
-"title": "Set Fire to the Rain",
-"artist": "Adele",
-"g": "pop",
-"y": 2011,
-"src": "pop"
-},
-{
-"title": "Poker Face",
-"artist": "Lady Gaga",
-"g": "pop",
-"y": 2008,
-"src": "pop"
-},
-{
-"title": "Your Song",
-"artist": "Elton John",
-"g": "pop",
-"y": 1970,
-"src": "pop"
-},
-{
-"title": "Never Enough",
-"artist": "The Greatest Showman Cast",
-"g": "musical",
-"y": 2017,
-"src": "pop"
-},
-{
-"title": "Complicated",
-"artist": "Avril Lavigne",
-"g": "punk",
-"y": 2002,
-"src": "pop"
-},
-{
-"title": "Perfect",
-"artist": "P!nk",
-"g": "pop",
-"y": 2010,
-"src": "pop"
-},
-{
-"title": "It's Raining Men",
-"artist": "The Weather Girls",
-"g": "disco",
-"y": 1982,
-"src": "pop"
-},
-{
-"title": "Don't Go Breaking My Heart",
-"artist": "Elton John & Kiki Dee",
-"g": "pop",
-"y": 1976,
-"src": "pop"
-},
-{
-"title": "Ordinary",
-"artist": "Alex Warren",
-"g": "pop",
-"y": 2025,
-"src": "pop"
-},
-{
-"title": "Telephone",
-"artist": "Lady Gaga & Beyoncé",
-"g": "pop",
-"y": 2009,
-"src": "pop"
-},
-{
-"title": "You Raise Me Up",
-"artist": "Josh Groban",
-"g": "pop",
-"y": 2003,
-"src": "pop"
-},
-{
-"title": "Money, Money, Money",
-"artist": "ABBA",
-"g": "disco",
-"y": 1976,
-"src": "pop"
-},
-{
-"title": "Hopelessly Devoted to You",
-"artist": "Olivia Newton-John",
-"g": "musical",
-"y": 1978,
-"src": "pop"
-},
-{
-"title": "Never Gonna Give You Up",
-"artist": "Rick Astley",
-"g": "pop",
-"y": 1987,
-"src": "pop"
-},
-{
-"title": "TiK ToK",
-"artist": "Kesha",
-"g": "pop",
-"y": 2009,
-"src": "pop"
-},
-{
-"title": "Last Friday Night (T.G.I.F.)",
-"artist": "Katy Perry",
-"g": "pop",
-"y": 2011,
-"src": "pop"
-},
-{
-"title": "Firework",
-"artist": "Katy Perry",
-"g": "pop",
-"y": 2010,
-"src": "pop"
-},
-{
-"title": "La Isla Bonita",
-"artist": "Madonna",
-"g": "pop",
-"y": 1987,
-"src": "pop"
-},
-{
-"title": "It Must Have Been Love",
-"artist": "Roxette",
-"g": "pop",
-"y": 1987,
-"src": "pop"
-},
-{
-"title": "Where the Wild Roses Grow",
-"artist": "Nick Cave & Kylie Minogue",
-"g": "rock",
-"y": 1995,
-"src": "pop"
-},
-{
-"title": "Part of Your World",
-"artist": "The Little Mermaid",
-"g": "musical",
-"y": 1989,
-"src": "pop"
-},
-{
-"title": "What a Wonderful World",
-"artist": "Louis Armstrong",
-"g": "jazz",
-"y": 1967,
-"src": "pop"
-},
-{
-"title": "Start of Something New",
-"artist": "High School Musical",
-"g": "musical",
-"y": 2006,
-"src": "pop"
-},
-{
-"title": "Halo",
-"artist": "Beyoncé",
-"g": "rnb",
-"y": 2008,
-"src": "pop"
-},
-{
-"title": "Super Trouper",
-"artist": "ABBA",
-"g": "disco",
-"y": 1980,
-"src": "pop"
-},
-{
-"title": "Waterloo",
-"artist": "ABBA",
-"g": "disco",
-"y": 1974,
-"src": "pop"
-},
-{
-"title": "We Are Young",
-"artist": "fun.",
-"g": "pop",
-"y": 2011,
-"src": "pop"
-},
-{
-"title": "Chiquitita",
-"artist": "ABBA",
-"g": "disco",
-"y": 1979,
-"src": "pop"
-},
-{
-"title": "Chandelier",
-"artist": "Sia",
-"g": "pop",
-"y": 2014,
-"src": "pop"
-},
-{
-"title": "Vampire",
-"artist": "Olivia Rodrigo",
-"g": "pop",
-"y": 2023,
-"src": "pop"
-},
-{
-"title": "Please Please Please",
-"artist": "Sabrina Carpenter",
-"g": "pop",
-"y": 2024,
-"src": "pop"
-},
-{
-"title": "Shape of You",
-"artist": "Ed Sheeran",
-"g": "pop",
-"y": 2017,
-"src": "pop"
-},
-{
-"title": "I'm Yours",
-"artist": "Jason Mraz",
-"g": "pop",
-"y": 2008,
-"src": "pop"
-},
-{
-"title": "Livin' la Vida Loca",
-"artist": "Ricky Martin",
-"g": "latin",
-"y": 1999,
-"src": "pop"
-},
-{
-"title": "Left Outside Alone",
-"artist": "Anastacia",
-"g": "pop",
-"y": 2004,
-"src": "pop"
-},
-{
-"title": "Drivers License",
-"artist": "Olivia Rodrigo",
-"g": "pop",
-"y": 2021,
-"src": "pop"
-},
-{
-"title": "Beat It",
-"artist": "Michael Jackson",
-"g": "pop",
-"y": 1982,
-"src": "pop"
-},
-{
-"title": "Thunderstruck",
-"artist": "AC/DC",
-"g": "rock",
-"y": 1990,
-"src": "rock"
-},
-{
-"title": "Seven Nation Army",
-"artist": "The White Stripes",
-"g": "rock",
-"y": 2003,
-"src": "rock"
-},
-{
-"title": "I Love Rock 'n' Roll",
-"artist": "Joan Jett & the Blackhearts",
-"g": "rock",
-"y": 1981,
-"src": "rock"
-},
-{
-"title": "Born to Run",
-"artist": "Bruce Springsteen",
-"g": "rock",
-"y": 1975,
-"src": "rock"
-},
-{
-"title": "I Bet You Look Good on the Dancefloor",
-"artist": "Arctic Monkeys",
-"g": "rock",
-"y": 2005,
-"src": "rock"
-},
-{
-"title": "Welcome to the Jungle",
-"artist": "Guns N' Roses",
-"g": "rock",
-"y": 1987,
-"src": "rock"
-},
-{
-"title": "Saturday",
-"artist": "Twenty One Pilots",
-"g": "rock",
-"y": 2021,
-"src": "rock"
-},
-{
-"title": "Black Summer",
-"artist": "Red Hot Chili Peppers",
-"g": "rock",
-"y": 2022,
-"src": "rock"
-},
-{
-"title": "Be My Baby",
-"artist": "The Ronettes",
-"g": "pop",
-"y": 1963,
-"src": "rock"
-},
-{
-"title": "Call Me",
-"artist": "Blondie",
-"g": "rock",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Prayer in C",
-"artist": "Lilly Wood & The Prick",
-"g": "electronic",
-"y": 2014,
-"src": "rock"
-},
-{
-"title": "Sleeping in My Car",
-"artist": "Roxette",
-"g": "rock",
-"y": 1994,
-"src": "rock"
-},
-{
-"title": "Simple Man",
-"artist": "Lynyrd Skynyrd",
-"g": "rock",
-"y": 1973,
-"src": "rock"
-},
-{
-"title": "Magic Man",
-"artist": "Heart",
-"g": "rock",
-"y": 1976,
-"src": "rock"
-},
-{
-"title": "Iron Man",
-"artist": "Black Sabbath",
-"g": "metal",
-"y": 1970,
-"src": "rock"
-},
-{
-"title": "Sharp Dressed Man",
-"artist": "ZZ Top",
-"g": "rock",
-"y": 1983,
-"src": "rock"
-},
-{
-"title": "Hurt",
-"artist": "Johnny Cash",
-"g": "country",
-"y": 2002,
-"src": "rock"
-},
-{
-"title": "Boulevard of Broken Dreams",
-"artist": "Green Day",
-"g": "punk",
-"y": 2004,
-"src": "rock"
-},
-{
-"title": "Use Somebody",
-"artist": "Kings of Leon",
-"g": "rock",
-"y": 2008,
-"src": "rock"
-},
-{
-"title": "Knockin' on Heaven's Door",
-"artist": "Bob Dylan",
-"g": "folk",
-"y": 1973,
-"src": "rock"
-},
-{
-"title": "Better Man",
-"artist": "Pearl Jam",
-"g": "rock",
-"y": 1994,
-"src": "rock"
-},
-{
-"title": "Brown Sugar",
-"artist": "The Rolling Stones",
-"g": "rock",
-"y": 1971,
-"src": "rock"
-},
-{
-"title": "Purple Haze",
-"artist": "Jimi Hendrix",
-"g": "rock",
-"y": 1967,
-"src": "rock"
-},
-{
-"title": "Whole Lotta Love",
-"artist": "Led Zeppelin",
-"g": "rock",
-"y": 1969,
-"src": "rock"
-},
-{
-"title": "Comfortably Numb",
-"artist": "Pink Floyd",
-"g": "rock",
-"y": 1979,
-"src": "rock"
-},
-{
-"title": "Smoke on the Water",
-"artist": "Deep Purple",
-"g": "rock",
-"y": 1972,
-"src": "rock"
-},
-{
-"title": "School's Out",
-"artist": "Alice Cooper",
-"g": "rock",
-"y": 1972,
-"src": "rock"
-},
-{
-"title": "Slow Ride",
-"artist": "Foghat",
-"g": "rock",
-"y": 1975,
-"src": "rock"
-},
-{
-"title": "Evil Ways",
-"artist": "Santana",
-"g": "latin",
-"y": 1969,
-"src": "rock"
-},
-{
-"title": "You Shook Me All Night Long",
-"artist": "AC/DC",
-"g": "rock",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Tom Sawyer",
-"artist": "Rush",
-"g": "rock",
-"y": 1981,
-"src": "rock"
-},
-{
-"title": "You Really Got Me",
-"artist": "The Kinks",
-"g": "rock",
-"y": 1964,
-"src": "rock"
-},
-{
-"title": "Close My Eyes Forever",
-"artist": "Lita Ford & Ozzy Osbourne",
-"g": "metal",
-"y": 1988,
-"src": "rock"
-},
-{
-"title": "Dancing in the Street",
-"artist": "David Bowie & Mick Jagger",
-"g": "rock",
-"y": 1985,
-"src": "rock"
-},
-{
-"title": "Almost Paradise",
-"artist": "Mike Reno & Ann Wilson",
-"g": "rock",
-"y": 1984,
-"src": "rock"
-},
-{
-"title": "Don't Give Up",
-"artist": "Peter Gabriel & Kate Bush",
-"g": "rock",
-"y": 1986,
-"src": "rock"
-},
-{
-"title": "Hunger Strike",
-"artist": "Temple of the Dog",
-"g": "rock",
-"y": 1991,
-"src": "rock"
-},
-{
-"title": "It's Only Love",
-"artist": "Bryan Adams & Tina Turner",
-"g": "rock",
-"y": 1984,
-"src": "rock"
-},
-{
-"title": "Numb",
-"artist": "Linkin Park",
-"g": "metal",
-"y": 2003,
-"src": "rock"
-},
-{
-"title": "Smells Like Teen Spirit",
-"artist": "Nirvana",
-"g": "rock",
-"y": 1991,
-"src": "rock"
-},
-{
-"title": "Love Will Tear Us Apart",
-"artist": "Joy Division",
-"g": "punk",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Radio Free Europe",
-"artist": "R.E.M.",
-"g": "rock",
-"y": 1981,
-"src": "rock"
-},
-{
-"title": "Blue Monday",
-"artist": "New Order",
-"g": "electronic",
-"y": 1983,
-"src": "rock"
-},
-{
-"title": "Once in a Lifetime",
-"artist": "Talking Heads",
-"g": "rock",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Blister in the Sun",
-"artist": "Violent Femmes",
-"g": "punk",
-"y": 1983,
-"src": "rock"
-},
-{
-"title": "Jeremy",
-"artist": "Pearl Jam",
-"g": "rock",
-"y": 1991,
-"src": "rock"
-},
-{
-"title": "Monkey Gone to Heaven",
-"artist": "Pixies",
-"g": "rock",
-"y": 1989,
-"src": "rock"
-},
-{
-"title": "Closer",
-"artist": "Nine Inch Nails",
-"g": "metal",
-"y": 1994,
-"src": "rock"
-},
-{
-"title": "Master of Puppets",
-"artist": "Metallica",
-"g": "metal",
-"y": 1986,
-"src": "rock"
-},
-{
-"title": "Ace of Spades",
-"artist": "Motörhead",
-"g": "metal",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Breaking the Law",
-"artist": "Judas Priest",
-"g": "metal",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Run to the Hills",
-"artist": "Iron Maiden",
-"g": "metal",
-"y": 1982,
-"src": "rock"
-},
-{
-"title": "Holy Diver",
-"artist": "Dio",
-"g": "metal",
-"y": 1983,
-"src": "rock"
-},
-{
-"title": "One",
-"artist": "Metallica",
-"g": "metal",
-"y": 1988,
-"src": "rock"
-},
-{
-"title": "Back in Black",
-"artist": "AC/DC",
-"g": "rock",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Shout at the Devil",
-"artist": "Mötley Crüe",
-"g": "metal",
-"y": 1983,
-"src": "rock"
-},
-{
-"title": "Anarchy in the U.K.",
-"artist": "Sex Pistols",
-"g": "punk",
-"y": 1976,
-"src": "rock"
-},
-{
-"title": "Blitzkrieg Bop",
-"artist": "Ramones",
-"g": "punk",
-"y": 1976,
-"src": "rock"
-},
-{
-"title": "London Calling",
-"artist": "The Clash",
-"g": "punk",
-"y": 1979,
-"src": "rock"
-},
-{
-"title": "I Wanna Be Your Dog",
-"artist": "The Stooges",
-"g": "punk",
-"y": 1969,
-"src": "rock"
-},
-{
-"title": "Ever Fallen in Love",
-"artist": "Buzzcocks",
-"g": "punk",
-"y": 1978,
-"src": "rock"
-},
-{
-"title": "Welcome to Paradise",
-"artist": "Green Day",
-"g": "punk",
-"y": 1994,
-"src": "rock"
-},
-{
-"title": "Psycho Killer",
-"artist": "Talking Heads",
-"g": "punk",
-"y": 1977,
-"src": "rock"
-},
-{
-"title": "Personality Crisis",
-"artist": "New York Dolls",
-"g": "punk",
-"y": 1973,
-"src": "rock"
-},
-{
-"title": "Lust for Life",
-"artist": "Iggy Pop",
-"g": "punk",
-"y": 1977,
-"src": "rock"
-},
-{
-"title": "Stairway to Heaven",
-"artist": "Led Zeppelin",
-"g": "rock",
-"y": 1971,
-"src": "rock"
-},
-{
-"title": "Imagine",
-"artist": "John Lennon",
-"g": "rock",
-"y": 1971,
-"src": "rock"
-},
-{
-"title": "Free Bird",
-"artist": "Lynyrd Skynyrd",
-"g": "rock",
-"y": 1973,
-"src": "rock"
-},
-{
-"title": "Go Your Own Way",
-"artist": "Fleetwood Mac",
-"g": "rock",
-"y": 1977,
-"src": "rock"
-},
-{
-"title": "Dream On",
-"artist": "Aerosmith",
-"g": "rock",
-"y": 1973,
-"src": "rock"
-},
-{
-"title": "Wish You Were Here",
-"artist": "Pink Floyd",
-"g": "rock",
-"y": 1975,
-"src": "rock"
-},
-{
-"title": "Another One Bites the Dust",
-"artist": "Queen",
-"g": "rock",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Rapture",
-"artist": "Blondie",
-"g": "disco",
-"y": 1980,
-"src": "rock"
-},
-{
-"title": "Hungry Like the Wolf",
-"artist": "Duran Duran",
-"g": "electronic",
-"y": 1982,
-"src": "rock"
-},
-{
-"title": "Losing My Religion",
-"artist": "R.E.M.",
-"g": "rock",
-"y": 1991,
-"src": "rock"
-},
-{
-"title": "Enter Sandman",
-"artist": "Metallica",
-"g": "metal",
-"y": 1991,
-"src": "rock"
-},
-{
-"title": "Come as You Are",
-"artist": "Nirvana",
-"g": "rock",
-"y": 1991,
-"src": "rock"
-},
-{
-"title": "Killing Me Softly",
-"artist": "Fugees",
-"g": "hiphop",
-"y": 1996,
-"src": "rock"
-},
-{
-"title": "Chicken Fried",
-"artist": "Zac Brown Band",
-"g": "country",
-"y": 2008,
-"src": "country"
-},
-{
-"title": "Save a Horse (Ride a Cowboy)",
-"artist": "Big & Rich",
-"g": "country",
-"y": 2004,
-"src": "country"
-},
-{
-"title": "Cruise",
-"artist": "Florida Georgia Line",
-"g": "country",
-"y": 2012,
-"src": "country"
-},
-{
-"title": "Boot Scootin' Boogie",
-"artist": "Brooks & Dunn",
-"g": "country",
-"y": 1992,
-"src": "country"
-},
-{
-"title": "Chattahoochee",
-"artist": "Alan Jackson",
-"g": "country",
-"y": 1993,
-"src": "country"
-},
-{
-"title": "Family Tradition",
-"artist": "Hank Williams Jr.",
-"g": "country",
-"y": 1979,
-"src": "country"
-},
-{
-"title": "Drunk on a Plane",
-"artist": "Dierks Bentley",
-"g": "country",
-"y": 2014,
-"src": "country"
-},
-{
-"title": "A Bar Song (Tipsy)",
-"artist": "Shaboozey",
-"g": "country",
-"y": 2024,
-"src": "country"
-},
-{
-"title": "Beer Never Broke My Heart",
-"artist": "Luke Combs",
-"g": "country",
-"y": 2019,
-"src": "country"
-},
-{
-"title": "Toes",
-"artist": "Zac Brown Band",
-"g": "country",
-"y": 2008,
-"src": "country"
-},
-{
-"title": "I Walk the Line",
-"artist": "Johnny Cash",
-"g": "country",
-"y": 1956,
-"src": "country"
-},
-{
-"title": "On the Road Again",
-"artist": "Willie Nelson",
-"g": "country",
-"y": 1980,
-"src": "country"
-},
-{
-"title": "All My Ex's Live in Texas",
-"artist": "George Strait",
-"g": "country",
-"y": 1987,
-"src": "country"
-},
-{
-"title": "Amarillo by Morning",
-"artist": "George Strait",
-"g": "country",
-"y": 1983,
-"src": "country"
-},
-{
-"title": "Rhinestone Cowboy",
-"artist": "Glen Campbell",
-"g": "country",
-"y": 1975,
-"src": "country"
-},
-{
-"title": "Your Cheatin' Heart",
-"artist": "Hank Williams",
-"g": "country",
-"y": 1953,
-"src": "country"
-},
-{
-"title": "Mama Tried",
-"artist": "Merle Haggard",
-"g": "country",
-"y": 1968,
-"src": "country"
-},
-{
-"title": "Stand by Your Man",
-"artist": "Tammy Wynette",
-"g": "country",
-"y": 1968,
-"src": "country"
-},
-{
-"title": "9 to 5",
-"artist": "Dolly Parton",
-"g": "country",
-"y": 1980,
-"src": "country"
-},
-{
-"title": "Jackson",
-"artist": "Johnny Cash & June Carter",
-"g": "country",
-"y": 1967,
-"src": "country"
-},
-{
-"title": "The House That Built Me",
-"artist": "Miranda Lambert",
-"g": "country",
-"y": 2010,
-"src": "country"
-},
-{
-"title": "Whiskey Lullaby",
-"artist": "Brad Paisley & Alison Krauss",
-"g": "country",
-"y": 2004,
-"src": "country"
-},
-{
-"title": "What Hurts the Most",
-"artist": "Rascal Flatts",
-"g": "country",
-"y": 2006,
-"src": "country"
-},
-{
-"title": "Cover Me Up",
-"artist": "Jason Isbell",
-"g": "country",
-"y": 2013,
-"src": "country"
-},
-{
-"title": "You Should Probably Leave",
-"artist": "Chris Stapleton",
-"g": "country",
-"y": 2021,
-"src": "country"
-},
-{
-"title": "Wasted on You",
-"artist": "Morgan Wallen",
-"g": "country",
-"y": 2021,
-"src": "country"
-},
-{
-"title": "The Night the Lights Went Out in Georgia",
-"artist": "Reba McEntire",
-"g": "country",
-"y": 1991,
-"src": "country"
-},
-{
-"title": "Achy Breaky Heart",
-"artist": "Billy Ray Cyrus",
-"g": "country",
-"y": 1992,
-"src": "country"
-},
-{
-"title": "Fancy",
-"artist": "Reba McEntire",
-"g": "country",
-"y": 1990,
-"src": "country"
-},
-{
-"title": "You Belong with Me",
-"artist": "Taylor Swift",
-"g": "country",
-"y": 2008,
-"src": "country"
-},
-{
-"title": "Follow Your Arrow",
-"artist": "Kacey Musgraves",
-"g": "country",
-"y": 2013,
-"src": "country"
-},
-{
-"title": "That Don't Impress Me Much",
-"artist": "Shania Twain",
-"g": "country",
-"y": 1997,
-"src": "country"
-},
-{
-"title": "Wide Open Spaces",
-"artist": "The Chicks",
-"g": "country",
-"y": 1998,
-"src": "country"
-},
-{
-"title": "Heart Like a Truck",
-"artist": "Lainey Wilson",
-"g": "country",
-"y": 2022,
-"src": "country"
-},
-{
-"title": "Gunpowder & Lead",
-"artist": "Miranda Lambert",
-"g": "country",
-"y": 2007,
-"src": "country"
-},
-{
-"title": "Last Night",
-"artist": "Morgan Wallen",
-"g": "country",
-"y": 2023,
-"src": "country"
-},
-{
-"title": "Beautiful Crazy",
-"artist": "Luke Combs",
-"g": "country",
-"y": 2018,
-"src": "country"
-},
-{
-"title": "Die a Happy Man",
-"artist": "Thomas Rhett",
-"g": "country",
-"y": 2015,
-"src": "country"
-},
-{
-"title": "In Color",
-"artist": "Jamey Johnson",
-"g": "country",
-"y": 2008,
-"src": "country"
-},
-{
-"title": "Whiskey Glasses",
-"artist": "Morgan Wallen",
-"g": "country",
-"y": 2018,
-"src": "country"
-},
-{
-"title": "Meant to Be",
-"artist": "Bebe Rexha & Florida Georgia Line",
-"g": "country",
-"y": 2017,
-"src": "country"
-},
-{
-"title": "10,000 Hours",
-"artist": "Dan + Shay & Justin Bieber",
-"g": "country",
-"y": 2019,
-"src": "country"
-},
-{
-"title": "I Had Some Help",
-"artist": "Post Malone & Morgan Wallen",
-"g": "country",
-"y": 2024,
-"src": "country"
-},
-{
-"title": "When It Rains It Pours",
-"artist": "Luke Combs",
-"g": "country",
-"y": 2017,
-"src": "country"
-},
-{
-"title": "Fast Car",
-"artist": "Luke Combs",
-"g": "country",
-"y": 2023,
-"src": "country"
-},
-{
-"title": "Broken Halos",
-"artist": "Chris Stapleton",
-"g": "country",
-"y": 2017,
-"src": "country"
-},
-{
-"title": "Tequila",
-"artist": "Dan + Shay",
-"g": "country",
-"y": 2018,
-"src": "country"
-},
-{
-"title": "The Bones",
-"artist": "Maren Morris",
-"g": "country",
-"y": 2019,
-"src": "country"
-},
-{
-"title": "Life Is a Highway",
-"artist": "Rascal Flatts",
-"g": "country",
-"y": 2006,
-"src": "country"
-},
-{
-"title": "The Devil Went Down to Georgia",
-"artist": "The Charlie Daniels Band",
-"g": "country",
-"y": 1979,
-"src": "country"
-},
-{
-"title": "One",
-"artist": "U2",
-"g": "rock",
-"y": 1991,
-"src": "rock"
-},
-{
-"title": "Crazy",
-"artist": "Patsy Cline",
-"g": "country",
-"y": 1961,
-"src": "us"
-},
-{
-"title": "Always on My Mind",
-"artist": "Willie Nelson",
-"g": "country",
-"y": 1982,
-"src": "country"
-},
-{
-"title": "Hallelujah",
-"artist": "Jeff Buckley",
-"g": "rock",
-"y": 1994,
-"src": "us"
-},
-{
-"title": "Wagon Wheel",
-"artist": "Darius Rucker",
-"g": "country",
-"y": 2013,
-"src": "us"
-},
-{
-"title": "Tequila",
-"artist": "The Champs",
-"g": "latin",
-"y": 1958,
-"src": "us"
-}
-]
+ "sources": {
+  "us": {
+   "name": "Singa — 100 most popular karaoke songs in the US (2026)",
+   "url": "https://singa.com/blog/100-most-popular-karaoke-songs-united-states/"
+  },
+  "pop": {
+   "name": "Singa — 100 most popular pop karaoke songs (2026)",
+   "url": "https://singa.com/blog/pop-karaoke-songs/"
+  },
+  "rock": {
+   "name": "Singa — 100+ best rock karaoke songs",
+   "url": "https://singa.com/blog/best-rock-karaoke-songs"
+  },
+  "country": {
+   "name": "StemSplit — best country karaoke songs (KaraFun country chart + fan vote)",
+   "url": "https://stemsplit.io/blog/country-karaoke-songs"
+  },
+  "singking": {
+   "name": "Sing King — biggest karaoke songs (2024) & most-viewed",
+   "url": "https://singking.com/blog/the-20-biggest-karaoke-songs-of-2024/"
+  },
+  "ph": {
+   "name": "Filipino karaoke-machine top 10 (Kollective Hustle)",
+   "url": "https://kollectivehustle.com/"
+  }
+ },
+ "songs": [
+  {
+   "title": "Valerie",
+   "artist": "Mark Ronson & Amy Winehouse",
+   "g": "rnb",
+   "y": 2007,
+   "src": "us"
+  },
+  {
+   "title": "Love",
+   "artist": "Keyshia Cole",
+   "g": "rnb",
+   "y": 2005,
+   "src": "us"
+  },
+  {
+   "title": "Can't Help Falling in Love",
+   "artist": "Elvis Presley",
+   "g": "pop",
+   "y": 1961,
+   "src": "us"
+  },
+  {
+   "title": "You Oughta Know",
+   "artist": "Alanis Morissette",
+   "g": "rock",
+   "y": 1995,
+   "src": "us"
+  },
+  {
+   "title": "A Million Dreams",
+   "artist": "The Greatest Showman Cast",
+   "g": "musical",
+   "y": 2017,
+   "src": "us"
+  },
+  {
+   "title": "I Write Sins Not Tragedies",
+   "artist": "Panic! at the Disco",
+   "g": "punk",
+   "y": 2005,
+   "src": "us"
+  },
+  {
+   "title": "No Scrubs",
+   "artist": "TLC",
+   "g": "rnb",
+   "y": 1999,
+   "src": "us"
+  },
+  {
+   "title": "(Sittin' On) The Dock of the Bay",
+   "artist": "Otis Redding",
+   "g": "rnb",
+   "y": 1968,
+   "src": "us"
+  },
+  {
+   "title": "Something in the Orange",
+   "artist": "Zach Bryan",
+   "g": "country",
+   "y": 2022,
+   "src": "us"
+  },
+  {
+   "title": "Choosin' Texas",
+   "artist": "Treaty Oak Revival",
+   "g": "country",
+   "y": null,
+   "src": "us"
+  },
+  {
+   "title": "Baby Got Back",
+   "artist": "Sir Mix-a-Lot",
+   "g": "hiphop",
+   "y": 1992,
+   "src": "us"
+  },
+  {
+   "title": "Jolene",
+   "artist": "Dolly Parton",
+   "g": "country",
+   "y": 1973,
+   "src": "us"
+  },
+  {
+   "title": "Misery Business",
+   "artist": "Paramore",
+   "g": "punk",
+   "y": 2007,
+   "src": "us"
+  },
+  {
+   "title": "Your Man",
+   "artist": "Josh Turner",
+   "g": "country",
+   "y": 2005,
+   "src": "us"
+  },
+  {
+   "title": "Careless Whisper",
+   "artist": "George Michael",
+   "g": "pop",
+   "y": 1984,
+   "src": "us"
+  },
+  {
+   "title": "Man I Need",
+   "artist": "Olivia Dean",
+   "g": "pop",
+   "y": 2025,
+   "src": "us"
+  },
+  {
+   "title": "Strawberry Wine",
+   "artist": "Deana Carter",
+   "g": "country",
+   "y": 1996,
+   "src": "us"
+  },
+  {
+   "title": "...Baby One More Time",
+   "artist": "Britney Spears",
+   "g": "pop",
+   "y": 1998,
+   "src": "us"
+  },
+  {
+   "title": "If I Ain't Got You",
+   "artist": "Alicia Keys",
+   "g": "rnb",
+   "y": 2003,
+   "src": "us"
+  },
+  {
+   "title": "Stay",
+   "artist": "Rihanna & Mikky Ekko",
+   "g": "pop",
+   "y": 2012,
+   "src": "us"
+  },
+  {
+   "title": "All of Me",
+   "artist": "John Legend",
+   "g": "rnb",
+   "y": 2013,
+   "src": "us"
+  },
+  {
+   "title": "Santa Baby",
+   "artist": "Eartha Kitt",
+   "g": "jazz",
+   "y": 1953,
+   "src": "us"
+  },
+  {
+   "title": "Mama's Broken Heart",
+   "artist": "Miranda Lambert",
+   "g": "country",
+   "y": 2011,
+   "src": "us"
+  },
+  {
+   "title": "Since U Been Gone",
+   "artist": "Kelly Clarkson",
+   "g": "pop",
+   "y": 2004,
+   "src": "us"
+  },
+  {
+   "title": "White Christmas",
+   "artist": "Bing Crosby",
+   "g": "jazz",
+   "y": 1942,
+   "src": "us"
+  },
+  {
+   "title": "Need You Now",
+   "artist": "Lady A",
+   "g": "country",
+   "y": 2009,
+   "src": "us"
+  },
+  {
+   "title": "From the Start",
+   "artist": "Laufey",
+   "g": "jazz",
+   "y": 2023,
+   "src": "us"
+  },
+  {
+   "title": "A Whole New World",
+   "artist": "Aladdin",
+   "g": "musical",
+   "y": 1992,
+   "src": "us"
+  },
+  {
+   "title": "Goodbye Earl",
+   "artist": "The Chicks",
+   "g": "country",
+   "y": 1999,
+   "src": "us"
+  },
+  {
+   "title": "New York, New York",
+   "artist": "Frank Sinatra",
+   "g": "jazz",
+   "y": 1979,
+   "src": "us"
+  },
+  {
+   "title": "Back to Black",
+   "artist": "Amy Winehouse",
+   "g": "rnb",
+   "y": 2006,
+   "src": "us"
+  },
+  {
+   "title": "When I Was Your Man",
+   "artist": "Bruno Mars",
+   "g": "pop",
+   "y": 2012,
+   "src": "us"
+  },
+  {
+   "title": "Feeling Good",
+   "artist": "Michael Bublé",
+   "g": "jazz",
+   "y": 2005,
+   "src": "us"
+  },
+  {
+   "title": "Crazy Rap",
+   "artist": "Afroman",
+   "g": "hiphop",
+   "y": 2001,
+   "src": "us"
+  },
+  {
+   "title": "Ain't No Mountain High Enough",
+   "artist": "Marvin Gaye & Tammi Terrell",
+   "g": "rnb",
+   "y": 1967,
+   "src": "us"
+  },
+  {
+   "title": "Bad Romance",
+   "artist": "Lady Gaga",
+   "g": "pop",
+   "y": 2009,
+   "src": "us"
+  },
+  {
+   "title": "When We Were Young",
+   "artist": "Adele",
+   "g": "pop",
+   "y": 2015,
+   "src": "us"
+  },
+  {
+   "title": "At Last",
+   "artist": "Etta James",
+   "g": "jazz",
+   "y": 1960,
+   "src": "us"
+  },
+  {
+   "title": "My Own Worst Enemy",
+   "artist": "Lit",
+   "g": "rock",
+   "y": 1999,
+   "src": "us"
+  },
+  {
+   "title": "All the Small Things",
+   "artist": "blink-182",
+   "g": "punk",
+   "y": 1999,
+   "src": "us"
+  },
+  {
+   "title": "Como La Flor",
+   "artist": "Selena",
+   "g": "latin",
+   "y": 1992,
+   "src": "us"
+  },
+  {
+   "title": "Lips of an Angel",
+   "artist": "Hinder",
+   "g": "rock",
+   "y": 2005,
+   "src": "us"
+  },
+  {
+   "title": "The Climb",
+   "artist": "Miley Cyrus",
+   "g": "country",
+   "y": 2009,
+   "src": "us"
+  },
+  {
+   "title": "Let Me Love You",
+   "artist": "Mario",
+   "g": "rnb",
+   "y": 2004,
+   "src": "us"
+  },
+  {
+   "title": "Ain't It Fun",
+   "artist": "Paramore",
+   "g": "punk",
+   "y": 2013,
+   "src": "us"
+  },
+  {
+   "title": "Closing Time",
+   "artist": "Semisonic",
+   "g": "rock",
+   "y": 1998,
+   "src": "us"
+  },
+  {
+   "title": "A Thousand Miles",
+   "artist": "Vanessa Carlton",
+   "g": "pop",
+   "y": 2002,
+   "src": "us"
+  },
+  {
+   "title": "Gimme! Gimme! Gimme! (A Man After Midnight)",
+   "artist": "ABBA",
+   "g": "disco",
+   "y": 1979,
+   "src": "pop"
+  },
+  {
+   "title": "Breaking Free",
+   "artist": "High School Musical",
+   "g": "musical",
+   "y": 2006,
+   "src": "pop"
+  },
+  {
+   "title": "Call Me Maybe",
+   "artist": "Carly Rae Jepsen",
+   "g": "pop",
+   "y": 2012,
+   "src": "pop"
+  },
+  {
+   "title": "Beauty and a Beat",
+   "artist": "Justin Bieber",
+   "g": "pop",
+   "y": 2012,
+   "src": "pop"
+  },
+  {
+   "title": "Don't Look Back in Anger",
+   "artist": "Oasis",
+   "g": "rock",
+   "y": 1996,
+   "src": "pop"
+  },
+  {
+   "title": "My Heart Will Go On",
+   "artist": "Céline Dion",
+   "g": "pop",
+   "y": 1997,
+   "src": "pop"
+  },
+  {
+   "title": "Barbie Girl",
+   "artist": "Aqua",
+   "g": "electronic",
+   "y": 1997,
+   "src": "pop"
+  },
+  {
+   "title": "Toxic",
+   "artist": "Britney Spears",
+   "g": "pop",
+   "y": 2003,
+   "src": "pop"
+  },
+  {
+   "title": "Believe",
+   "artist": "Cher",
+   "g": "electronic",
+   "y": 1998,
+   "src": "pop"
+  },
+  {
+   "title": "Lush Life",
+   "artist": "Zara Larsson",
+   "g": "pop",
+   "y": 2015,
+   "src": "pop"
+  },
+  {
+   "title": "Die with a Smile",
+   "artist": "Lady Gaga & Bruno Mars",
+   "g": "pop",
+   "y": 2024,
+   "src": "pop"
+  },
+  {
+   "title": "Boten Anna",
+   "artist": "Basshunter",
+   "g": "electronic",
+   "y": 2006,
+   "src": "pop"
+  },
+  {
+   "title": "What Makes You Beautiful",
+   "artist": "One Direction",
+   "g": "pop",
+   "y": 2011,
+   "src": "pop"
+  },
+  {
+   "title": "Espresso",
+   "artist": "Sabrina Carpenter",
+   "g": "pop",
+   "y": 2024,
+   "src": "pop"
+  },
+  {
+   "title": "Everybody (Backstreet's Back)",
+   "artist": "Backstreet Boys",
+   "g": "pop",
+   "y": 1997,
+   "src": "pop"
+  },
+  {
+   "title": "Billie Jean",
+   "artist": "Michael Jackson",
+   "g": "pop",
+   "y": 1982,
+   "src": "pop"
+  },
+  {
+   "title": "Fuck You",
+   "artist": "CeeLo Green",
+   "g": "rnb",
+   "y": 2010,
+   "src": "pop"
+  },
+  {
+   "title": "Bye Bye Bye",
+   "artist": "*NSYNC",
+   "g": "pop",
+   "y": 2000,
+   "src": "pop"
+  },
+  {
+   "title": "Manchild",
+   "artist": "Sabrina Carpenter",
+   "g": "pop",
+   "y": 2025,
+   "src": "pop"
+  },
+  {
+   "title": "I Kissed a Girl",
+   "artist": "Katy Perry",
+   "g": "pop",
+   "y": 2008,
+   "src": "pop"
+  },
+  {
+   "title": "Shake It Off",
+   "artist": "Taylor Swift",
+   "g": "pop",
+   "y": 2014,
+   "src": "pop"
+  },
+  {
+   "title": "Diamonds",
+   "artist": "Rihanna",
+   "g": "pop",
+   "y": 2012,
+   "src": "pop"
+  },
+  {
+   "title": "Oops!... I Did It Again",
+   "artist": "Britney Spears",
+   "g": "pop",
+   "y": 2000,
+   "src": "pop"
+  },
+  {
+   "title": "Sk8er Boi",
+   "artist": "Avril Lavigne",
+   "g": "punk",
+   "y": 2002,
+   "src": "pop"
+  },
+  {
+   "title": "Gnarly",
+   "artist": "KATSEYE",
+   "g": "kpop",
+   "y": 2025,
+   "src": "pop"
+  },
+  {
+   "title": "Gotta Go My Own Way",
+   "artist": "High School Musical",
+   "g": "musical",
+   "y": 2007,
+   "src": "pop"
+  },
+  {
+   "title": "Dancing On My Own",
+   "artist": "Robyn",
+   "g": "electronic",
+   "y": 2010,
+   "src": "pop"
+  },
+  {
+   "title": "Stateside",
+   "artist": "PinkPantheress",
+   "g": "electronic",
+   "y": null,
+   "src": "pop"
+  },
+  {
+   "title": "HOT TO GO!",
+   "artist": "Chappell Roan",
+   "g": "pop",
+   "y": 2023,
+   "src": "pop"
+  },
+  {
+   "title": "This Is Me",
+   "artist": "Keala Settle",
+   "g": "musical",
+   "y": 2017,
+   "src": "pop"
+  },
+  {
+   "title": "Set Fire to the Rain",
+   "artist": "Adele",
+   "g": "pop",
+   "y": 2011,
+   "src": "pop"
+  },
+  {
+   "title": "Poker Face",
+   "artist": "Lady Gaga",
+   "g": "pop",
+   "y": 2008,
+   "src": "pop"
+  },
+  {
+   "title": "Your Song",
+   "artist": "Elton John",
+   "g": "pop",
+   "y": 1970,
+   "src": "pop"
+  },
+  {
+   "title": "Never Enough",
+   "artist": "The Greatest Showman Cast",
+   "g": "musical",
+   "y": 2017,
+   "src": "pop"
+  },
+  {
+   "title": "Complicated",
+   "artist": "Avril Lavigne",
+   "g": "punk",
+   "y": 2002,
+   "src": "pop"
+  },
+  {
+   "title": "Perfect",
+   "artist": "P!nk",
+   "g": "pop",
+   "y": 2010,
+   "src": "pop"
+  },
+  {
+   "title": "It's Raining Men",
+   "artist": "The Weather Girls",
+   "g": "disco",
+   "y": 1982,
+   "src": "pop"
+  },
+  {
+   "title": "Don't Go Breaking My Heart",
+   "artist": "Elton John & Kiki Dee",
+   "g": "pop",
+   "y": 1976,
+   "src": "pop"
+  },
+  {
+   "title": "Ordinary",
+   "artist": "Alex Warren",
+   "g": "pop",
+   "y": 2025,
+   "src": "pop"
+  },
+  {
+   "title": "Telephone",
+   "artist": "Lady Gaga & Beyoncé",
+   "g": "pop",
+   "y": 2009,
+   "src": "pop"
+  },
+  {
+   "title": "You Raise Me Up",
+   "artist": "Josh Groban",
+   "g": "pop",
+   "y": 2003,
+   "src": "pop"
+  },
+  {
+   "title": "Money, Money, Money",
+   "artist": "ABBA",
+   "g": "disco",
+   "y": 1976,
+   "src": "pop"
+  },
+  {
+   "title": "Hopelessly Devoted to You",
+   "artist": "Olivia Newton-John",
+   "g": "musical",
+   "y": 1978,
+   "src": "pop"
+  },
+  {
+   "title": "Never Gonna Give You Up",
+   "artist": "Rick Astley",
+   "g": "pop",
+   "y": 1987,
+   "src": "pop"
+  },
+  {
+   "title": "TiK ToK",
+   "artist": "Kesha",
+   "g": "pop",
+   "y": 2009,
+   "src": "pop"
+  },
+  {
+   "title": "Last Friday Night (T.G.I.F.)",
+   "artist": "Katy Perry",
+   "g": "pop",
+   "y": 2011,
+   "src": "pop"
+  },
+  {
+   "title": "Firework",
+   "artist": "Katy Perry",
+   "g": "pop",
+   "y": 2010,
+   "src": "pop"
+  },
+  {
+   "title": "La Isla Bonita",
+   "artist": "Madonna",
+   "g": "pop",
+   "y": 1987,
+   "src": "pop"
+  },
+  {
+   "title": "It Must Have Been Love",
+   "artist": "Roxette",
+   "g": "pop",
+   "y": 1987,
+   "src": "pop"
+  },
+  {
+   "title": "Where the Wild Roses Grow",
+   "artist": "Nick Cave & Kylie Minogue",
+   "g": "rock",
+   "y": 1995,
+   "src": "pop"
+  },
+  {
+   "title": "Part of Your World",
+   "artist": "The Little Mermaid",
+   "g": "musical",
+   "y": 1989,
+   "src": "pop"
+  },
+  {
+   "title": "What a Wonderful World",
+   "artist": "Louis Armstrong",
+   "g": "jazz",
+   "y": 1967,
+   "src": "pop"
+  },
+  {
+   "title": "Start of Something New",
+   "artist": "High School Musical",
+   "g": "musical",
+   "y": 2006,
+   "src": "pop"
+  },
+  {
+   "title": "Halo",
+   "artist": "Beyoncé",
+   "g": "rnb",
+   "y": 2008,
+   "src": "pop"
+  },
+  {
+   "title": "Super Trouper",
+   "artist": "ABBA",
+   "g": "disco",
+   "y": 1980,
+   "src": "pop"
+  },
+  {
+   "title": "Waterloo",
+   "artist": "ABBA",
+   "g": "disco",
+   "y": 1974,
+   "src": "pop"
+  },
+  {
+   "title": "We Are Young",
+   "artist": "fun.",
+   "g": "pop",
+   "y": 2011,
+   "src": "pop"
+  },
+  {
+   "title": "Chiquitita",
+   "artist": "ABBA",
+   "g": "disco",
+   "y": 1979,
+   "src": "pop"
+  },
+  {
+   "title": "Chandelier",
+   "artist": "Sia",
+   "g": "pop",
+   "y": 2014,
+   "src": "pop"
+  },
+  {
+   "title": "Vampire",
+   "artist": "Olivia Rodrigo",
+   "g": "pop",
+   "y": 2023,
+   "src": "pop"
+  },
+  {
+   "title": "Please Please Please",
+   "artist": "Sabrina Carpenter",
+   "g": "pop",
+   "y": 2024,
+   "src": "pop"
+  },
+  {
+   "title": "Shape of You",
+   "artist": "Ed Sheeran",
+   "g": "pop",
+   "y": 2017,
+   "src": "pop"
+  },
+  {
+   "title": "I'm Yours",
+   "artist": "Jason Mraz",
+   "g": "pop",
+   "y": 2008,
+   "src": "pop"
+  },
+  {
+   "title": "Livin' la Vida Loca",
+   "artist": "Ricky Martin",
+   "g": "latin",
+   "y": 1999,
+   "src": "pop"
+  },
+  {
+   "title": "Left Outside Alone",
+   "artist": "Anastacia",
+   "g": "pop",
+   "y": 2004,
+   "src": "pop"
+  },
+  {
+   "title": "Drivers License",
+   "artist": "Olivia Rodrigo",
+   "g": "pop",
+   "y": 2021,
+   "src": "pop"
+  },
+  {
+   "title": "Beat It",
+   "artist": "Michael Jackson",
+   "g": "pop",
+   "y": 1982,
+   "src": "pop"
+  },
+  {
+   "title": "Thunderstruck",
+   "artist": "AC/DC",
+   "g": "rock",
+   "y": 1990,
+   "src": "rock"
+  },
+  {
+   "title": "Seven Nation Army",
+   "artist": "The White Stripes",
+   "g": "rock",
+   "y": 2003,
+   "src": "rock"
+  },
+  {
+   "title": "I Love Rock 'n' Roll",
+   "artist": "Joan Jett & the Blackhearts",
+   "g": "rock",
+   "y": 1981,
+   "src": "rock"
+  },
+  {
+   "title": "Born to Run",
+   "artist": "Bruce Springsteen",
+   "g": "rock",
+   "y": 1975,
+   "src": "rock"
+  },
+  {
+   "title": "I Bet You Look Good on the Dancefloor",
+   "artist": "Arctic Monkeys",
+   "g": "rock",
+   "y": 2005,
+   "src": "rock"
+  },
+  {
+   "title": "Welcome to the Jungle",
+   "artist": "Guns N' Roses",
+   "g": "rock",
+   "y": 1987,
+   "src": "rock"
+  },
+  {
+   "title": "Saturday",
+   "artist": "Twenty One Pilots",
+   "g": "rock",
+   "y": 2021,
+   "src": "rock"
+  },
+  {
+   "title": "Black Summer",
+   "artist": "Red Hot Chili Peppers",
+   "g": "rock",
+   "y": 2022,
+   "src": "rock"
+  },
+  {
+   "title": "Be My Baby",
+   "artist": "The Ronettes",
+   "g": "pop",
+   "y": 1963,
+   "src": "rock"
+  },
+  {
+   "title": "Call Me",
+   "artist": "Blondie",
+   "g": "rock",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Prayer in C",
+   "artist": "Lilly Wood & The Prick",
+   "g": "electronic",
+   "y": 2014,
+   "src": "rock"
+  },
+  {
+   "title": "Sleeping in My Car",
+   "artist": "Roxette",
+   "g": "rock",
+   "y": 1994,
+   "src": "rock"
+  },
+  {
+   "title": "Simple Man",
+   "artist": "Lynyrd Skynyrd",
+   "g": "rock",
+   "y": 1973,
+   "src": "rock"
+  },
+  {
+   "title": "Magic Man",
+   "artist": "Heart",
+   "g": "rock",
+   "y": 1976,
+   "src": "rock"
+  },
+  {
+   "title": "Iron Man",
+   "artist": "Black Sabbath",
+   "g": "metal",
+   "y": 1970,
+   "src": "rock"
+  },
+  {
+   "title": "Sharp Dressed Man",
+   "artist": "ZZ Top",
+   "g": "rock",
+   "y": 1983,
+   "src": "rock"
+  },
+  {
+   "title": "Hurt",
+   "artist": "Johnny Cash",
+   "g": "country",
+   "y": 2002,
+   "src": "rock"
+  },
+  {
+   "title": "Boulevard of Broken Dreams",
+   "artist": "Green Day",
+   "g": "punk",
+   "y": 2004,
+   "src": "rock"
+  },
+  {
+   "title": "Use Somebody",
+   "artist": "Kings of Leon",
+   "g": "rock",
+   "y": 2008,
+   "src": "rock"
+  },
+  {
+   "title": "Knockin' on Heaven's Door",
+   "artist": "Bob Dylan",
+   "g": "folk",
+   "y": 1973,
+   "src": "rock"
+  },
+  {
+   "title": "Better Man",
+   "artist": "Pearl Jam",
+   "g": "rock",
+   "y": 1994,
+   "src": "rock"
+  },
+  {
+   "title": "Brown Sugar",
+   "artist": "The Rolling Stones",
+   "g": "rock",
+   "y": 1971,
+   "src": "rock"
+  },
+  {
+   "title": "Purple Haze",
+   "artist": "Jimi Hendrix",
+   "g": "rock",
+   "y": 1967,
+   "src": "rock"
+  },
+  {
+   "title": "Whole Lotta Love",
+   "artist": "Led Zeppelin",
+   "g": "rock",
+   "y": 1969,
+   "src": "rock"
+  },
+  {
+   "title": "Comfortably Numb",
+   "artist": "Pink Floyd",
+   "g": "rock",
+   "y": 1979,
+   "src": "rock"
+  },
+  {
+   "title": "Smoke on the Water",
+   "artist": "Deep Purple",
+   "g": "rock",
+   "y": 1972,
+   "src": "rock"
+  },
+  {
+   "title": "School's Out",
+   "artist": "Alice Cooper",
+   "g": "rock",
+   "y": 1972,
+   "src": "rock"
+  },
+  {
+   "title": "Slow Ride",
+   "artist": "Foghat",
+   "g": "rock",
+   "y": 1975,
+   "src": "rock"
+  },
+  {
+   "title": "Evil Ways",
+   "artist": "Santana",
+   "g": "latin",
+   "y": 1969,
+   "src": "rock"
+  },
+  {
+   "title": "You Shook Me All Night Long",
+   "artist": "AC/DC",
+   "g": "rock",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Tom Sawyer",
+   "artist": "Rush",
+   "g": "rock",
+   "y": 1981,
+   "src": "rock"
+  },
+  {
+   "title": "You Really Got Me",
+   "artist": "The Kinks",
+   "g": "rock",
+   "y": 1964,
+   "src": "rock"
+  },
+  {
+   "title": "Close My Eyes Forever",
+   "artist": "Lita Ford & Ozzy Osbourne",
+   "g": "metal",
+   "y": 1988,
+   "src": "rock"
+  },
+  {
+   "title": "Dancing in the Street",
+   "artist": "David Bowie & Mick Jagger",
+   "g": "rock",
+   "y": 1985,
+   "src": "rock"
+  },
+  {
+   "title": "Almost Paradise",
+   "artist": "Mike Reno & Ann Wilson",
+   "g": "rock",
+   "y": 1984,
+   "src": "rock"
+  },
+  {
+   "title": "Don't Give Up",
+   "artist": "Peter Gabriel & Kate Bush",
+   "g": "rock",
+   "y": 1986,
+   "src": "rock"
+  },
+  {
+   "title": "Hunger Strike",
+   "artist": "Temple of the Dog",
+   "g": "rock",
+   "y": 1991,
+   "src": "rock"
+  },
+  {
+   "title": "It's Only Love",
+   "artist": "Bryan Adams & Tina Turner",
+   "g": "rock",
+   "y": 1984,
+   "src": "rock"
+  },
+  {
+   "title": "Numb",
+   "artist": "Linkin Park",
+   "g": "metal",
+   "y": 2003,
+   "src": "rock"
+  },
+  {
+   "title": "Smells Like Teen Spirit",
+   "artist": "Nirvana",
+   "g": "rock",
+   "y": 1991,
+   "src": "rock"
+  },
+  {
+   "title": "Love Will Tear Us Apart",
+   "artist": "Joy Division",
+   "g": "punk",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Radio Free Europe",
+   "artist": "R.E.M.",
+   "g": "rock",
+   "y": 1981,
+   "src": "rock"
+  },
+  {
+   "title": "Blue Monday",
+   "artist": "New Order",
+   "g": "electronic",
+   "y": 1983,
+   "src": "rock"
+  },
+  {
+   "title": "Once in a Lifetime",
+   "artist": "Talking Heads",
+   "g": "rock",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Blister in the Sun",
+   "artist": "Violent Femmes",
+   "g": "punk",
+   "y": 1983,
+   "src": "rock"
+  },
+  {
+   "title": "Jeremy",
+   "artist": "Pearl Jam",
+   "g": "rock",
+   "y": 1991,
+   "src": "rock"
+  },
+  {
+   "title": "Monkey Gone to Heaven",
+   "artist": "Pixies",
+   "g": "rock",
+   "y": 1989,
+   "src": "rock"
+  },
+  {
+   "title": "Closer",
+   "artist": "Nine Inch Nails",
+   "g": "metal",
+   "y": 1994,
+   "src": "rock"
+  },
+  {
+   "title": "Master of Puppets",
+   "artist": "Metallica",
+   "g": "metal",
+   "y": 1986,
+   "src": "rock"
+  },
+  {
+   "title": "Ace of Spades",
+   "artist": "Motörhead",
+   "g": "metal",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Breaking the Law",
+   "artist": "Judas Priest",
+   "g": "metal",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Run to the Hills",
+   "artist": "Iron Maiden",
+   "g": "metal",
+   "y": 1982,
+   "src": "rock"
+  },
+  {
+   "title": "Holy Diver",
+   "artist": "Dio",
+   "g": "metal",
+   "y": 1983,
+   "src": "rock"
+  },
+  {
+   "title": "One",
+   "artist": "Metallica",
+   "g": "metal",
+   "y": 1988,
+   "src": "rock"
+  },
+  {
+   "title": "Back in Black",
+   "artist": "AC/DC",
+   "g": "rock",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Shout at the Devil",
+   "artist": "Mötley Crüe",
+   "g": "metal",
+   "y": 1983,
+   "src": "rock"
+  },
+  {
+   "title": "Anarchy in the U.K.",
+   "artist": "Sex Pistols",
+   "g": "punk",
+   "y": 1976,
+   "src": "rock"
+  },
+  {
+   "title": "Blitzkrieg Bop",
+   "artist": "Ramones",
+   "g": "punk",
+   "y": 1976,
+   "src": "rock"
+  },
+  {
+   "title": "London Calling",
+   "artist": "The Clash",
+   "g": "punk",
+   "y": 1979,
+   "src": "rock"
+  },
+  {
+   "title": "I Wanna Be Your Dog",
+   "artist": "The Stooges",
+   "g": "punk",
+   "y": 1969,
+   "src": "rock"
+  },
+  {
+   "title": "Ever Fallen in Love",
+   "artist": "Buzzcocks",
+   "g": "punk",
+   "y": 1978,
+   "src": "rock"
+  },
+  {
+   "title": "Welcome to Paradise",
+   "artist": "Green Day",
+   "g": "punk",
+   "y": 1994,
+   "src": "rock"
+  },
+  {
+   "title": "Psycho Killer",
+   "artist": "Talking Heads",
+   "g": "punk",
+   "y": 1977,
+   "src": "rock"
+  },
+  {
+   "title": "Personality Crisis",
+   "artist": "New York Dolls",
+   "g": "punk",
+   "y": 1973,
+   "src": "rock"
+  },
+  {
+   "title": "Lust for Life",
+   "artist": "Iggy Pop",
+   "g": "punk",
+   "y": 1977,
+   "src": "rock"
+  },
+  {
+   "title": "Stairway to Heaven",
+   "artist": "Led Zeppelin",
+   "g": "rock",
+   "y": 1971,
+   "src": "rock"
+  },
+  {
+   "title": "Imagine",
+   "artist": "John Lennon",
+   "g": "rock",
+   "y": 1971,
+   "src": "rock"
+  },
+  {
+   "title": "Free Bird",
+   "artist": "Lynyrd Skynyrd",
+   "g": "rock",
+   "y": 1973,
+   "src": "rock"
+  },
+  {
+   "title": "Go Your Own Way",
+   "artist": "Fleetwood Mac",
+   "g": "rock",
+   "y": 1977,
+   "src": "rock"
+  },
+  {
+   "title": "Dream On",
+   "artist": "Aerosmith",
+   "g": "rock",
+   "y": 1973,
+   "src": "rock"
+  },
+  {
+   "title": "Wish You Were Here",
+   "artist": "Pink Floyd",
+   "g": "rock",
+   "y": 1975,
+   "src": "rock"
+  },
+  {
+   "title": "Another One Bites the Dust",
+   "artist": "Queen",
+   "g": "rock",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Rapture",
+   "artist": "Blondie",
+   "g": "disco",
+   "y": 1980,
+   "src": "rock"
+  },
+  {
+   "title": "Hungry Like the Wolf",
+   "artist": "Duran Duran",
+   "g": "electronic",
+   "y": 1982,
+   "src": "rock"
+  },
+  {
+   "title": "Losing My Religion",
+   "artist": "R.E.M.",
+   "g": "rock",
+   "y": 1991,
+   "src": "rock"
+  },
+  {
+   "title": "Enter Sandman",
+   "artist": "Metallica",
+   "g": "metal",
+   "y": 1991,
+   "src": "rock"
+  },
+  {
+   "title": "Come as You Are",
+   "artist": "Nirvana",
+   "g": "rock",
+   "y": 1991,
+   "src": "rock"
+  },
+  {
+   "title": "Killing Me Softly",
+   "artist": "Fugees",
+   "g": "hiphop",
+   "y": 1996,
+   "src": "rock"
+  },
+  {
+   "title": "Chicken Fried",
+   "artist": "Zac Brown Band",
+   "g": "country",
+   "y": 2008,
+   "src": "country"
+  },
+  {
+   "title": "Save a Horse (Ride a Cowboy)",
+   "artist": "Big & Rich",
+   "g": "country",
+   "y": 2004,
+   "src": "country"
+  },
+  {
+   "title": "Cruise",
+   "artist": "Florida Georgia Line",
+   "g": "country",
+   "y": 2012,
+   "src": "country"
+  },
+  {
+   "title": "Boot Scootin' Boogie",
+   "artist": "Brooks & Dunn",
+   "g": "country",
+   "y": 1992,
+   "src": "country"
+  },
+  {
+   "title": "Chattahoochee",
+   "artist": "Alan Jackson",
+   "g": "country",
+   "y": 1993,
+   "src": "country"
+  },
+  {
+   "title": "Family Tradition",
+   "artist": "Hank Williams Jr.",
+   "g": "country",
+   "y": 1979,
+   "src": "country"
+  },
+  {
+   "title": "Drunk on a Plane",
+   "artist": "Dierks Bentley",
+   "g": "country",
+   "y": 2014,
+   "src": "country"
+  },
+  {
+   "title": "A Bar Song (Tipsy)",
+   "artist": "Shaboozey",
+   "g": "country",
+   "y": 2024,
+   "src": "country"
+  },
+  {
+   "title": "Beer Never Broke My Heart",
+   "artist": "Luke Combs",
+   "g": "country",
+   "y": 2019,
+   "src": "country"
+  },
+  {
+   "title": "Toes",
+   "artist": "Zac Brown Band",
+   "g": "country",
+   "y": 2008,
+   "src": "country"
+  },
+  {
+   "title": "I Walk the Line",
+   "artist": "Johnny Cash",
+   "g": "country",
+   "y": 1956,
+   "src": "country"
+  },
+  {
+   "title": "On the Road Again",
+   "artist": "Willie Nelson",
+   "g": "country",
+   "y": 1980,
+   "src": "country"
+  },
+  {
+   "title": "All My Ex's Live in Texas",
+   "artist": "George Strait",
+   "g": "country",
+   "y": 1987,
+   "src": "country"
+  },
+  {
+   "title": "Amarillo by Morning",
+   "artist": "George Strait",
+   "g": "country",
+   "y": 1983,
+   "src": "country"
+  },
+  {
+   "title": "Rhinestone Cowboy",
+   "artist": "Glen Campbell",
+   "g": "country",
+   "y": 1975,
+   "src": "country"
+  },
+  {
+   "title": "Your Cheatin' Heart",
+   "artist": "Hank Williams",
+   "g": "country",
+   "y": 1953,
+   "src": "country"
+  },
+  {
+   "title": "Mama Tried",
+   "artist": "Merle Haggard",
+   "g": "country",
+   "y": 1968,
+   "src": "country"
+  },
+  {
+   "title": "Stand by Your Man",
+   "artist": "Tammy Wynette",
+   "g": "country",
+   "y": 1968,
+   "src": "country"
+  },
+  {
+   "title": "9 to 5",
+   "artist": "Dolly Parton",
+   "g": "country",
+   "y": 1980,
+   "src": "country"
+  },
+  {
+   "title": "Jackson",
+   "artist": "Johnny Cash & June Carter",
+   "g": "country",
+   "y": 1967,
+   "src": "country"
+  },
+  {
+   "title": "The House That Built Me",
+   "artist": "Miranda Lambert",
+   "g": "country",
+   "y": 2010,
+   "src": "country"
+  },
+  {
+   "title": "Whiskey Lullaby",
+   "artist": "Brad Paisley & Alison Krauss",
+   "g": "country",
+   "y": 2004,
+   "src": "country"
+  },
+  {
+   "title": "What Hurts the Most",
+   "artist": "Rascal Flatts",
+   "g": "country",
+   "y": 2006,
+   "src": "country"
+  },
+  {
+   "title": "Cover Me Up",
+   "artist": "Jason Isbell",
+   "g": "country",
+   "y": 2013,
+   "src": "country"
+  },
+  {
+   "title": "You Should Probably Leave",
+   "artist": "Chris Stapleton",
+   "g": "country",
+   "y": 2021,
+   "src": "country"
+  },
+  {
+   "title": "Wasted on You",
+   "artist": "Morgan Wallen",
+   "g": "country",
+   "y": 2021,
+   "src": "country"
+  },
+  {
+   "title": "The Night the Lights Went Out in Georgia",
+   "artist": "Reba McEntire",
+   "g": "country",
+   "y": 1991,
+   "src": "country"
+  },
+  {
+   "title": "Achy Breaky Heart",
+   "artist": "Billy Ray Cyrus",
+   "g": "country",
+   "y": 1992,
+   "src": "country"
+  },
+  {
+   "title": "Fancy",
+   "artist": "Reba McEntire",
+   "g": "country",
+   "y": 1990,
+   "src": "country"
+  },
+  {
+   "title": "You Belong with Me",
+   "artist": "Taylor Swift",
+   "g": "country",
+   "y": 2008,
+   "src": "country"
+  },
+  {
+   "title": "Follow Your Arrow",
+   "artist": "Kacey Musgraves",
+   "g": "country",
+   "y": 2013,
+   "src": "country"
+  },
+  {
+   "title": "That Don't Impress Me Much",
+   "artist": "Shania Twain",
+   "g": "country",
+   "y": 1997,
+   "src": "country"
+  },
+  {
+   "title": "Wide Open Spaces",
+   "artist": "The Chicks",
+   "g": "country",
+   "y": 1998,
+   "src": "country"
+  },
+  {
+   "title": "Heart Like a Truck",
+   "artist": "Lainey Wilson",
+   "g": "country",
+   "y": 2022,
+   "src": "country"
+  },
+  {
+   "title": "Gunpowder & Lead",
+   "artist": "Miranda Lambert",
+   "g": "country",
+   "y": 2007,
+   "src": "country"
+  },
+  {
+   "title": "Last Night",
+   "artist": "Morgan Wallen",
+   "g": "country",
+   "y": 2023,
+   "src": "country"
+  },
+  {
+   "title": "Beautiful Crazy",
+   "artist": "Luke Combs",
+   "g": "country",
+   "y": 2018,
+   "src": "country"
+  },
+  {
+   "title": "Die a Happy Man",
+   "artist": "Thomas Rhett",
+   "g": "country",
+   "y": 2015,
+   "src": "country"
+  },
+  {
+   "title": "In Color",
+   "artist": "Jamey Johnson",
+   "g": "country",
+   "y": 2008,
+   "src": "country"
+  },
+  {
+   "title": "Whiskey Glasses",
+   "artist": "Morgan Wallen",
+   "g": "country",
+   "y": 2018,
+   "src": "country"
+  },
+  {
+   "title": "Meant to Be",
+   "artist": "Bebe Rexha & Florida Georgia Line",
+   "g": "country",
+   "y": 2017,
+   "src": "country"
+  },
+  {
+   "title": "10,000 Hours",
+   "artist": "Dan + Shay & Justin Bieber",
+   "g": "country",
+   "y": 2019,
+   "src": "country"
+  },
+  {
+   "title": "I Had Some Help",
+   "artist": "Post Malone & Morgan Wallen",
+   "g": "country",
+   "y": 2024,
+   "src": "country"
+  },
+  {
+   "title": "When It Rains It Pours",
+   "artist": "Luke Combs",
+   "g": "country",
+   "y": 2017,
+   "src": "country"
+  },
+  {
+   "title": "Fast Car",
+   "artist": "Luke Combs",
+   "g": "country",
+   "y": 2023,
+   "src": "country"
+  },
+  {
+   "title": "Broken Halos",
+   "artist": "Chris Stapleton",
+   "g": "country",
+   "y": 2017,
+   "src": "country"
+  },
+  {
+   "title": "Tequila",
+   "artist": "Dan + Shay",
+   "g": "country",
+   "y": 2018,
+   "src": "country"
+  },
+  {
+   "title": "The Bones",
+   "artist": "Maren Morris",
+   "g": "country",
+   "y": 2019,
+   "src": "country"
+  },
+  {
+   "title": "Life Is a Highway",
+   "artist": "Rascal Flatts",
+   "g": "country",
+   "y": 2006,
+   "src": "country"
+  },
+  {
+   "title": "The Devil Went Down to Georgia",
+   "artist": "The Charlie Daniels Band",
+   "g": "country",
+   "y": 1979,
+   "src": "country"
+  },
+  {
+   "title": "One",
+   "artist": "U2",
+   "g": "rock",
+   "y": 1991,
+   "src": "rock"
+  },
+  {
+   "title": "Crazy",
+   "artist": "Patsy Cline",
+   "g": "country",
+   "y": 1961,
+   "src": "us"
+  },
+  {
+   "title": "Always on My Mind",
+   "artist": "Willie Nelson",
+   "g": "country",
+   "y": 1982,
+   "src": "country"
+  },
+  {
+   "title": "Hallelujah",
+   "artist": "Jeff Buckley",
+   "g": "rock",
+   "y": 1994,
+   "src": "us"
+  },
+  {
+   "title": "Wagon Wheel",
+   "artist": "Darius Rucker",
+   "g": "country",
+   "y": 2013,
+   "src": "us"
+  },
+  {
+   "title": "Tequila",
+   "artist": "The Champs",
+   "g": "latin",
+   "y": 1958,
+   "src": "us"
+  },
+  {
+   "title": "BIRDS OF A FEATHER",
+   "artist": "Billie Eilish",
+   "g": "pop",
+   "y": 2024,
+   "src": "singking"
+  },
+  {
+   "title": "Karma",
+   "artist": "JoJo Siwa",
+   "g": "pop",
+   "y": 2024,
+   "src": "singking"
+  },
+  {
+   "title": "On the Wings of Love",
+   "artist": "Jeffrey Osborne",
+   "g": "rnb",
+   "y": 1982,
+   "src": "singking"
+  },
+  {
+   "title": "Good Luck, Babe!",
+   "artist": "Chappell Roan",
+   "g": "pop",
+   "y": 2024,
+   "src": "singking"
+  },
+  {
+   "title": "Valentine",
+   "artist": "Jim Brickman & Martina McBride",
+   "g": "country",
+   "y": 1997,
+   "src": "singking"
+  },
+  {
+   "title": "Sailor Song",
+   "artist": "Gigi Perez",
+   "g": "pop",
+   "y": 2024,
+   "src": "singking"
+  },
+  {
+   "title": "Making Love Out of Nothing at All",
+   "artist": "Air Supply",
+   "g": "rock",
+   "y": 1983,
+   "src": "singking"
+  },
+  {
+   "title": "WILDFLOWER",
+   "artist": "Billie Eilish",
+   "g": "pop",
+   "y": 2024,
+   "src": "singking"
+  },
+  {
+   "title": "we can't be friends (wait for your love)",
+   "artist": "Ariana Grande",
+   "g": "pop",
+   "y": 2024,
+   "src": "singking"
+  },
+  {
+   "title": "Angels Like You",
+   "artist": "Miley Cyrus",
+   "g": "pop",
+   "y": 2020,
+   "src": "singking"
+  },
+  {
+   "title": "Reckless",
+   "artist": "Madison Beer",
+   "g": "pop",
+   "y": 2021,
+   "src": "singking"
+  },
+  {
+   "title": "Take A Bow",
+   "artist": "Rihanna",
+   "g": "pop",
+   "y": 2008,
+   "src": "singking"
+  },
+  {
+   "title": "Every Breath You Take",
+   "artist": "The Police",
+   "g": "rock",
+   "y": 1983,
+   "src": "singking"
+  },
+  {
+   "title": "Super Bass",
+   "artist": "Nicki Minaj",
+   "g": "hiphop",
+   "y": 2011,
+   "src": "singking"
+  },
+  {
+   "title": "I Will Always Love You",
+   "artist": "Whitney Houston",
+   "g": "rnb",
+   "y": 1992,
+   "src": "ph"
+  },
+  {
+   "title": "My Heart Will Go On",
+   "artist": "Celine Dion",
+   "g": "pop",
+   "y": 1997,
+   "src": "ph"
+  }
+ ]
 }
