@@ -60,6 +60,8 @@
 
   function showAwards(list) {
     if (!list.length) return toast('No awards yet — somebody sing something!', 'bad');
+    const n = KQ.state && KQ.state.night;
+    $('#awardsSub').innerHTML = n ? `<b>${KQ.dur((KQ.now() - n.partyStart) / 1000)}</b> of party · <b>${n.songs}</b> songs · <b>${n.singers}</b> singers · <b>${KQ.dur(n.singSecs)}</b> of singing · <b>${n.reacts}</b> 🔥` : '';
     $('#awardsGrid').innerHTML = list.map((x, i) => `<div class="acard" style="animation-delay:${i * 0.35}s"><div class="aic">${x.icon}</div>${avatar(x.name.split(' & ')[0], 'l')}<h3>${esc(x.title)}</h3><b>${esc(x.name)}</b><span>${esc(x.why)}</span></div>`).join('');
     app.classList.add('awards'); tada();
     clearTimeout(showAwards.t); showAwards.t = setTimeout(() => app.classList.remove('awards'), 60000);
@@ -224,6 +226,7 @@
   function renderAttract(st) {
     const panels = [];
     if ((st.stats || []).length) panels.push(`<div class="stats">${(st.stats || []).map((x, i) => `<span class="st ${i === 0 && x.sung > 1 ? 'top' : ''}">${avatar(x.singer, 's')} ${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('')}</div>`);
+    if (st.night && st.night.songs) panels.push(KQ.nightHtml(st.night));
     if (st.mix && st.mix.genres && st.mix.genres.length) panels.push(mixHtml(st.mix));
     const sung = new Set((st.stats || []).map(x => x.singer.toLowerCase()));
     const notYet = Object.values(st.people || {}).filter(p => p.seen >= st.nightStartedAt && !sung.has(p.name.toLowerCase())).slice(0, 10);

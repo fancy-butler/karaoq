@@ -103,7 +103,8 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
 - **🎲 Spin for me:** can't decide? The Search tab picks a karaoke classic for you, optionally by genre or decade. It also shows your recent searches and a shuffle of party classics to tap.
 - **Wrong version?** ⋯ on a queued song → pick another karaoke version. The singer keeps their spot.
 - **🏆 Tonight's awards:** Mic Hog, Genre Hopper, Crowd Favourite (most reactions), Marathon Mic, Time Traveller, Duet Darling, Fashionably Late, Opening Act. They're on the phone's Sung tab, and a host can put them on the TV (or ☰ Menu → Awards on the TV).
-- **📊 My stats** (☰ on your phone): your songs across every night, your most-sung songs, genres, decades and favourite duet partners.
+- **Tonight so far:** party time (ticking live), songs sung, singers, time spent singing, songs per hour, reactions, what's left in line, and the longest song. It's on the Sung tab, in the TV's rotating idle screen, and under the awards.
+- **📊 My stats** (☰ on your phone): total time on stage, your songs across every night, your most-sung songs, genres, decades and favourite duet partners.
 
 ## Genres & tonight's mix
 KARAO-Q reads the artist from the karaoke title and looks up the genre and decade on [MusicBrainz](https://musicbrainz.org), a free public music database. Every song gets a colour chip, the TV glows in the current song's genre colour, and **Tonight's mix** shows the night's split ("40% Pop · 25% Rock…") plus decades. Wrong guess? Tap the chip (or ⋯ → Genre) on a phone to fix it. Your pick is remembered.

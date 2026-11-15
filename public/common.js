@@ -108,6 +108,30 @@ window.KQ = (() => {
       ${mix.decades && mix.decades.length ? `<div class="mixdec">${mix.decades.slice(0, 5).map(d => `${esc(d.k)} <em>${pct(d.n)}%</em>`).join(' · ')}</div>` : ''}</div>`;
   }
 
+  // ---------- tonight in numbers ----------
+  const dur = secs => { secs = Math.max(0, Math.round(secs)); const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60); return h ? `${h}h ${String(m).padStart(2, '0')}m` : `${m} min`; };
+  function nightHtml(n) {
+    if (!n) return '';
+    const partySecs = (now() - n.partyStart) / 1000;
+    const perHour = partySecs > 600 ? (n.songs / (partySecs / 3600)).toFixed(1) : '–';
+    const tile = (icon, val, label) => `<div class="nt"><i>${icon}</i><b>${val}</b><span>${label}</span></div>`;
+    return `<div class="night">
+      <div class="ntiles">
+        ${tile('⏱️', `<span data-since="${n.partyStart}">${dur(partySecs)}</span>`, 'party time')}
+        ${tile('🎤', n.songs, `song${n.songs === 1 ? '' : 's'} sung`)}
+        ${tile('🧑‍🎤', n.singers, `singer${n.singers === 1 ? '' : 's'}`)}
+        ${tile('🎶', dur(n.singSecs), 'of singing')}
+        ${tile('📈', perHour, 'songs / hour')}
+        ${tile('🔥', n.reacts, 'reactions')}
+        ${tile('⏳', n.queueSongs ? dur(n.queueSecs) : '—', `in line${n.queueSongs ? ` (${n.queueSongs})` : ''}`)}
+        ${n.skipped ? tile('⏭️', n.skipped, 'skipped') : ''}
+      </div>
+      ${n.longest ? `<p class="nlong">Longest: <b>${esc(clean(n.longest.title))}</b> — ${esc(n.longest.who)} (${dur(n.longest.secs)})</p>` : ''}
+    </div>`;
+  }
+  // keep "party time" ticking without a full re-render
+  setInterval(() => document.querySelectorAll('[data-since]').forEach(el => { el.textContent = dur((now() - Number(el.dataset.since)) / 1000); }), 20000);
+
   // About / credits, shared by the TV screen and the phones
   const CREDITS = [
     ['yt-dlp', 'https://github.com/yt-dlp/yt-dlp', 'fetches the songs', 'Unlicense'],
@@ -134,6 +158,6 @@ window.KQ = (() => {
     </div>`;
   }
 
-  Object.assign(api, { PRESETS, avatar, avatars, person, isHostName, GENRES, gColor, genreChip, mixHtml, aboutHtml, who, keyLabel, connect, act, send, now, esc, fmt, clean, thumb, dlLabel, toast });
+  Object.assign(api, { dur, nightHtml, PRESETS, avatar, avatars, person, isHostName, GENRES, gColor, genreChip, mixHtml, aboutHtml, who, keyLabel, connect, act, send, now, esc, fmt, clean, thumb, dlLabel, toast });
   return api;
 })();

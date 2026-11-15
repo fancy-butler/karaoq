@@ -365,6 +365,7 @@
       <img loading="lazy" src="${esc(thumb(it))}" alt="">
       <div class="meta"><div class="singer">${esc(who(it))}</div><div class="t">${esc(clean(it.title))}</div></div>
       <div class="acts">${host || it.clientId === KQ.clientId ? '<button class="cyan back">↩ Back</button>' : ''}<button class="ghost">⋯</button></div></div>`).join('');
+    $('#nightBox').innerHTML = KQ.nightHtml(st.night);
     $('#mixBox').innerHTML = mixHtml(st.mix);
     const aw = st.awards || [];
     $('#awardsBox').innerHTML = aw.length ? `<div class="awards"><h4>🏆 Tonight's awards${KQ.you.isHost ? ' <button id="awardsTv" class="ghost tiny">Show on TV</button>' : ''}</h4>${aw.map(x => `<div class="award"><span class="ic">${x.icon}</span>${avatar(x.name.split(' & ')[0], 'm')}<div><b>${esc(x.title)}</b><span>${esc(x.name)} · ${esc(x.why)}</span></div></div>`).join('')}</div>` : '';
@@ -421,7 +422,7 @@
     const st = await (await fetch(`/api/stats?name=${encodeURIComponent(myName)}`)).json().catch(() => ({ songs: 0 }));
     const pills = (arr, f) => arr.map(f).join(' ');
     $('#aboutBody').innerHTML = `<div class="about mystats"><div class="whorow">${avatar(myName, 'l')}<h2>${esc(myName)}</h2></div>` + (st.songs ? `
-      <p><b>${st.songs}</b> song${st.songs > 1 ? 's' : ''} over <b>${st.nights}</b> night${st.nights > 1 ? 's' : ''} · singing since ${new Date(st.since).toLocaleDateString()}</p>
+      <p><b>${st.songs}</b> song${st.songs > 1 ? 's' : ''} over <b>${st.nights}</b> night${st.nights > 1 ? 's' : ''} · <b>${KQ.dur(st.stageSecs || 0)}</b> on stage · singing since ${new Date(st.since).toLocaleDateString()}</p>
       <h3>Most sung</h3><ol>${st.topSongs.map(t => `<li>${esc(clean(t.title))} <i>×${t.n}</i></li>`).join('')}</ol>
       ${st.genres.length ? `<h3>Genres</h3><p>${pills(st.genres, x => `<span class="gchip" style="--g:${KQ.gColor(x.g)}">${esc((GENRES[x.g] || [x.g])[0])} ×${x.n}</span>`)}</p>` : ''}
       ${st.decades.length ? `<h3>Decades</h3><p>${st.decades.map(x => `${x.d} ×${x.n}`).join(' · ')}</p>` : ''}

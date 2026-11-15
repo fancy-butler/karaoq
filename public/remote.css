@@ -212,3 +212,13 @@ body[data-theme="minimal"] button:not(.ghost):not(.av) { color: #111; }
 .award { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid #ffffff10; }
 .award .ic { font-size: 26px; width: 34px; text-align: center; } .award b { display: block; color: var(--gold); } .award span { font-size: 13px; color: var(--dim); }
 .mystats ol { padding-left: 20px; } .mystats .gchip { margin: 2px; }
+
+/* tonight in numbers */
+.night::before { content: "Tonight so far"; display: block; color: var(--dim); font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 8px; }
+.ntiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.nt { background: #ffffff0d; border-radius: 12px; padding: 8px 4px; text-align: center; display: flex; flex-direction: column; gap: 2px; }
+.nt i { font-style: normal; font-size: 18px; } .nt b { font-size: 18px; font-variant-numeric: tabular-nums; } .nt span { font-size: 11px; color: var(--dim); }
+.nlong { font-size: 13px; color: var(--dim); margin: 8px 2px 0; } .nlong b { color: var(--text); }
+.night { background: var(--panel); border-radius: 14px; padding: 12px; margin: 4px 0 14px; }
+#board span { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px 4px 4px; }
+#board span .av { margin: 0; }
