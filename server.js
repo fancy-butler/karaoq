@@ -36,9 +36,10 @@ app.use((req, res, next) => {
   if (viaNet(req) && (req.path.startsWith('/media') || req.path.startsWith('/stage'))) return res.status(404).end();
   next();
 });
-app.get('/', (req, res) => res.sendFile(path.join(pub, 'remote.html')));
-app.get('/stage', (req, res) => res.sendFile(path.join(pub, 'stage.html')));
-app.use(express.static(pub, { index: false }));
+app.get('/', (req, res) => { res.setHeader('Cache-Control', 'no-cache'); res.sendFile(path.join(pub, 'remote.html')); });
+app.get('/stage', (req, res) => { res.setHeader('Cache-Control', 'no-cache'); res.sendFile(path.join(pub, 'stage.html')); });
+// no-cache = phones re-check files every load, so an updated KARAO-Q never runs with stale page code
+app.use(express.static(pub, { index: false, setHeaders: res => res.setHeader('Cache-Control', 'no-cache') }));
 app.use('/media', express.static(yt.cacheDir, { fallthrough: false, maxAge: '1h' }));
 
 app.get('/api/search', async (req, res) => {
