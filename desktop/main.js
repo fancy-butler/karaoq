@@ -164,6 +164,8 @@ async function start() {
     return { action: 'deny' };
   });
   win.webContents.on('did-finish-load', tellStage);
+  // make sure keyboard shortcuts reach the TV straight away (Windows doesn't always focus a new window)
+  win.webContents.on('did-finish-load', () => { if (win && !win.isDestroyed()) { win.focus(); win.webContents.focus(); } });
 }
 
 // ---------- 🐞 bug report: one file in Downloads with everything needed to diagnose a problem ----------

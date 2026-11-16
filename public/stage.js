@@ -345,17 +345,20 @@
 
   document.addEventListener('keydown', e => {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
-    const st = KQ.state; if (!st) return;
+    // Screen keys (menu, help, fullscreen…) always work — even while the app is still starting up and
+    // hasn't heard from the party server yet. Only the queue keys below need the party state.
+    const st = KQ.state || { phase: 'idle', queue: [], held: [] };
     const k = e.key;
     if (KQStage.panels && KQStage.panels.onKey(k)) return;
     if (k === 'Escape') { app.classList.remove('pf'); app.classList.remove('mics'); app.classList.remove('lib'); app.classList.remove('awards'); setDrawer(false); setMenu(false); app.classList.remove('help'); return; }
     if (k === 'm' || k === 'M') { setMenu(!app.classList.contains('menu')); return; }
     if (k === 'a' || k === 'A' || k === '/') { e.preventDefault(); setDrawer(!drawerOpen); return; }
-    if (k === 'q' || k === 'Q') { sidePinned = !sidePinned; render(st); toast(sidePinned ? 'Queue pinned' : 'Queue hides during songs'); return; }
+    if (k === 'q' || k === 'Q') { sidePinned = !sidePinned; if (KQ.state) render(st); toast(sidePinned ? 'Queue pinned' : 'Queue hides during songs'); return; }
     if (k === '?') { if (!$('#helpAbout').innerHTML) KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; }); app.classList.toggle('help'); return; }
     if (k === 'u' || k === 'U') { nextHidden = !nextHidden; toast(nextHidden ? '"Next up" hidden' : '"Next up" showing'); return; }
-    if (k === 'j' || k === 'J') { joinHidden = !joinHidden; render(st); toast(joinHidden ? 'Join code hidden' : 'Join code showing'); return; }
+    if (k === 'j' || k === 'J') { joinHidden = !joinHidden; if (KQ.state) render(st); toast(joinHidden ? 'Join code hidden' : 'Join code showing'); return; }
     if (k === 'f' || k === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => { }); return; }
+    if (!KQ.state) return toast('Still starting up — one moment…');
     if (k === 'Enter') return doAct('startNow');
     if (k === 'n' || k === 'N') return doAct('defer', {}, 'Not here — next person is up');
     if (k === 'h' || k === 'H') return doAct('hold', {}, 'Moved to Stepped out');

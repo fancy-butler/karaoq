@@ -239,3 +239,16 @@ test('reopening with songs still queued waits for a Start instead of counting do
   assert.equal(p2.s.phase, 'playing');
   assert.equal(p2.s.resumeHold, false);
 });
+
+test('reopening with songs waiting: the first song waits for a Start instead of counting down', t => {
+  const { p, add, dir, yt, host, cleanup } = setup({ countdown: 15 });
+  t.after(cleanup);
+  add('Ann'); add('Bob'); p.flush();
+  const p2 = new Party({ file: path.join(dir, 'party.json'), yt, genres: fakeGenres, people: fakePeople });
+  t.after(() => { p2._clearTimer(); clearTimeout(p2.saveTimer); clearTimeout(p2.emitTimer); });
+  p2._refresh();
+  assert.equal(p2.s.phase, 'upnext');
+  assert.equal(p2.s.countdownEndsAt, null, 'no countdown until someone presses Start');
+  assert.equal(p2.act('startNow', {}, host).ok, true);
+  assert.equal(p2.s.resumeHold, false);
+});
