@@ -258,9 +258,9 @@
     const m = { on: false, vol: [0.8, 0.8], reverb: 0.25, echo: 0.1, master: 0.9, ...(KQ.state.settings.mic || {}) };
     const sl = (id, label, v, max = 1.5) => `<label class="mic-sl"><span>${label}</span><input type="range" id="${id}" min="0" max="${max}" step="0.05" value="${v}"></label>`;
     sheet(`<h3>🎤 Mics</h3>
-      <label class="toggle"><input type="checkbox" id="pmOn" ${m.on ? 'checked' : ''}> Mics on (through the TV computer's speakers)</label>
+      <label class="toggle"><input type="checkbox" id="pmOn" ${m.on ? 'checked' : ''}> Mics on (through the party computer's speakers)</label>
       ${sl('pmV0', 'Mic 1', m.vol[0])}${sl('pmV1', 'Mic 2', m.vol[1])}${sl('pmRev', 'Reverb', m.reverb, 1)}${sl('pmEcho', 'Echo', m.echo, 1)}${sl('pmAll', 'All mics', m.master)}
-      <p class="hint">Which sound card / input is Mic 1 and Mic 2 is picked on the TV: ☰ Menu → 🎤 Microphones.</p>`, () => { });
+      <p class="hint">Which sound card / input is Mic 1 and Mic 2 is picked on the party computer: ☰ Menu → 🎤 Microphones.</p>`, () => { });
     let t = null, pend = {};
     const send = p => { pend = { ...pend, ...p }; clearTimeout(t); t = setTimeout(() => { act('settings', { settings: { mic: pend } }); pend = {}; }, 120); };
     const v = id => Number($('#' + id).value);
@@ -516,7 +516,7 @@
     $('#nightBox').innerHTML = KQ.nightHtml(st.night);
     $('#mixBox').innerHTML = mixHtml(st.mix);
     const aw = st.awards || [];
-    $('#awardsBox').innerHTML = aw.length ? `<div class="awards"><h4>🏆 Tonight's awards${KQ.you.isHost ? ' <button id="awardsTv" class="ghost tiny">Show on TV</button>' : ''}</h4>${aw.map(x => `<div class="award"><span class="ic">${x.icon}</span>${avatar(x.name.split(' & ')[0], 'm')}<div><b>${esc(x.title)}</b><span>${esc(x.name)} · ${esc(x.why)}</span></div></div>`).join('')}</div>` : '';
+    $('#awardsBox').innerHTML = aw.length ? `<div class="awards"><h4>🏆 Tonight's awards${KQ.you.isHost ? ' <button id="awardsTv" class="ghost tiny">Show on big screen</button>' : ''}</h4>${aw.map(x => `<div class="award"><span class="ic">${x.icon}</span>${avatar(x.name.split(' & ')[0], 'm')}<div><b>${esc(x.title)}</b><span>${esc(x.name)} · ${esc(x.why)}</span></div></div>`).join('')}</div>` : '';
     $('#board').innerHTML = (st.stats || []).map((x, i) => `<span class="${i === 0 && x.sung > 1 ? 'top' : ''}">${avatar(x.singer, 's')} ${i === 0 && x.sung > 1 ? '👑 ' : ''}${esc(x.singer)}<i>${x.sung}</i></span>`).join('');
     $('#doneList').innerHTML = st.history.length ? st.history.map((h, i) => `<div class="item done">
       <img loading="lazy" src="${esc(thumb(h))}" alt="">
@@ -568,7 +568,7 @@
     if (u !== undefined) run('fave', { singer: cur.name, video: cur.songs[u], on: false }, 'Removed');
   };
 
-  $('#awardsBox').onclick = e => { if (e.target.id === 'awardsTv') run('awards', {}, '🏆 On the TV now'); };
+  $('#awardsBox').onclick = e => { if (e.target.id === 'awardsTv') run('awards', {}, '🏆 On the big screen now'); };
   $('#leftovers').onclick = e => { const v = e.target.closest('[data-lo]')?.dataset.lo; if (v === undefined) return; run('leftovers', { restore: v === '1' }, v === '1' ? 'Restored' : 'Cleared'); };
 
   // ---------- about ----------

@@ -1,6 +1,6 @@
 # 🎤 KARAO-Q
 
-YouTube karaoke for parties, without passing a keyboard around. One computer drives the TV. Everyone else adds songs from their phone by scanning a QR code, and nobody installs an app.
+YouTube karaoke for parties, without passing a keyboard around. One computer runs the big screen (a TV, a projector or just its own display). Everyone else adds songs from their phone by scanning a QR code, and nobody installs an app.
 
 There are no ads to block. Songs are fetched with **yt-dlp** and played from a local file, so YouTube's player (and its ads, "are you still watching?" prompts and autoplay junk) never comes into it. Each song is downloaded while the one before it plays, so there's no buffering gap between singers.
 
@@ -32,9 +32,9 @@ After that it opens normally. Not sure which Mac you have? Apple menu → **Abou
 - **"Windows protected your PC"** (blue box): click **More info → Run anyway**. It shows because the installer isn't signed with a paid certificate.
 - **Windows Firewall prompt**: tick **Private networks** and click **Allow** — otherwise phones can't connect over Wi-Fi (the internet "Can't connect?" link still works).
 
-Plug the computer into the TV, open KARAO-Q, and everyone scans the QR code. Close the window to quit.
+Open KARAO-Q on the party computer (plug it into a TV or projector if you have one), and everyone scans the QR code. Close the window to quit.
 
-**Updates:** on Windows and Linux, KARAO-Q downloads new versions in the background. Between songs, the TV shows **⬆ Restart to update**: click it and KARAO-Q updates and reopens by itself in a few seconds (the queue is kept). Or ignore it and the update installs the next time you close KARAO-Q. On a Mac, you'll get a notification with a link to the new version.
+**Updates:** on Windows and Linux, KARAO-Q downloads new versions in the background. Between songs, the big screen shows **⬆ Restart to update**: click it and KARAO-Q updates and reopens by itself in a few seconds (the queue is kept). Or ignore it and the update installs the next time you close KARAO-Q. On a Mac, you'll get a notification with a link to the new version.
 
 Downloaded songs are capped at 5 GB by default (change it in ⚙ Settings on a phone). The oldest unplayed songs get deleted first, and queued songs are never touched. After 6+ hours with nothing happening (whether KARAO-Q was closed or left open), it starts a new night: empty queue, fresh counts, and a Restore/Clear banner for last time's leftovers.
 
@@ -64,7 +64,7 @@ Some phones can't reach the party computer over Wi-Fi: guest networks, routers t
 |---|---|---|
 | `sudo pacman -S cloudflared` | `winget install Cloudflare.cloudflared` | `brew install cloudflared` |
 
-What it exposes: **only the phone remote page**. The TV page, the downloaded videos and the rest of your computer are not reachable through it. The address is long, random, and **changes every time you start KARAO-Q**. People who join this way are **guests**: they can add songs and manage their own, but only the party computer (or someone with the host PIN) can skip, reorder or remove other people's songs. The link stops working as soon as you close KARAO-Q. Traffic goes through Cloudflare's free tunnel service. Run with `TUNNEL=0` to switch it off.
+What it exposes: **only the phone remote page**. The big-screen page, the downloaded videos and the rest of your computer are not reachable through it. The address is long, random, and **changes every time you start KARAO-Q**. People who join this way are **guests**: they can add songs and manage their own, but only the party computer (or someone with the host PIN) can skip, reorder or remove other people's songs. The link stops working as soon as you close KARAO-Q. Traffic goes through Cloudflare's free tunnel service. Run with `TUNNEL=0` to switch it off.
 
 ## Run it
 
@@ -79,7 +79,7 @@ It adds a **KARAO-Q icon** to your app menu (Linux), Applications folder (macOS)
 - **Linux / macOS:** `./start.sh`
 - **Windows:** double-click `start.bat`
 
-The stage opens fullscreen on the TV. Close the browser (Alt+F4 / Cmd+Q) and the whole thing shuts down. Nothing stays running in the background.
+The stage opens fullscreen on the big screen. Close the browser (Alt+F4 / Cmd+Q) and the whole thing shuts down. Nothing stays running in the background.
 
 Phones must be on the **same wifi**. They scan the QR code on screen, and that's it.
 
@@ -106,10 +106,10 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
 | 🔀 **Fair shuffle** | Shuffles the line but keeps it fair. |
 | ↶ **Undo** (`Z`) | Reverses the last queue change. For when someone fat-fingers it. |
 
-**Between songs** the TV shows a big **UP NEXT: NAME** screen with a countdown (15 s by default, adjustable in ⚙ Settings) and a chime. Set the countdown to "None" if you'd rather the host hit Start every time.
+**Between songs** the big screen shows a big **UP NEXT: NAME** screen with a countdown (15 s by default, adjustable in ⚙ Settings) and a chime. Set the countdown to "None" if you'd rather the host hit Start every time.
 
 ## Look & sound
-- **Themes** (⚙ Settings → Look): Neon, **Synthwave '84** (sunset + neon grid), Dive Bar, Retro Arcade, Minimal. Phones follow the TV's theme.
+- **Themes** (⚙ Settings → Look): Neon, **Synthwave '84** (sunset + neon grid), Dive Bar, Retro Arcade, Minimal. Phones follow the big screen's theme.
 - **Title card:** each song opens with a 3-second card (face, name, song, genre) and a little ta-da.
 - **Even volumes:** new downloads are loudness-matched (EBU R128, −14 LUFS), so songs play at the same level.
 - **Attract mode:** the idle screen keeps the QR up and rotates through tonight's leaderboard, the genre mix, *Haven't sung yet 👀*, and tips.
@@ -124,42 +124,42 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
   - **🎲 Spin for me:** a random pick from the same pool, using the same genre/decade filters.
   - Your recent searches, plus a shuffle of more party classics.
 - **Wrong version?** ⋯ on a queued song → pick another karaoke version. The singer keeps their spot.
-- **🏆 Tonight's awards:** Mic Hog, Genre Hopper, Crowd Favourite (most reactions), Marathon Mic, Time Traveller, Duet Darling, Fashionably Late, Opening Act. They're on the phone's Sung tab, and a host can put them on the TV (or ☰ Menu → Awards on the TV).
-- **Tonight so far:** party time (ticking live), songs sung, singers, time spent singing, songs per hour, reactions, what's left in line, and the longest song. It's on the Sung tab, in the TV's rotating idle screen, and under the awards.
+- **🏆 Tonight's awards:** Mic Hog, Genre Hopper, Crowd Favourite (most reactions), Marathon Mic, Time Traveller, Duet Darling, Fashionably Late, Opening Act. They're on the phone's Sung tab, and a host can put them on the big screen (or ☰ Menu → Awards on the big screen).
+- **Tonight so far:** party time (ticking live), songs sung, singers, time spent singing, songs per hour, reactions, what's left in line, and the longest song. It's on the Sung tab, in the big screen's rotating idle screen, and under the awards.
 - **📊 My stats** (☰ on your phone): total time on stage, your songs across every night, your most-sung songs, genres, decades and favourite duet partners.
 
 ## Genres & tonight's mix
-KARAO-Q reads the artist from the karaoke title and looks up the genre and decade on [MusicBrainz](https://musicbrainz.org), a free public music database. Every song gets a colour chip, the TV glows in the current song's genre colour, and **Tonight's mix** shows the night's split ("40% Pop · 25% Rock…") plus decades. Wrong guess? Tap the chip (or ⋯ → Genre) on a phone to fix it. Your pick is remembered.
+KARAO-Q reads the artist from the karaoke title and looks up the genre and decade on [MusicBrainz](https://musicbrainz.org), a free public music database. Every song gets a colour chip, the big screen glows in the current song's genre colour, and **Tonight's mix** shows the night's split ("40% Pop · 25% Rock…") plus decades. Wrong guess? Tap the chip (or ⋯ → Genre) on a phone to fix it. Your pick is remembered.
 
 ## People & hosting
-- **Joining:** the first time a phone opens KARAO-Q, it asks *Who's singing?* Tap your name if you've been before, or type a new one. Then pick a look: one of 24 avatars, or **📸 take a selfie**. Faces show up on the TV's UP NEXT screen, the queue, the sidebar and the leaderboard. Selfies are wiped at the start of a new night unless you tick *Keep my photo*. Change it any time from ☰.
+- **Joining:** the first time a phone opens KARAO-Q, it asks *Who's singing?* Tap your name if you've been before, or type a new one. Then pick a look: one of 24 avatars, or **📸 take a selfie**. Faces show up on the big screen's UP NEXT screen, the queue, the sidebar and the leaderboard. Selfies are wiped at the start of a new night unless you tick *Keep my photo*. Change it any time from ☰.
 - **Open party** (default): every phone can manage the queue.
 - **Hosted party:** ☰ → **👑 Be the host**. Now only the host, co-hosts and the party computer can skip, reorder or remove other people's songs. Everyone can still add songs and manage their own. The host can add co-hosts, hand off the crown, or end host mode from ☰.
 - **Songs per person:** ⚙ Settings can cap how many songs each person has *waiting in line at once*. It's not a nightly limit: once one is sung they can add another. Hosts aren't limited.
 - **Duplicate check:** adding a song that's already queued, or was sung in the last 90 minutes, asks "add anyway?"
 
 ## Singing features
-- **Key change:** the singer (or host) taps **−/+** on their phone to move the song down or up in semitones without changing the speed. It's shown on the TV as "key −2". Starred songs remember the key you last sang them in.
+- **Key change:** the singer (or host) taps **−/+** on their phone to move the song down or up in semitones without changing the speed. It's shown on the big screen as "key −2". Starred songs remember the key you last sang them in.
 - **Favourites:** tap ☆ on the song that's playing, or ⋯ → Save on any queued song. The **⭐ Faves** tab lists each person's songs across nights, with one tap to queue (in their key).
 - **Duets:** tap 👤 when adding to enter a duet partner, or ⋯ → "Make it a duet" on a queued song. Shows as "Stan & Priya" and counts for both.
-- **Reactions:** everyone gets 🔥👏😂❤️🎉🤘 buttons while someone sings. They float up the side of the TV.
+- **Reactions:** everyone gets 🔥👏😂❤️🎉🤘 buttons while someone sings. They float up the side of the big screen.
 
 - **🎤✂ Vocal remover:** ⋯ → *Remove the vocals* on any song, or the *Vocals* button while it plays. It switches over mid-song once the copy is ready. Songs that aren't karaoke videos offer it when you add them. There are two engines:
   - **Quick** is built in. It cancels whatever is panned to the centre (usually the lead vocal) and keeps the bass, in a few seconds. It's great on older stereo mixes and so-so on modern ones.
-  - **AI (Demucs)** is used automatically if it's installed on the TV computer. It sounds like a real backing track and takes about as long as the song on a normal CPU. To install it, run `pipx install demucs` (Linux/Mac) or `pip install demucs` (Windows, with Python installed), then restart KARAO-Q. It looks in the usual places, or you can set `KQ_DEMUCS=/path/to/demucs`. The first run downloads the AI model (~80 MB).
-- **📝 Lyrics for non-karaoke videos:** when a song isn't a karaoke version (or its vocals are removed), KARAO-Q looks up synced lyrics on [LRCLIB](https://lrclib.net) and scrolls them on the TV. Press `,` / `.` on the keyboard to nudge the timing. ⋯ → *Show/Hide lyrics* per song; turn it off in *More settings*.
+  - **AI (Demucs)** is used automatically if it's installed on the party computer. It sounds like a real backing track and takes about as long as the song on a normal CPU. To install it, run `pipx install demucs` (Linux/Mac) or `pip install demucs` (Windows, with Python installed), then restart KARAO-Q. It looks in the usual places, or you can set `KQ_DEMUCS=/path/to/demucs`. The first run downloads the AI model (~80 MB).
+- **📝 Lyrics for non-karaoke videos:** when a song isn't a karaoke version (or its vocals are removed), KARAO-Q looks up synced lyrics on [LRCLIB](https://lrclib.net) and scrolls them on the big screen. Press `,` / `.` on the keyboard to nudge the timing. ⋯ → *Show/Hide lyrics* per song; turn it off in *More settings*.
 - **⬇ Download ahead:** the Faves tab has a button that downloads that person's favourites in the background, so they start instantly later. This is handy before people arrive or on slow internet.
 
 ## 🎤 Microphones
-Plug mics into the TV computer's sound card (an audio interface like an Mbox, UR44 or Audio Kontrol, or a USB mic) and KARAO-Q plays them through the speakers with the song, with reverb and echo.
+Plug mics into the party computer's sound card (an audio interface like an Mbox, UR44 or Audio Kontrol, or a USB mic) and KARAO-Q plays them through the speakers with the song, with reverb and echo.
 
-- **Setup, on the TV computer:** ☰ Menu → **🎤 Microphones**. Turn them on, then pick Mic 1 (and Mic 2). For two mics on one interface, pick the same device twice with *input 1* and *input 2*. There are level meters, plus a **Speakers** choice that sends everything (song + mics) to that output.
+- **Setup, on the party computer:** ☰ Menu → **🎤 Microphones**. Turn them on, then pick Mic 1 (and Mic 2). For two mics on one interface, pick the same device twice with *input 1* and *input 2*. There are level meters, plus a **Speakers** choice that sends everything (song + mics) to that output.
 - **On the night:** the host adjusts mic volumes, reverb and echo from their phone: Queue tab → 🎤 Mics.
 - **Latency:** the panel shows how late the voice comes out of the computer. Past ~30 ms singers notice. Then use the interface's **direct monitor** for the dry voice and keep reverb/echo here.
 - **What works:** anything the operating system sees as an audio input, including USB, FireWire (Linux FireWire drivers / FFADO, macOS up to Sequoia) and built-in inputs. It only works in the KARAO-Q app, not a TV browser (browsers only allow mics on secure pages).
 
 ## 💾 Your own karaoke files (KJ hard drives)
-Got a drive full of karaoke tracks? On the TV computer: ☰ Menu → **💾 Karaoke library** → **Add a folder**. KARAO-Q scans it (subfolders too) and those songs show up in everyone's search, marked 💾, above the YouTube results.
+Got a drive full of karaoke tracks? On the party computer: ☰ Menu → **💾 Karaoke library** → **Add a folder**. KARAO-Q scans it (subfolders too) and those songs show up in everyone's search, marked 💾, above the YouTube results.
 
 - **CD+G:** `song.cdg` + `song.mp3` (or .ogg/.wav/.flac/.m4a) side by side, or both inside a `.zip`. This is the classic Sound Choice / Sunfly / Party Tyme disc rip format.
 - **Karaoke videos:** .mp4 .mkv .avi .mov .m4v .webm .mpg .vob .wmv .flv .ts.
@@ -192,7 +192,7 @@ Or grab [`docker-compose.yml`](docker-compose.yml) and run `docker compose up -d
 - The **Sung** tab shows tonight's history, with one tap to queue a song again.
 
 ## Keyboard on the party computer
-`A` or `/` opens the search/queue panel right on the TV, for keyboard + mouse people. `?` shows all keys.
+`A` or `/` opens the search/queue panel right on the big screen, for keyboard + mouse people. `?` shows all keys.
 
 `Enter` start now · `N` not here · `H` stepped out · `Space` pause · `R` restart · `S S` skip (press twice) · `Z` undo · `← →` seek 10 s · `Q` pin queue sidebar · `F` fullscreen
 
@@ -201,7 +201,7 @@ Or grab [`docker-compose.yml`](docker-compose.yml) and run `docker compose up -d
 ## Troubleshooting
 - **Downloads failing:** update yt-dlp (`yt-dlp -U`, or update it through your package manager). YouTube changes all the time. The launchers try to update it on every start.
 - **Phones can't connect:** they have to be on the same wifi, and the computer's firewall has to allow the port. On Windows, allow Node through the firewall prompt the first time.
-- **No sound on the TV:** click once on the stage. Browsers need one click before they'll play audio unless they were launched with the autoplay flag, which the launchers do.
+- **No sound on the big screen:** click once on the stage. Browsers need one click before they'll play audio unless they were launched with the autoplay flag, which the launchers do.
 - **Testing without internet:** `MOCK=1 node server.js` fakes search results and generates test videos.
 
 Downloaded songs are cached in `data/cache/`, so repeat requests start instantly. Delete the folder whenever you like.
