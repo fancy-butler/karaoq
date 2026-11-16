@@ -427,6 +427,7 @@
     cd.textContent = left !== null && left > 0 ? left : '';
     let msg = '';
     if (head?.dl?.state !== 'ready') msg = head?.dl?.state === 'downloading' ? `Loading video… ${head.dl.pct || 0}%` : head?.dl?.state === 'error' ? '⚠ Download failed — remove or retry it' : 'Waiting to download…';
+    else if (st.countdownEndsAt === null && st.resumeHold) msg = 'Welcome back — waiting for the host to start';
     else if (st.countdownEndsAt === null) msg = 'Ready — waiting for the host to start';
     us.textContent = msg;
   }

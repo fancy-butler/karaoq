@@ -287,6 +287,7 @@
       if (left !== null && left > 0) { ring.style.setProperty('--p', String(1 - left / total)); $('#ringNum').textContent = Math.ceil(left / 1000); }
       let msg = '';
       if (head && head.dl?.state !== 'ready') msg = head.dl?.state === 'downloading' ? `Loading video… ${head.dl.pct || 0}%` : head.dl?.state === 'error' ? '⚠ This video failed to download — remove it or pick another version' : 'Waiting for download…';
+      else if (!st.countdownEndsAt && st.resumeHold) msg = 'Welcome back! Songs from last time are still in line — press Enter (or ▶ Start on a phone) when you\'re ready';
       else if (!st.countdownEndsAt) msg = 'Press Enter when they have the mic';
       $('#upStatus').textContent = msg;
     }

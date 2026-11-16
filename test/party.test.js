@@ -223,3 +223,19 @@ test('stats, awards and the night in numbers add up', t => {
   assert.equal(p.personalStats('ann').songs, 2);
   assert.equal(p.houseFaves().length, 3);
 });
+
+test('reopening with songs still queued waits for a Start instead of counting down', t => {
+  const { p, add, dir, yt, host, cleanup } = setup({ countdown: 15 });
+  t.after(cleanup);
+  const v = vid(); add('Ann', { videoId: v }); yt.ready(v);
+  p.flush();
+  const p2 = new Party({ file: path.join(dir, 'party.json'), yt, genres: fakeGenres, people: fakePeople });
+  t.after(() => { p2._clearTimer(); clearTimeout(p2.saveTimer); clearTimeout(p2.emitTimer); });
+  p2._refresh();
+  assert.equal(p2.s.phase, 'upnext');
+  assert.equal(p2.s.countdownEndsAt, null, 'no countdown running');
+  assert.equal(p2.s.resumeHold, true);
+  p2.act('startNow', {}, host);
+  assert.equal(p2.s.phase, 'playing');
+  assert.equal(p2.s.resumeHold, false);
+});
