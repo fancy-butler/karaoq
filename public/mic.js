@@ -31,8 +31,11 @@
     master = ctx.createGain(); master.connect(ctx.destination);
     dry = ctx.createGain(); comp.connect(dry).connect(master);
     // reverb
+    // reverb: a short pre-delay, the room, then darken the tail a little (sounds less like hiss)
     revSend = ctx.createGain(); const conv = ctx.createConvolver(); conv.buffer = impulse(ctx);
-    comp.connect(revSend).connect(conv).connect(master);
+    const pre = ctx.createDelay(0.1); pre.delayTime.value = 0.025;
+    const warm = ctx.createBiquadFilter(); warm.type = 'lowpass'; warm.frequency.value = 6500;
+    comp.connect(revSend).connect(pre).connect(conv).connect(warm).connect(master);
     // echo (slap-back-ish, darkened each repeat)
     echoSend = ctx.createGain(); delay = ctx.createDelay(2); delay.delayTime.value = 0.32;
     fb = ctx.createGain(); fb.gain.value = 0.35; const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200;
@@ -44,7 +47,7 @@
     if (!ctx) return;
     const t = ctx.currentTime, on = params.on ? 1 : 0;
     master.gain.setTargetAtTime(on * params.master, t, 0.03);
-    revSend.gain.setTargetAtTime(params.reverb * 0.9, t, 0.05);
+    revSend.gain.setTargetAtTime(params.reverb * 3.5, t, 0.05); // convolver output is ~13 dB below the dry voice; this makes 25% clearly audible
     echoSend.gain.setTargetAtTime(params.echo * 0.8, t, 0.05);
     dry.gain.setTargetAtTime(1, t, 0.05);
     slots.forEach((s, i) => s && s.gain.gain.setTargetAtTime(params.vol[i] ?? 0.8, t, 0.03));
