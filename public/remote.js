@@ -656,14 +656,22 @@
 
   // ---------- join: tap your name, pick a look (avatar or selfie) ----------
   let jName = '', jPreset, jPhoto = null;
+  // Taking a selfie opens the phone's camera app. While it's open the browser pauses this page (the
+  // connection drops and reconnects) and, on phones short on memory, may even reload it. So: the join
+  // screen must never reset itself on a reconnect, and the half-finished join is remembered for a reload.
+  const ss = { get: k => { try { return sessionStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch { } } };
+  const joinOpen = () => !$('#join').hidden;
   function showJoin() {
+    ss.set('kq.joining', null);
     $('#join').hidden = false; $('#jName').hidden = false; $('#jLook').hidden = true;
     const ppl = Object.values((KQ.state && KQ.state.people) || {});
     $('#jPeople').innerHTML = ppl.map(p => `<button data-n="${esc(p.name)}">${avatar(p.name, 'l')}<span>${esc(p.name)}</span></button>`).join('');
     $('#jNew').value = '';
   }
-  function lookStep(name) {
-    jName = name; jPhoto = null;
+  function lookStep(name, photo = null) {
+    jName = name; jPhoto = photo;
+    ss.set('kq.joining', name);
+    $('#join').hidden = false;
     const p = KQ.person(name);
     jPreset = p ? p.preset : undefined;
     $('#jKeep').checked = !!(p && p.keep);
@@ -679,21 +687,27 @@
   $('#jNewForm').onsubmit = e => { e.preventDefault(); const n = $('#jNew').value.trim(); if (n) lookStep(n); };
   $('#jPresets').onclick = e => { const em = e.target.closest('[data-e]')?.dataset.e; if (em) { jPreset = em; jPhoto = null; renderLook(); } };
   $('#jBack').onclick = () => showJoin();
-  $('#jPhoto').onchange = async () => {
-    const f = $('#jPhoto').files[0]; if (!f) return;
+  // remember where we were before the camera app opens (in case the browser reloads this page meanwhile)
+  for (const id of ['#jPhoto', '#jGallery']) $(id).addEventListener('click', () => ss.set('kq.joining', jName));
+  $('#jGallery').onchange = () => usePhoto($('#jGallery'));
+  $('#jPhoto').onchange = () => usePhoto($('#jPhoto'));
+  async function usePhoto(input) {
+    const f = input.files[0]; if (!f) return;
     try {
       const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(f); });
       const S = 360, k = Math.min(img.naturalWidth, img.naturalHeight);
       const c = document.createElement('canvas'); c.width = c.height = S;
       c.getContext('2d').drawImage(img, (img.naturalWidth - k) / 2, (img.naturalHeight - k) / 2, k, k, 0, 0, S, S); // centre square crop
       jPhoto = c.toDataURL('image/jpeg', 0.82);
+      ss.set('kq.joinPhoto', jPhoto); // survives a reload until they tap "Let's sing"
       renderLook();
     } catch { toast("Couldn't read that photo", 'bad'); }
-    $('#jPhoto').value = '';
-  };
+    input.value = '';
+  }
   $('#jDone').onclick = async () => {
     const keep = $('#jKeep').checked;
     setName(jName);
+    ss.set('kq.joining', null); ss.set('kq.joinPhoto', null);
     if (jPhoto) {
       const r = await fetch('/api/avatar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: jName, data: jPhoto, clientId: KQ.clientId, keep }) }).catch(() => null);
       if (!r || !r.ok) toast("Photo didn't upload — try again from ☰", 'bad');
@@ -710,7 +724,14 @@
     renderMe();
     if (introduced) return; introduced = true;
     if (myName) act('profile', { name: myName });
-    else if (!new URLSearchParams(location.search).has('embed')) showJoin();
+    if (joinOpen()) return; // never yank someone out of the join screen (e.g. reconnecting after the camera)
+    const pending = ss.get('kq.joining');
+    if (pending) { // page was reloaded mid-join (camera app): pick up where they left off
+      const photo = ss.get('kq.joinPhoto');
+      lookStep(pending, photo);
+      if (!photo) toast('Your phone reloaded the page while the camera was open — tap 📸 again, or choose the photo from your gallery');
+    }
+    else if (!myName && !new URLSearchParams(location.search).has('embed')) showJoin();
   });
   KQ.on('conn', up => { if (up) introduced = false; });
   let openedFromHash = false;

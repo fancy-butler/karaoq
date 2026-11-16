@@ -171,6 +171,8 @@ nav button { padding: 10px 6px; font-size: 15px; }
 #jPreview { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 10px 0; font-size: 22px; font-weight: 900; }
 .selfie { display: block; text-align: center; background: var(--pink); color: #fff; font-weight: 800; font-size: 18px; padding: 16px; border-radius: 16px; margin-bottom: 14px; cursor: pointer; }
 .selfie input { display: none; }
+.jrow:has(.selfie) { display: flex; gap: 10px; } .jrow .selfie { flex: 1; margin-bottom: 14px; padding: 14px 8px; font-size: 16px; }
+.selfie.alt { background: #ffffff18; color: var(--text); }
 #jPresets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
 #jPresets button { background: var(--panel); font-size: 30px; padding: 8px 0; border-radius: 14px; }
 #jPresets button.on { outline: 3px solid var(--cyan); background: var(--panel2); }

@@ -172,6 +172,23 @@ async function until(fn, ms, what) {
     ok(true, 'zipped CD+G converted and started');
     ok((await act('skip')).ok, 'skip'); await until(() => state && state.phase === 'idle', 10000, 'idle');
 
+    // 📸 selfie join: the camera app makes phones drop the connection or even reload the page —
+    // the join screen must stay put and keep the photo
+    const pctx = await browser.createBrowserContext();
+    const sph = await pctx.newPage(); watch(sph, 'selfie phone'); await sph.setViewport({ width: 390, height: 844, isMobile: true });
+    await sph.goto(BASE + '/', { waitUntil: 'domcontentloaded' }); await sleep(1200);
+    await sph.type('#jNew', 'Selfie Sue'); await sph.evaluate(() => document.querySelector('#jNewForm').requestSubmit()); await sleep(300);
+    const shot = path.join(DATA, 'selfie.png');
+    require('child_process').execFileSync(fd0 ? path.join(fd0, process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg') : 'ffmpeg', ['-y', '-loglevel', 'error', '-f', 'lavfi', '-i', 'testsrc2=size=640x480', '-frames:v', '1', shot]);
+    await (await sph.$('#jPhoto')).uploadFile(shot); await sleep(800);
+    await sph.reload({ waitUntil: 'domcontentloaded' }); await sleep(1500);
+    const look = await sph.evaluate(() => !document.querySelector('#jLook').hidden && !!document.querySelector('#jPreview img'));
+    ok(look, 'selfie survives the page reloading mid-join (camera app)');
+    await sph.evaluate(() => document.querySelector('#jDone').click()); await sleep(1200);
+    const photo = await until(() => sph.evaluate(() => { const p = Object.values(KQ.state.people || {}).find(x => x.name === 'Selfie Sue'); return p && p.photo; }), 5000, 'selfie on profile');
+    ok(/\/avatars\//.test(photo), 'selfie lands on their profile');
+    await pctx.close();
+
     // 🎤 mics: turning them on from a phone opens the TV computer's audio input and audio flows
     ok((await act('settings', { settings: { mic: { on: true, reverb: 0.5 } } })).ok, 'host turns mics on');
     const lvl = await until(() => tv.evaluate(() => { const l = KQMic.levels()[0]; return l > 0.05 && l; }), 10000, 'mic signal');
