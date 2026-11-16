@@ -81,7 +81,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-15, macos-15-intel]  # macos-15 = Apple Silicon, macos-15-intel = Intel Macs
+        # One Mac job builds BOTH Mac versions (Intel + Apple Silicon): GitHub's Apple Silicon machines have
+        # been sitting unassigned for 15+ minutes and getting cancelled, and one Mac job is quicker to get anyway.
+        os: [ubuntu-latest, windows-latest, macos-15-intel]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
     steps:
@@ -93,15 +95,24 @@ jobs:
       - run: npm ci
       - name: Bundle yt-dlp, ffmpeg, deno, cloudflared
         run: node scripts/fetch-binaries.js
+      - name: Bundle the Apple Silicon versions too (Mac)
+        if: runner.os == 'macOS'
+        run: node scripts/fetch-binaries.js --arch arm64
       - name: Build installer
-        run: npx electron-builder --publish ${{ needs.check.outputs.mode == 'publish' && 'always' || 'never' }}
+        run: npx electron-builder ${{ runner.os == 'macOS' && '--mac --x64 --arm64' || '' }} --publish ${{ needs.check.outputs.mode == 'publish' && 'always' || 'never' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Mac: prove the signature is valid (no "damaged" message) and that the packaged app actually starts
       - name: Check the Mac app opens
         if: runner.os == 'macOS'
         run: |
-          APP=$(ls -d dist/mac*/KARAO-Q.app | head -1); echo "$APP"
+          ARM=dist/mac-arm64/KARAO-Q.app; APP=dist/mac/KARAO-Q.app; ls -d dist/mac*/
+          # Apple Silicon build: valid signature and really arm64 inside (it can't be opened on this Intel Mac)
+          codesign --verify --deep --strict --verbose=2 "$ARM"
+          lipo -info "$ARM/Contents/MacOS/KARAO-Q"
+          for b in yt-dlp deno ffmpeg cloudflared; do file "$ARM/Contents/Resources/bin/$b"; done
+          file "$ARM/Contents/Resources/bin/deno" "$ARM/Contents/Resources/bin/ffmpeg" "$ARM/Contents/Resources/bin/cloudflared" | grep -v arm64 && { echo "x86 binary in the Apple Silicon app!"; exit 1; } || true
+          # Intel build: valid signature, then actually open it
           codesign --verify --deep --strict --verbose=2 "$APP"
           codesign -dv "$APP" 2>&1 | grep -E 'Signature|Identifier|flags'
           RES="$APP/Contents/Resources/bin"; ls "$RES"

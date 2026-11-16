@@ -9,8 +9,11 @@ const os = require('os');
 const { execFileSync } = require('child_process');
 
 const plat = { darwin: 'mac', win32: 'win', linux: 'linux' }[process.platform];
-const arm = process.arch === 'arm64';
-const out = path.join(__dirname, '..', 'bin', `${plat}-${process.arch}`);
+// --arch arm64 / --arch x64 bundles for another CPU than this machine's (e.g. Apple Silicon on an Intel Mac)
+const ai = process.argv.indexOf('--arch');
+const arch = ai > 0 ? process.argv[ai + 1] : process.arch;
+const arm = arch === 'arm64';
+const out = path.join(__dirname, '..', 'bin', `${plat}-${arch}`);
 fs.mkdirSync(out, { recursive: true });
 const exe = n => (plat === 'win' ? `${n}.exe` : n);
 const gh = (repo, file) => `https://github.com/${repo}/releases/latest/download/${file}`;
@@ -71,7 +74,17 @@ function extract(archive, dir) {
   } else await download(gh('cloudflare/cloudflared', files.cf), path.join(out, exe('cloudflared')));
 
   console.log('ffmpeg…');
-  const ff = require('ffmpeg-static'); // devDependency: fetched for this OS/CPU at npm install time
+  let ff = require('ffmpeg-static'); // devDependency: fetched for this OS/CPU at npm install time
+  if (arch !== process.arch) {
+    // fetch ffmpeg-static's build for the other CPU: run its installer from a copy, with npm_config_arch set
+    const src = path.dirname(require.resolve('ffmpeg-static/package.json'));
+    const copy = path.join(src, '..', `ffmpeg-static-${arch}`);
+    fs.rmSync(copy, { recursive: true, force: true });
+    fs.cpSync(src, copy, { recursive: true });
+    for (const f of ['ffmpeg', 'ffmpeg.exe']) fs.rmSync(path.join(copy, f), { force: true });
+    execFileSync(process.execPath, ['install.js'], { cwd: copy, stdio: 'inherit', env: { ...process.env, npm_config_arch: arch } });
+    ff = path.join(copy, exe('ffmpeg'));
+  }
   if (!ff || !fs.existsSync(ff)) throw new Error('ffmpeg-static binary missing — run npm ci first');
   fs.copyFileSync(ff, path.join(out, exe('ffmpeg')));
 
