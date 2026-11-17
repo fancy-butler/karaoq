@@ -254,3 +254,17 @@ body[data-theme="minimal"] button:not(.ghost):not(.av) { color: #111; }
 
 .mic-sl { display: grid; grid-template-columns: 80px 1fr; align-items: center; gap: 10px; margin: 12px 2px; font-weight: 700; }
 .mic-sl input { width: 100%; accent-color: var(--pink); }
+
+/* party skins: the phone gets a matching (still dark, still readable) palette.
+   --pink is the primary-button colour and always carries white text, so keep it dark enough. */
+body[data-theme="amber"] { --bg: #0b0602; --panel: #1a1005; --panel2: #261808; --line: #4a3210; --text: #ffd27a; --dim: #c89a4a; --pink: #b86e00; --cyan: #ffcc55; --gold: #ffe08a; }
+body[data-theme="amber"] .brand, body[data-theme="amber"] h2, body[data-theme="amber"] #join h1 { font-family: ui-monospace, "DejaVu Sans Mono", "Courier New", monospace; color: #ffb000; text-shadow: 0 0 8px #ffb00077; }
+body[data-theme="cabinet"] { --bg: #12051f; --panel: #1f0b33; --panel2: #2c1048; --line: #4d1d74; --pink: #d6179f; --cyan: #3ef0ff; --gold: #ffe14a; --dim: #b99ad6; }
+body[data-theme="cabinet"] .brand { text-transform: uppercase; letter-spacing: .05em; text-shadow: 0 0 10px #ff2fd0aa; }
+body[data-theme="desk92"], body[data-theme="desk95"] { --bg: #0f3a3a; --panel: #164848; --panel2: #1d5656; --line: #2f7373; --pink: #000080; --cyan: #9ff; --gold: #ffff80; --dim: #a9cfcf; }
+body[data-theme="desk92"] input, body[data-theme="desk95"] input, body[data-theme="desk92"] select, body[data-theme="desk95"] select { border-radius: 0; }
+body[data-theme="aero"] { --bg: #062a4a; --panel: #0d3b63; --panel2: #134b7a; --line: #2a6da3; --pink: #1479c4; --cyan: #9cf0ff; --gold: #b6f36a; --dim: #a9cbe6; }
+body[data-theme="rhythm"] { --bg: #0b0420; --panel: #170a36; --panel2: #22104c; --line: #3d1f7a; --pink: #e01a8f; --cyan: #2fd3ff; --gold: #ffe03a; --green: #3dff8a; --dim: #b4a0e6; }
+body[data-theme="rhythm"] .brand { font-style: italic; }
+body[data-theme="desk92"] .brand span, body[data-theme="desk95"] .brand span { color: #ff6b6b; }
+body[data-theme="aero"] .brand span { color: #7dff9a; }

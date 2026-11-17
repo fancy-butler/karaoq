@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KARAO-Q — Stage</title>
 <link rel="stylesheet" href="/stage.css">
+<link rel="stylesheet" href="/skins.css">
 </head>
 <body>
 <div id="app">
@@ -133,6 +134,18 @@
     </dl>
     <div id="helpAbout"></div>
   </div>
+</div>
+<!-- party-skin chrome (frames, marquee, control deck, title bar, taskbar); see skins.css -->
+<div id="skin" aria-hidden="true">
+  <div class="scan"></div>
+  <div class="bezel">KARAO-Q 2000 <i></i></div>
+  <div class="marquee">KARAO-Q</div>
+  <div class="deck"><div class="stick"></div><div class="btns"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="start" data-skin="menu"><b></b>1P START</div><div class="coin">INSERT<br>COIN</div></div>
+  <div class="titlebar"><b class="l">━</b><span class="t">🎤 KARAO-Q</span><span class="r"><b>▾</b><b>▴</b><b class="x">✕</b></span></div>
+  <div class="lanes left"><div class="lane l"><i class="rcp"></i><i class="n"></i><i class="n"></i><i class="n"></i></div><div class="lane d"><i class="rcp"></i><i class="n"></i><i class="n"></i><i class="n"></i></div></div>
+  <div class="lanes right"><div class="lane u"><i class="rcp"></i><i class="n"></i><i class="n"></i><i class="n"></i></div><div class="lane r"><i class="rcp"></i><i class="n"></i><i class="n"></i><i class="n"></i></div></div>
+  <div class="judge" id="skinJudge"></div>
+  <div class="taskbar"><div class="startbtn" data-skin="menu">🎤 Start</div><div class="task" id="skinTask">🎤 KARAO-Q</div><div class="tray" id="skinClock"></div></div>
 </div>
 <script src="/common.js"></script>
 <script src="/mic.js"></script>

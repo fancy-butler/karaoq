@@ -154,7 +154,16 @@
     app.appendChild(el);
     setTimeout(() => el.remove(), 4200);
   }
-  KQ.on('react', m => floatReaction(m.emoji));
+  KQ.on('react', m => { floatReaction(m.emoji); judge(); });
+  // Dance Stage skin: every reaction from the crowd scores a judgement
+  let judgeT = null;
+  function judge() {
+    const j = $('#skinJudge'); if (!j || document.body.dataset.theme !== 'rhythm') return;
+    const words = [['MARVELOUS!!', 'm'], ['PERFECT!!', 'p'], ['PERFECT!!', 'p'], ['GREAT!', 'g'], ['COMBO ×' + (2 + Math.floor(Math.random() * 40)), 'c']];
+    const [w, c] = words[Math.floor(Math.random() * words.length)];
+    j.textContent = w; j.className = 'judge ' + c; void j.offsetWidth; j.classList.add('hit');
+    clearTimeout(judgeT); judgeT = setTimeout(() => j.classList.remove('hit'), 900);
+  }
 
   KQ.on('cmd', m => {
     if (m.cmd === 'restart') { vid.currentTime = 0; flashNowTag(); }
@@ -217,6 +226,10 @@
     $('#sideMix').innerHTML = mixH;
 
     document.body.dataset.theme = st.settings.theme || 'neon';
+    document.body.dataset.phase = st.phase;
+    document.body.dataset.fx = st.settings.skinFx === false ? '0' : '1';
+    // Desktop '95 taskbar: what's on
+    const tk = $('#skinTask'); if (tk) tk.textContent = st.current ? `🎤 ${who(st.current)} — ${clean(st.current.title)}` : st.queue[0] ? `⏭ Up next: ${who(st.queue[0])}` : '🎤 KARAO-Q';
     renderAttract(st);
 
     // songs sung tonight
@@ -303,7 +316,11 @@
     clearTimeout(mouseT);
     mouseT = setTimeout(() => { if (!app.classList.contains('menu')) { document.body.classList.add('hidecursor'); app.classList.remove('mouse'); } }, 3000);
   });
-  function setMenu(open) { app.classList.toggle('menu', open); if (open) $('#menuPanel button').focus(); }
+  function setMenu(open) { app.classList.toggle('menu', open); document.body.classList.toggle('menuopen', open); if (open) $('#menuPanel button').focus(); }
+  // skin chrome: the arcade "1P START" and the desktop "Start" button open the menu
+  document.querySelectorAll('#skin [data-skin="menu"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); setMenu(!app.classList.contains('menu')); }));
+  const clockTick = () => { const c = $('#skinClock'); if (c) c.textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); };
+  clockTick(); setInterval(clockTick, 15000);
   $('#menuPill').onclick = e => { e.stopPropagation(); setMenu(!app.classList.contains('menu')); };
   document.addEventListener('click', e => { if (!e.target.closest('#menuPanel, #menuPill')) setMenu(false); });
   function openDrawerAt(hash) {
