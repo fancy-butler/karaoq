@@ -10,7 +10,7 @@ test('valid values are applied, junk is ignored or clamped', () => {
 });
 test('mic settings merge and clamp', () => {
   const s = applySettings(base, { mic: { on: 1, echo: -3, vol: [2] } }, base);
-  assert.deepEqual(s.mic, { on: true, vol: [1.5, 0.8], reverb: 0.25, echo: 0, master: 0.9 });
+  assert.deepEqual(s.mic, { on: true, vol: [2, 0.8, 0.8, 0.8], reverb: 0.25, echo: 0, master: 0.9 });
 });
 test('nothing / garbage in → nothing changes', () => {
   assert.deepEqual(applySettings(base, null, base), base);

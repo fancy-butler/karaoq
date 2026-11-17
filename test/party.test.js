@@ -163,7 +163,7 @@ test('settings are sanitised (no junk values get through)', t => {
   assert.equal(p.s.settings.cacheGB, 1);
   assert.equal(p.s.settings.mic.on, true);
   assert.equal(p.s.settings.mic.reverb, 1.5);
-  assert.deepEqual(p.s.settings.mic.vol, [0.8, 0.5]);
+  assert.deepEqual(p.s.settings.mic.vol, [0.8, 0.5, 0.8, 0.8]);
 });
 
 test('guests cannot change settings when a host is in charge', t => {

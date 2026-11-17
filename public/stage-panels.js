@@ -99,21 +99,38 @@
   $('#pfPanel').onclick = e => { if (e.target.closest('[data-pfx]')) app.classList.remove('pf'); };
 
   // ---------- 🎤 microphones (see mic.js) ----------
-  const micS = () => ({ on: false, vol: [0.8, 0.8], reverb: 0.25, echo: 0.1, master: 0.9, ...((KQ.state && KQ.state.settings.mic) || {}) });
-  let micErr = ['', ''];
+  const N = KQMic.N;
+  const micS = () => { const m = { on: false, reverb: 0.25, echo: 0.1, master: 0.9, ...((KQ.state && KQ.state.settings.mic) || {}) }; m.vol = Array.from({ length: N }, (_, i) => (m.vol || [])[i] ?? 0.8); return m; };
+  const micErr = Array(N).fill('');
   KQMic.onError = (i, e) => { micErr[i] = e.name === 'NotAllowedError' ? 'not allowed to use the mic' : e.name === 'NotFoundError' || e.name === 'OverconstrainedError' ? 'device not found — unplugged?' : (e.message || e.name); micNoteUpdate(); };
   const sendMic = (() => { let t = null, pend = {}; return p => { pend = { ...pend, ...p }; clearTimeout(t); t = setTimeout(() => { KQ.act('settings', { settings: { mic: pend } }); pend = {}; }, 120); }; })();
   KQ.on('state', st => { if (st.settings && st.settings.mic) KQMic.setParams(st.settings.mic); syncMicControls(); });
+  // one row per mic: device · which input · level meter · volume
+  $('#micRows').innerHTML = Array.from({ length: N }, (_, i) => `<div class="mrow"><b>Mic ${i + 1}</b><select data-mdev="${i}"></select><select data-mch="${i}"></select><div class="meter"><i id="lv${i}"></i></div><input type="range" data-mvol="${i}" min="0" max="3" step="0.05" title="Volume (up to 3× for quiet mics)"></div>`).join('');
   function syncMicControls() {
     if (!app.classList.contains('mics')) return;
     const m = micS();
     $('#micOn').checked = m.on;
-    for (const [id, v] of [['vol0', m.vol[0]], ['vol1', m.vol[1]], ['micRev', m.reverb], ['micEcho', m.echo], ['micMaster', m.master]]) if (document.activeElement !== $('#' + id)) $('#' + id).value = v;
+    document.querySelectorAll('[data-mvol]').forEach(el => { if (document.activeElement !== el) el.value = m.vol[el.dataset.mvol]; });
+    for (const [id, v] of [['micRev', m.reverb], ['micEcho', m.echo], ['micMaster', m.master]]) if (document.activeElement !== $('#' + id)) $('#' + id).value = v;
   }
   function micNoteUpdate() {
     const lat = KQMic.latencyMs();
     $('#micNote').textContent = !KQMic.supported() ? 'Mics only work in the KARAO-Q app on this computer (browsers only allow microphones on secure pages).'
-      : [micErr[0] && `Mic 1: ${micErr[0]}`, micErr[1] && `Mic 2: ${micErr[1]}`, lat != null && micS().on ? `Delay through the computer: about ${lat} ms${lat > 30 ? ' — noticeable; use direct monitoring for the dry voice' : ''}` : ''].filter(Boolean).join(' · ');
+      : [...micErr.map((e, i) => e && `Mic ${i + 1}: ${e}`), lat != null && micS().on ? `Delay through the computer: about ${lat} ms${lat > 30 ? ' — noticeable; use direct monitoring for the dry voice' : ''}` : ''].filter(Boolean).join(' · ');
+  }
+  const chOpts = (n, sel) => {
+    const list = [['both', n > 2 ? 'inputs 1 + 2' : 'both channels'], ...Array.from({ length: n }, (_, k) => [String(k + 1), `input ${k + 1} only`])];
+    const cur = sel === 'L' ? '1' : sel === 'R' ? '2' : String(sel || 'both');
+    return list.map(([v, l]) => `<option value="${v}" ${v === cur ? 'selected' : ''}>${l}</option>`).join('');
+  };
+  async function fillChannels(i) {
+    const c = KQMic.cfg.slots[i], sel = document.querySelector(`[data-mch="${i}"]`);
+    if (i > 0 && !c.id) { sel.innerHTML = '<option>—</option>'; sel.disabled = true; return; }
+    sel.disabled = false;
+    sel.innerHTML = chOpts(2, c.ch);
+    const n = await KQMic.probeChannels(c.id);
+    sel.innerHTML = chOpts(n, c.ch);
   }
   async function micRefresh() {
     syncMicControls(); micNoteUpdate();
@@ -121,9 +138,13 @@
     const { inputs, outputs } = await KQMic.devices();
     const c = KQMic.cfg;
     const opts = (list, sel, first) => first + list.map(d => `<option value="${KQ.esc(d.deviceId)}" ${d.deviceId === sel ? 'selected' : ''}>${KQ.esc(d.label || 'Unnamed device')}</option>`).join('');
-    $('#mic1').innerHTML = opts(inputs.filter(d => d.deviceId !== 'communications'), c.slots[0].id, `<option value="" ${!c.slots[0].id ? 'selected' : ''}>Default input</option>`);
-    $('#mic2').innerHTML = opts(inputs.filter(d => d.deviceId !== 'communications' && d.deviceId !== 'default'), c.slots[1].id, `<option value="" ${!c.slots[1].id ? 'selected' : ''}>— off —</option>`);
-    $('#mic1ch').value = c.slots[0].ch || 'both'; $('#mic2ch').value = c.slots[1].ch || 'both';
+    const ins = inputs.filter(d => d.deviceId !== 'communications');
+    document.querySelectorAll('[data-mdev]').forEach(el => {
+      const i = Number(el.dataset.mdev), cur = c.slots[i].id;
+      el.innerHTML = i === 0 ? opts(ins, cur, `<option value="" ${!cur ? 'selected' : ''}>Default input</option>`)
+        : opts(ins.filter(d => d.deviceId !== 'default'), cur, `<option value="" ${!cur ? 'selected' : ''}>— off —</option>`);
+    });
+    for (let i = 0; i < N; i++) fillChannels(i);
     $('#micOut').innerHTML = opts(outputs.filter(d => d.deviceId !== 'communications'), c.out, `<option value="" ${!c.out ? 'selected' : ''}>System default</option>`);
   }
   (function meterLoop() {
@@ -132,15 +153,18 @@
     KQMic.levels().forEach((v, i) => { const el = $('#lv' + i); if (el) el.style.width = `${Math.round((v || 0) * 100)}%`; });
   })();
   $('#micOn').onchange = e => sendMic({ on: e.target.checked });
-  $('#vol0').oninput = e => sendMic({ vol: [Number(e.target.value), micS().vol[1]] });
-  $('#vol1').oninput = e => sendMic({ vol: [micS().vol[0], Number(e.target.value)] });
+  $('#micRows').addEventListener('input', e => {
+    const v = e.target.closest('[data-mvol]'); if (!v) return;
+    const vol = micS().vol.slice(); vol[v.dataset.mvol] = Number(v.value); sendMic({ vol });
+  });
+  $('#micRows').addEventListener('change', e => {
+    const d = e.target.closest('[data-mdev]'), ch = e.target.closest('[data-mch]');
+    if (d) { const i = Number(d.dataset.mdev); micErr[i] = ''; KQMic.setSlot(i, { id: d.value }).then(() => { fillChannels(i); micNoteUpdate(); }); }
+    if (ch) KQMic.setSlot(Number(ch.dataset.mch), { ch: ch.value });
+  });
   $('#micRev').oninput = e => sendMic({ reverb: Number(e.target.value) });
   $('#micEcho').oninput = e => sendMic({ echo: Number(e.target.value) });
   $('#micMaster').oninput = e => sendMic({ master: Number(e.target.value) });
-  $('#mic1').onchange = e => { micErr[0] = ''; KQMic.setSlot(0, { id: e.target.value }).then(micNoteUpdate); };
-  $('#mic2').onchange = e => { micErr[1] = ''; KQMic.setSlot(1, { id: e.target.value }).then(micNoteUpdate); };
-  $('#mic1ch').onchange = e => KQMic.setSlot(0, { ch: e.target.value });
-  $('#mic2ch').onchange = e => KQMic.setSlot(1, { ch: e.target.value });
   // speakers: everything (song, key change, mics, chime) goes to the chosen output
   const outTargets = () => [vid, KQStage.keyCtx, KQStage.audioCtx].filter(Boolean);
   $('#micOut').onchange = e => KQMic.setOutput(e.target.value, outTargets());

@@ -255,18 +255,18 @@
 
   // ---------- 🎤 mics (host): live volume / reverb / echo for mics plugged into the TV computer ----------
   $('#micBtn').onclick = () => {
-    const m = { on: false, vol: [0.8, 0.8], reverb: 0.25, echo: 0.1, master: 0.9, ...(KQ.state.settings.mic || {}) };
+    const m = { on: false, reverb: 0.25, echo: 0.1, master: 0.9, ...(KQ.state.settings.mic || {}) };
+    const vols = [0, 1, 2, 3].map(i => (m.vol || [])[i] ?? 0.8);
     const sl = (id, label, v, max = 1.5) => `<label class="mic-sl"><span>${label}</span><input type="range" id="${id}" min="0" max="${max}" step="0.05" value="${v}"></label>`;
     sheet(`<h3>🎤 Mics</h3>
       <label class="toggle"><input type="checkbox" id="pmOn" ${m.on ? 'checked' : ''}> Mics on (through the party computer's speakers)</label>
-      ${sl('pmV0', 'Mic 1', m.vol[0])}${sl('pmV1', 'Mic 2', m.vol[1])}${sl('pmRev', 'Reverb', m.reverb, 1)}${sl('pmEcho', 'Echo', m.echo, 1)}${sl('pmAll', 'All mics', m.master)}
+      ${vols.map((v, i) => sl('pmV' + i, 'Mic ' + (i + 1), v, 3)).join('')}${sl('pmRev', 'Reverb', m.reverb, 1)}${sl('pmEcho', 'Echo', m.echo, 1)}${sl('pmAll', 'All mics', m.master)}
       <p class="hint">Which sound card / input is Mic 1 and Mic 2 is picked on the party computer: ☰ Menu → 🎤 Microphones.</p>`, () => { });
     let t = null, pend = {};
     const send = p => { pend = { ...pend, ...p }; clearTimeout(t); t = setTimeout(() => { act('settings', { settings: { mic: pend } }); pend = {}; }, 120); };
     const v = id => Number($('#' + id).value);
     $('#pmOn').onchange = e => send({ on: e.target.checked });
-    $('#pmV0').oninput = () => send({ vol: [v('pmV0'), v('pmV1')] });
-    $('#pmV1').oninput = () => send({ vol: [v('pmV0'), v('pmV1')] });
+    for (let i = 0; i < 4; i++) $('#pmV' + i).oninput = () => send({ vol: [0, 1, 2, 3].map(k => v('pmV' + k)) });
     $('#pmRev').oninput = () => send({ reverb: v('pmRev') });
     $('#pmEcho').oninput = () => send({ echo: v('pmEcho') });
     $('#pmAll').oninput = () => send({ master: v('pmAll') });

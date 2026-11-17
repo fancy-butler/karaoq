@@ -1,6 +1,6 @@
 'use strict';
 // 🎤 Microphones through the party computer's sound card (Mbox, UR44, Audio Kontrol, a USB mic…).
-// Up to two mics: two separate devices, or the left/right inputs of one audio interface.
+// Up to four mics: any mix of devices, and any single input of a multi-input interface (e.g. Mbox inputs 5/6).
 // Each mic → volume → shared vocal bus → gentle compressor → dry + reverb + echo → speakers.
 // The party's settings (on/off, volumes, reverb, echo) come from the host's phone; which device is which
 // mic is picked on the TV (device IDs only mean something on this computer) and remembered here.
@@ -8,12 +8,14 @@
   const LS = 'kq.mic';
   const load = () => { try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch { return {}; } };
   const save = c => { try { localStorage.setItem(LS, JSON.stringify(c)); } catch { } };
-  let cfg = Object.assign({ slots: [{ id: '', ch: 'both' }, { id: '', ch: 'both' }], out: '' }, load());
+  const N = 4; // mic slots
+  let cfg = Object.assign({ slots: [], out: '' }, load());
+  while (cfg.slots.length < N) cfg.slots.push({ id: '', ch: 'both' });
 
   let ctx = null, bus = null, master = null, dry = null, revSend = null, echoSend = null, delay = null, fb = null;
-  const slots = [null, null]; // { stream, src, gain, analyser }
+  const slots = Array(N).fill(null); // { src, gain, analyser }
   const streams = new Map();  // deviceId → MediaStream (one interface can feed both mics)
-  let params = { on: false, vol: [0.8, 0.8], reverb: 0.25, echo: 0.1, master: 0.9 };
+  let params = { on: false, vol: Array(N).fill(0.8), reverb: 0.25, echo: 0.1, master: 0.9 };
 
   function impulse(c, secs = 2.4, decay = 3) {
     const len = Math.floor(c.sampleRate * secs), buf = c.createBuffer(2, len, c.sampleRate);
@@ -56,7 +58,7 @@
   async function streamFor(id) {
     if (streams.has(id)) return streams.get(id);
     const s = await navigator.mediaDevices.getUserMedia({ audio: {
-      deviceId: id ? { exact: id } : undefined, channelCount: { ideal: 2 },
+      deviceId: id ? { exact: id } : undefined, channelCount: { ideal: 32 }, // every input the interface has
       echoCancellation: false, noiseSuppression: false, autoGainControl: false, latency: 0 } });
     streams.set(id, s);
     return s;
@@ -66,20 +68,25 @@
     for (const s of slots) if (s) { try { s.src.disconnect(); s.gain.disconnect(); } catch { } }
     slots.fill(null);
     const used = new Set();
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < N; i++) {
       const c = cfg.slots[i];
-      if (!c || c.id === 'off' || (i === 1 && !c.id)) continue; // mic 2 is off unless chosen
+      if (!c || c.id === 'off' || (i > 0 && !c.id)) continue; // mics 2–4 are off unless chosen
       try {
         const stream = await streamFor(c.id);
         used.add(c.id);
         const src = ctx.createMediaStreamSource(stream);
         const gain = ctx.createGain(), analyser = ctx.createAnalyser(); analyser.fftSize = 512;
         let node = src;
-        if (c.ch === 'L' || c.ch === 'R') {
-          // one input of a 2-in interface: take that channel, centre it
-          const split = ctx.createChannelSplitter(2), merge = ctx.createChannelMerger(2);
-          src.connect(split); const k = c.ch === 'L' ? 0 : 1;
-          split.connect(merge, k, 0); split.connect(merge, k, 1); node = merge;
+        const n = channelsOf(stream);
+        const k = c.ch === 'L' ? 0 : c.ch === 'R' ? 1 : /^\d+$/.test(String(c.ch)) ? Number(c.ch) - 1 : null;
+        if (k != null && k < n) {
+          // one input of an interface: take that channel and put it in the middle
+          const split = ctx.createChannelSplitter(Math.max(2, n)), merge = ctx.createChannelMerger(2);
+          src.connect(split); split.connect(merge, k, 0); split.connect(merge, k, 1); node = merge;
+        } else if (n > 2) {
+          // "inputs 1+2" on a many-input interface: just the first pair (not a mash of every input)
+          const split = ctx.createChannelSplitter(n), merge = ctx.createChannelMerger(2);
+          src.connect(split); split.connect(merge, 0, 0); split.connect(merge, 1, 1); node = merge;
         }
         node.connect(gain); gain.connect(analyser); analyser.connect(bus); // analyser in-line: a dead-end analyser never gets audio
         slots[i] = { src, gain, analyser, node };
@@ -94,6 +101,20 @@
     slots.fill(null);
     for (const s of streams.values()) s.getTracks().forEach(t => t.stop());
     streams.clear();
+  }
+
+  function channelsOf(stream) {
+    const t = stream.getAudioTracks()[0];
+    const n = t && t.getSettings && t.getSettings().channelCount;
+    return n > 0 ? n : 2;
+  }
+  // how many inputs a device gives us (opens it briefly if mics are off)
+  async function probeChannels(id) {
+    if (streams.has(id)) return channelsOf(streams.get(id));
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: id ? { exact: id } : undefined, channelCount: { ideal: 32 }, echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      const n = channelsOf(s); s.getTracks().forEach(t => t.stop()); return n;
+    } catch { return 2; }
   }
 
   // 0–1 level per mic, for meters
@@ -133,5 +154,5 @@
   const latencyMs = () => ctx ? Math.round(((ctx.baseLatency || 0) + (ctx.outputLatency || 0)) * 1000) : null;
   const supported = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.isSecureContext);
 
-  window.KQMic = { setParams, setSlot, setOutput, devices, levels, latencyMs, supported, get cfg() { return cfg; }, get params() { return params; }, onError: null };
+  window.KQMic = { N, probeChannels, setParams, setSlot, setOutput, devices, levels, latencyMs, supported, get cfg() { return cfg; }, get params() { return params; }, onError: null };
 })();
