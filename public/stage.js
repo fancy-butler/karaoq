@@ -250,6 +250,8 @@
     document.body.dataset.theme = st.settings.theme || 'neon';
     document.body.dataset.phase = st.phase;
     document.body.dataset.fx = st.settings.skinFx === false ? '0' : '1';
+    document.body.dataset.oled = st.settings.oledCare === false ? '0' : '1';
+    const sk = $('#skin'); document.body.dataset.skin = sk && getComputedStyle(sk).display !== 'none' ? '1' : '0';
     // Desktop '95 taskbar: what's on
     const nowTxt = st.current ? `🎤 ${who(st.current)} — ${clean(st.current.title)}` : st.queue[0] ? `⏭ Up next: ${who(st.queue[0])}` : '🎤 KARAO-Q';
     const dmdTxt = st.current ? `NOW SINGING: ${who(st.current)}` : st.queue[0] ? `UP NEXT: ${who(st.queue[0])}` : 'INSERT COIN';
@@ -305,6 +307,9 @@
     const care = st.settings.oledCare !== false;
     app.style.setProperty('--px', care ? `${Math.round(Math.random() * 12 - 6)}px` : '0px');
     app.style.setProperty('--py', care ? `${Math.round(Math.random() * 12 - 6)}px` : '0px');
+    // skin frames and their chrome (bezels, signs, taskbars) move as one, a few pixels at a time
+    document.body.style.setProperty('--sx', care ? `${Math.round(Math.random() * 8 - 4)}px` : '0px');
+    document.body.style.setProperty('--sy', care ? `${Math.round(Math.random() * 8 - 4)}px` : '0px');
   }, 90000);
   setInterval(() => {
     const st = KQ.state; if (!st) return;
