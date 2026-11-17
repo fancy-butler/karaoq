@@ -380,3 +380,6 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #cbBar::before { content: ''; position: absolute; left: 0; right: 0; top: 9px; height: 4px; border-radius: 2px; background: #ffffff26; }
 #cbBar i { position: absolute; left: 0; top: 9px; height: 4px; width: 0; border-radius: 2px; background: linear-gradient(90deg, var(--pink), var(--cyan)); }
 #cbBar b { position: absolute; top: 4px; left: 0; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px var(--pink); }
+
+/* [hidden] must win over component display rules (menu buttons, cards…) */
+[hidden] { display: none !important; }

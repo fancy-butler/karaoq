@@ -15,8 +15,13 @@
   };
   // only offered between songs, never mid-song
   function syncUpdPill() { $('#updPill').hidden = !(updVer && KQ.state && KQ.state.phase === 'idle'); }
+  window.KQUpdateStatus = msg => toast(msg);
   function restartToUpdate() {
-    if (!updVer) return;
+    if (!updVer) { // nothing downloaded yet: check now (desktop app), or point a browser at the download page
+      if (/Electron/.test(navigator.userAgent)) { toast('Checking for updates…'); window.open('karaoq:checkupdate'); }
+      else toast('Updates come through the KARAO-Q desktop app — or grab the latest from github.com/fancy-butler/karaoq/releases');
+      return;
+    }
     const busy = KQ.state && KQ.state.phase !== 'idle';
     if (!confirm(`Install KARAO-Q v${updVer} now? It takes a few seconds and reopens by itself.${busy ? '\n\nThe current song will stop — the queue is saved.' : ''}`)) return;
     toast('Updating… back in a few seconds');

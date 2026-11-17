@@ -194,6 +194,7 @@ async function start() {
     if (url.startsWith('karaoq:update')) installNow();
     else if (url.startsWith('karaoq:pickfolder')) pickLibraryFolder();
     else if (url.startsWith('karaoq:report')) saveReport();
+    else if (url.startsWith('karaoq:checkupdate')) checkNow(true);
     else if (url.startsWith('karaoq:check')) tellStage();
     else shell.openExternal(url);
     return { action: 'deny' };
@@ -245,45 +246,61 @@ async function pickLibraryFolder() {
 }
 
 // ---------- updates ----------
-let updateReady = null, updaterRef = null;
-// Show the "Restart to update" button on the TV (the stage page asks via window.open('karaoq:…')).
-function tellStage() {
-  if (updateReady && win && !win.isDestroyed()) win.webContents.executeJavaScript(`window.KQUpdateReady && window.KQUpdateReady(${JSON.stringify(updateReady)})`).catch(() => { });
-}
+// Checks at start-up and every 30 minutes, and on demand from the TV menu ("Check for updates").
+// Windows + Linux AppImage: download quietly, then offer "Restart to update" between songs (or install on close).
+// macOS: unsigned apps can't self-update, so say a new version is out and open the download page.
+let updateReady = null, updaterRef = null, updChecking = false, updManual = false;
+const RELEASES = 'https://github.com/fancy-butler/karaoq/releases/latest';
+function toStage(fn, arg) { if (win && !win.isDestroyed()) win.webContents.executeJavaScript(`window.${fn} && window.${fn}(${JSON.stringify(arg)})`).catch(() => { }); }
+function tellStage() { if (updateReady) toStage('KQUpdateReady', updateReady); }
+function updStatus(msg) { log(`update: ${msg}`); if (updManual) toStage('KQUpdateStatus', msg); }
 function installNow() {
-  if (!updaterRef || !updateReady) return;
+  if (!updaterRef || !updateReady) { checkNow(true); return; }
   log(`restart to update → ${updateReady}`);
   quitting = true;
   try { fs.writeFileSync(path.join(dataDir, '.closing'), String(Date.now())); } catch { }
   stopServer();
   setTimeout(() => updaterRef.quitAndInstall(true, true), 800); // silent install, then reopen KARAO-Q
 }
-// Windows + Linux: download quietly, install when the app is closed (never mid-song).
-// macOS: unsigned apps can't self-update, so just say a new version is out and link to it.
+function checkNow(manual) {
+  if (manual) updManual = true;
+  if (!app.isPackaged) return updStatus(`Updates only work in the installed app (this is v${app.getVersion()} from source)`);
+  if (updateReady) return tellStage();
+  if (process.platform === 'linux' && !process.env.APPIMAGE) return updStatus(`Auto-update only works when KARAO-Q runs from its .AppImage file — download the new version from GitHub`);
+  if (!updaterRef) return updStatus('The update checker is still starting — try again in a few seconds');
+  if (updChecking) return updStatus('Still checking…');
+  updChecking = true;
+  updaterRef.checkForUpdates().catch(e => { updChecking = false; updStatus(`Couldn't check for updates: ${e.message.split('\n')[0]}`); });
+}
 function checkForUpdates() {
   if (!app.isPackaged) return;
   let autoUpdater;
   try { ({ autoUpdater } = require('electron-updater')); } catch (e) { return log(`updater unavailable: ${e.message}`); }
   autoUpdater.logger = { info: log, warn: log, error: log, debug() { } };
-  if (process.platform === 'darwin') {
-    autoUpdater.autoDownload = false;
-    autoUpdater.on('update-available', info => {
-      if (!Notification.isSupported()) return;
-      const n = new Notification({ title: `KARAO-Q ${info.version} is out`, body: 'Click to download the new version.' });
-      n.on('click', () => shell.openExternal('https://github.com/fancy-butler/karaoq/releases/latest'));
-      n.show();
-    });
-    autoUpdater.checkForUpdates().catch(e => log(`update check failed: ${e.message}`));
-  } else {
-    autoUpdater.autoInstallOnAppQuit = true;
-    autoUpdater.on('update-downloaded', info => {
-      updateReady = info.version;
-      tellStage();
-      if (Notification.isSupported()) new Notification({ title: `KARAO-Q ${info.version} is ready`, body: 'Use "Restart to update" on the TV screen, or it installs next time you close KARAO-Q.' }).show();
-    });
-    updaterRef = autoUpdater;
-    autoUpdater.checkForUpdates().catch(e => log(`update check failed: ${e.message}`));
-  }
+  const mac = process.platform === 'darwin';
+  autoUpdater.autoDownload = !mac;
+  autoUpdater.autoInstallOnAppQuit = !mac;
+  autoUpdater.on('checking-for-update', () => updStatus('Checking for updates…'));
+  autoUpdater.on('update-not-available', () => { updChecking = false; updStatus(`You're up to date (v${app.getVersion()})`); updManual = false; });
+  autoUpdater.on('update-available', info => {
+    updChecking = false;
+    if (mac) {
+      updStatus(`KARAO-Q ${info.version} is out — opening the download page`);
+      if (updManual) shell.openExternal(RELEASES);
+      else if (Notification.isSupported()) { const n = new Notification({ title: `KARAO-Q ${info.version} is out`, body: 'Click to download the new version.' }); n.on('click', () => shell.openExternal(RELEASES)); n.show(); }
+      updManual = false;
+    } else updStatus(`Downloading v${info.version}…`);
+  });
+  autoUpdater.on('download-progress', p => { if (updManual && p.percent) toStage('KQUpdateStatus', `Downloading… ${Math.round(p.percent)}%`); });
+  autoUpdater.on('update-downloaded', info => {
+    updateReady = info.version; updManual = false;
+    tellStage();
+    if (Notification.isSupported()) new Notification({ title: `KARAO-Q ${info.version} is ready`, body: 'Use "Restart to update" on the TV screen, or it installs next time you close KARAO-Q.' }).show();
+  });
+  autoUpdater.on('error', e => { updChecking = false; updStatus(`Update failed: ${String(e && e.message || e).split('\n')[0]}`); updManual = false; });
+  updaterRef = autoUpdater;
+  checkNow(false);
+  setInterval(() => checkNow(false), 30 * 60 * 1000);
 }
 
 // macOS needs an app menu for Cmd+Q / Cmd+F to work; elsewhere no menu bar at all.
