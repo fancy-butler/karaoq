@@ -1,7 +1,7 @@
 'use strict';
 // KARAO-Q desktop app (Electron). Everything is bundled: Node (Electron's own), yt-dlp, ffmpeg, deno and
 // cloudflared. Double-click → the TV screen opens fullscreen with the join QR. Close the window → it all shuts down.
-const { app, BrowserWindow, Menu, dialog, shell, Notification, session, systemPreferences } = require('electron');
+const { app, BrowserWindow, Menu, dialog, shell, Notification, session, systemPreferences, powerSaveBlocker } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
@@ -277,6 +277,9 @@ app.whenReady().then(async () => {
     if (!gotLock) { app.quit(); return; } // a running KARAO-Q got focused instead
   }
   try { fs.unlinkSync(path.join(dataDir, '.closing')); } catch { }
+  // Keep the screen awake while KARAO-Q is open — between songs nothing is "playing", so the computer
+  // would otherwise dim or sleep the display mid-party. Released the moment KARAO-Q closes.
+  try { powerSaveBlocker.start('prevent-display-sleep'); } catch { }
   start(); setTimeout(checkForUpdates, 15000);
 });
 app.on('window-all-closed', () => app.quit());
