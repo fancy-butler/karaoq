@@ -1,0 +1,7 @@
+Fonts bundled with KARAO-Q (used by the party skins). All free to bundle and redistribute.
+
+Monoton, Pacifico, Press Start 2P, Audiowide, VT323, Righteous — SIL Open Font License 1.1 (via Fontsource, fontsource.org)
+Permanent Marker — Apache License 2.0 (via Fontsource)
+DSEG7 / DSEG14 Classic — SIL Open Font License 1.1, (c) keshikan (github.com/keshikan/DSEG)
+
+OFL text: https://openfontlicense.org   Apache 2.0 text: https://www.apache.org/licenses/LICENSE-2.0

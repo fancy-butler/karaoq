@@ -277,7 +277,7 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #updPill b { color: var(--cyan); } #updPill:hover { border-color: var(--gold); }
 #menuPanel .upd { color: var(--cyan); font-weight: 800; }
 
-#pfPanel, #micPanel, #libPanel { max-height: 92%; overflow: auto; width: min(900px, 92vw); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.96); background: #110a1bf7; border: 1px solid var(--line); border-radius: 22px; padding: 26px 34px; z-index: 31; opacity: 0; pointer-events: none; transition: .2s; box-shadow: 0 30px 80px #000c; font-size: 18px; }
+#pfPanel, #micPanel, #libPanel { max-height: 92%; overflow: auto; width: min(900px, 94%); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(.96); background: #110a1bf7; border: 1px solid var(--line); border-radius: 22px; padding: 26px 34px; z-index: 31; opacity: 0; pointer-events: none; transition: .2s; box-shadow: 0 30px 80px #000c; font-size: 18px; }
 .pf #pfPanel, .mics #micPanel, .lib #libPanel { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
 #pfPanel h2, #micPanel h2, #libPanel h2 { margin: 0 0 8px; } #pfPanel .fine, #micPanel .fine, #libPanel .fine { color: var(--dim); font-size: 16px; line-height: 1.45; }
 #pfPanel .x, #micPanel .x, #libPanel .x { position: absolute; top: 14px; right: 16px; background: none; border: 0; color: var(--dim); font-size: 22px; cursor: pointer; }

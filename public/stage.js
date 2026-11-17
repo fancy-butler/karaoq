@@ -160,8 +160,25 @@
   function showCombo() {
     const c = $('#skinCombo'); if (c) { c.innerHTML = combo > 1 ? `<b>${combo}</b><small>COMBO</small>` : ''; c.classList.remove('bump'); void c.offsetWidth; if (combo > 1) c.classList.add('bump'); }
     const sc = $('#skinScore'); if (sc) sc.textContent = String(score).padStart(7, '0');
+    const hi = $('#skinHits'); if (hi) hi.textContent = String(Math.min(999, combo)).padStart(3, '0');
+  }
+  // other skins answer a reaction in their own chrome (LED panel, vest HUD, diner bell)
+  const FLASH = { hall: ['1UP', 'HI', 'b0nUS'], laser: ['HIT!', 'DIRECT HIT!', 'TAGGED!'], diner: ['DING! ORDER UP', 'ENCORE!', 'ORDER UP!'] };
+  let flashT = null;
+  function skinFlash() {
+    const words = FLASH[document.body.dataset.theme]; if (!words) return;
+    combo++; showCombo();
+    const w = words[Math.floor(Math.random() * words.length)];
+    document.querySelectorAll('#skin [data-flash]').forEach(el => { if (!el.dataset.keep) el.dataset.keep = el.textContent; el.textContent = w; });
+    document.body.classList.add('kqhit');
+    clearTimeout(flashT); flashT = setTimeout(() => {
+      document.body.classList.remove('kqhit');
+      document.querySelectorAll('#skin [data-flash]').forEach(el => { el.textContent = el.dataset.keep || ''; delete el.dataset.keep; });
+      if (KQ.state) render(KQ.state);
+    }, 1100);
   }
   function judge() {
+    skinFlash();
     const j = $('#skinJudge'); if (!j || document.body.dataset.theme !== 'rhythm') return;
     const r = Math.random();
     const [w, c, pts] = r < .2 ? ['MARVELOUS', 'm', 3000] : r < .65 ? ['PERFECT', 'p', 2000] : ['GREAT', 'g', 1000];
@@ -239,6 +256,7 @@
     document.querySelectorAll('#skin .skinnow').forEach(el => { const t = el.closest('.dmd') ? dmdTxt.toUpperCase() : nowTxt; if (el.textContent !== t) el.textContent = t; });
     const songKey = st.current ? st.current.id + '|' + st.current.singer : '';
     if (songKey !== lastSongKey) { lastSongKey = songKey; combo = 0; showCombo(); }
+    const cr = $('#skinCredit'); if (cr && !document.body.classList.contains('kqhit')) cr.textContent = String(Math.min(99, st.queue.length)).padStart(2, '0');
     renderAttract(st);
 
     // songs sung tonight
@@ -330,7 +348,10 @@
   document.querySelectorAll('#skin [data-skin="menu"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); setMenu(!app.classList.contains('menu')); }));
   // desktop skins: menu-bar items run the matching menu entry
   document.querySelectorAll('#skin [data-skin-m]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const t = $(`#menuPanel [data-m="${b.dataset.skinM}"]`); if (t) t.click(); }));
-  const clockTick = () => { const c = $('#skinClock'); if (c) c.textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); };
+  const clockTick = () => {
+    const now = new Date(); const c = $('#skinClock'); if (c) c.textContent = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    const dc = $('#skin .dclock'); if (dc) { dc.style.setProperty('--h', (now.getHours() % 12) * 30 + now.getMinutes() / 2 + 'deg'); dc.style.setProperty('--m', now.getMinutes() * 6 + 'deg'); }
+  };
   clockTick(); setInterval(clockTick, 15000);
   $('#menuPill').onclick = e => { e.stopPropagation(); setMenu(!app.classList.contains('menu')); };
   document.addEventListener('click', e => { if (!e.target.closest('#menuPanel, #menuPill')) setMenu(false); });

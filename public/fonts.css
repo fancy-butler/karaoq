@@ -1,0 +1,10 @@
+/* Display fonts for the party skins — bundled, so they work offline. Licences: /fonts/LICENSES.txt */
+@font-face { font-family: "KQ Neon"; src: url(/fonts/monoton-latin-400-normal.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "KQ Script"; src: url(/fonts/pacifico-latin-400-normal.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "KQ Pixel"; src: url(/fonts/press-start-2p-latin-400-normal.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "KQ Laser"; src: url(/fonts/audiowide-latin-400-normal.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "KQ Marker"; src: url(/fonts/permanent-marker-latin-400-normal.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "KQ Term"; src: url(/fonts/vt323-latin-400-normal.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "KQ Retro"; src: url(/fonts/righteous-latin-400-normal.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "KQ 7Seg"; src: url(/fonts/dseg7-bold.woff2) format("woff2"); font-display: swap; }
+@font-face { font-family: "KQ 14Seg"; src: url(/fonts/dseg14-bold.woff2) format("woff2"); font-display: swap; }

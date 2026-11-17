@@ -147,6 +147,8 @@ window.KQ = (() => {
     ['Express', 'https://expressjs.com', 'web server', 'MIT'],
     ['ws', 'https://github.com/websockets/ws', 'live sync between phones and TV', 'MIT'],
     ['node-qrcode', 'https://github.com/soldair/node-qrcode', 'QR codes', 'MIT'],
+    ['Fontsource fonts', 'https://fontsource.org', 'skin fonts: Monoton, Pacifico, Press Start 2P, Audiowide, VT323, Righteous, Permanent Marker', 'OFL-1.1 / Apache-2.0'],
+    ['DSEG', 'https://github.com/keshikan/DSEG', '7- and 14-segment LED fonts', 'OFL-1.1'],
   ];
   async function aboutHtml() {
     let v = '', yd = '';

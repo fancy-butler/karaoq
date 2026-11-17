@@ -8,9 +8,9 @@
 #skin > * { display: none; position: fixed; z-index: 70; pointer-events: none; }
 #skin > svg { display: block; width: 0; height: 0; }
 body[data-theme="amber"] #skin, body[data-theme="cabinet"] #skin, body[data-theme="desk92"] #skin,
-body[data-theme="desk95"] #skin, body[data-theme="aero"] #skin, body[data-theme="graffiti"] #skin { display: block; }
+body[data-theme="desk95"] #skin, body[data-theme="aero"] #skin, body[data-theme="graffiti"] #skin, body[data-theme="hall"] #skin, body[data-theme="laser"] #skin, body[data-theme="diner"] #skin { display: block; }
 body[data-theme="amber"] #app, body[data-theme="cabinet"] #app, body[data-theme="desk92"] #app,
-body[data-theme="desk95"] #app, body[data-theme="aero"] #app, body[data-theme="graffiti"] #app { inset: var(--app-inset); overflow: hidden; }
+body[data-theme="desk95"] #app, body[data-theme="aero"] #app, body[data-theme="graffiti"] #app, body[data-theme="hall"] #app, body[data-theme="laser"] #app, body[data-theme="diner"] #app { inset: var(--app-inset); overflow: hidden; }
 #skin .scan { inset: var(--app-inset); }
 body[data-fx="0"] #skin .scan { display: none !important; }
 
@@ -316,7 +316,7 @@ body[data-theme="graffiti"] .logo, body[data-theme="graffiti"] #upSinger, body[d
 body[data-theme="graffiti"] .logo span { color: var(--gold); text-shadow: .05em .05em 0 #000, .1em .1em 0 var(--cyan); }
 body[data-theme="graffiti"] .big { color: var(--cyan); text-shadow: .06em .06em 0 #000; rotate: 1.5deg; }
 body[data-theme="graffiti"] .up-label { color: var(--gold); text-shadow: .06em .06em 0 #000; }
-body[data-theme="graffiti"] .big-qr { border-radius: 14px; box-shadow: 0 0 0 4px #000, 8px 8px 0 4px var(--pink); rotate: -2deg; }
+body[data-theme="graffiti"] .big-qr, body[data-theme="hall"] .big-qr, body[data-theme="laser"] .big-qr, body[data-theme="diner"] .big-qr { border-radius: 14px; box-shadow: 0 0 0 4px #000, 8px 8px 0 4px var(--pink); rotate: -2deg; }
 body[data-theme="graffiti"] :is(#side, #menuPanel, #nowTag, #ticker, #pfPanel, #micPanel, #libPanel, #help, .up-inner) { border: 3px solid #000 !important; border-radius: 16px !important; box-shadow: 7px 7px 0 #000 !important; }
 body[data-theme="graffiti"] .up-inner { background: var(--panel); padding: 3vh 4vw; rotate: -1deg; }
 body[data-theme="graffiti"] #nowTag { rotate: -2deg; } body[data-theme="graffiti"] #ticker { rotate: 1.5deg; }
@@ -345,11 +345,200 @@ body[data-theme="graffiti"][data-phase="playing"] .tags span:nth-child(2n) { ani
 body[data-fx="0"][data-theme="graffiti"] .tags span { animation: none !important; }
 @keyframes kqbob { to { translate: 0 -.8vh; } }
 
+/* ---------------------------------------------------------------- 👾 Arcade Hall — standing in the aisle, the video is the big screen at the end */
+body[data-theme="hall"] {
+  --app-inset: 15vh 20vw 19vh;
+  --bg: #07030f; --panel: #120824f0; --line: #3a1f5c; --text: #fff; --dim: #c0a8e8; --pink: #ff3ea5; --cyan: #33e1ff; --gold: #ffb020; --red: #ff3030; --green: #4dff9c;
+  background: radial-gradient(30% 30% at 50% 45%, #5a1f8a88, transparent 70%), linear-gradient(#0b0518, #1a0a33 55%, #0a0414);
+}
+body[data-theme="hall"] #app { border-radius: .8vw; box-shadow: 0 0 0 .8vh #050208, 0 0 0 1vh #ff7a1a, 0 0 3vh #ff7a1a99, 0 0 10vh #a14dff55; }
+body[data-theme="hall"] .logo, body[data-theme="hall"] .up-label, body[data-theme="hall"] #upSinger, body[data-theme="hall"] #intro h1 { font-family: "KQ Pixel", "Courier New", monospace; letter-spacing: 0; text-transform: uppercase; }
+body[data-theme="hall"] .logo { font-size: clamp(22px, 3.4vw, 60px) !important; color: #ffb020; text-shadow: .08em .08em 0 #ff3ea5, 0 0 2vh #ffb02088; }
+body[data-theme="hall"] .logo span { color: #33e1ff; text-shadow: .08em .08em 0 #3a1f5c; }
+body[data-theme="hall"] #upSinger { font-size: clamp(26px, 4.4vw, 72px) !important; line-height: 1.3; color: #fff; text-shadow: .07em .07em 0 #ff3ea5; }
+body[data-theme="hall"] .big { font-family: "KQ Pixel", monospace; font-size: clamp(12px, 1.4vw, 24px) !important; color: #33e1ff; }
+body[data-theme="hall"] #idle, body[data-theme="hall"] #upnext { background: radial-gradient(80% 70% at 50% 40%, #241046, #07030f 75%); }
+body[data-theme="hall"] #skin .scan { display: block; border-radius: .8vw; z-index: 69; background: repeating-linear-gradient(transparent 0 2px, #00000030 2px 3px); }
+body[data-theme="hall"] #skin .hall { display: block; inset: 0; z-index: 1; }
+body[data-theme="hall"] .hall .ceil { position: absolute; left: 0; right: 0; top: 0; height: 15vh; overflow: hidden; perspective: 40vh; }
+body[data-theme="hall"] .hall .ceil::before { content: ''; position: absolute; left: -40%; right: -40%; top: -60%; height: 260%; transform: rotateX(-72deg); transform-origin: top;
+  background: repeating-linear-gradient(90deg, transparent 0 8vw, #e9d4ff 8vw 8.5vw, transparent 8.5vw 22vw), #120826; filter: drop-shadow(0 0 1vh #c08aff); }
+body[data-theme="hall"] .hall .floor { position: absolute; left: 0; right: 0; bottom: 0; height: 19vh; overflow: hidden; perspective: 30vh; }
+body[data-theme="hall"] .hall .floor::before { content: ''; position: absolute; left: -60%; right: -60%; bottom: 0; height: 300%; transform: rotateX(70deg); transform-origin: bottom;
+  background: radial-gradient(18% 30% at 50% 0%, #ff7a1a66, transparent 70%), radial-gradient(10% 40% at 30% 0%, #ff3ea555, transparent 70%), radial-gradient(10% 40% at 70% 0%, #33e1ff55, transparent 70%),
+    repeating-linear-gradient(90deg, #ffffff10 0 2px, transparent 2px 6vw), repeating-linear-gradient(#ffffff10 0 2px, transparent 2px 6vw), linear-gradient(#3b1460, #12062a); }
+body[data-theme="hall"] .hall .row { position: absolute; top: 10vh; bottom: 12vh; width: 20vw; perspective: 60vw; }
+body[data-theme="hall"] .hall .row.l { left: 0; perspective-origin: 100% 50%; } body[data-theme="hall"] .hall .row.r { right: 0; perspective-origin: 0% 50%; }
+body[data-theme="hall"] .hall .track { position: absolute; top: 0; bottom: 0; width: 52vw; display: flex; gap: 1.2vw; align-items: stretch; }
+body[data-theme="hall"] .row.l .track { left: 0; transform: rotateY(62deg); transform-origin: left center; }
+body[data-theme="hall"] .row.r .track { right: 0; flex-direction: row-reverse; transform: rotateY(-62deg); transform-origin: right center; }
+body[data-theme="hall"] .track i { --c: #ff7a1a; position: relative; flex: 1; border-radius: 1vw 1vw .3vw .3vw;
+  background: linear-gradient(#0000 0 4%, color-mix(in srgb, var(--c) 70%, #fff) 4% 13%, #0000 13%), linear-gradient(#0d0716, #05030a); box-shadow: inset 0 0 0 .45vw var(--c), 0 0 2.5vw color-mix(in srgb, var(--c) 50%, transparent); }
+body[data-theme="hall"] .track i b { position: absolute; left: 14%; right: 14%; top: 18%; height: 34%; border-radius: .4vw; animation: kqattract 3.2s steps(4) infinite;
+  background: radial-gradient(circle at 30% 40%, #fff8 0 4%, transparent 5%), radial-gradient(circle at 70% 60%, var(--c) 0 6%, transparent 7%), linear-gradient(135deg, #2a0f6a, #0a2a6a); box-shadow: 0 0 1.6vw #6aa8ff88; }
+body[data-theme="hall"] .track i::after { content: ''; position: absolute; left: 6%; right: 6%; top: 58%; height: 10%; border-radius: .3vw; background: radial-gradient(circle at 25% 50%, #ff3030 0 14%, transparent 16%), radial-gradient(circle at 55% 50%, #ffe14a 0 11%, transparent 13%), radial-gradient(circle at 75% 50%, #4dff9c 0 11%, transparent 13%), #241a33; }
+body[data-theme="hall"] .track i:nth-child(2) { --c: #ff3ea5; } body[data-theme="hall"] .track i:nth-child(3) { --c: #33e1ff; } body[data-theme="hall"] .track i:nth-child(4) { --c: #4dff9c; } body[data-theme="hall"] .track i:nth-child(5) { --c: #a14dff; }
+body[data-theme="hall"] .track i:nth-child(2) b { animation-delay: -.8s; } body[data-theme="hall"] .track i:nth-child(3) b { animation-delay: -1.6s; } body[data-theme="hall"] .track i:nth-child(4) b { animation-delay: -2.4s; }
+@keyframes kqattract { 25% { filter: hue-rotate(90deg); } 50% { filter: hue-rotate(180deg) brightness(1.3); } 75% { filter: hue-rotate(270deg); } }
+body[data-fx="0"] .track i b { animation: none !important; }
+body[data-theme="hall"] #skin .neonsign { display: flex; flex-direction: column; align-items: center; top: 1.2vh; left: 0; right: 0; z-index: 72; }
+body[data-theme="hall"] .neonsign b { font: 400 clamp(30px, 8.4vh, 96px)/1 "KQ Neon", Impact, sans-serif; color: #ffe2c8; letter-spacing: .04em;
+  text-shadow: 0 0 .4vh #fff, 0 0 1.2vh #ff7a1a, 0 0 3vh #ff4d00, 0 0 6vh #ff4d00; animation: kqflicker 7s infinite; }
+body[data-theme="hall"] .neonsign small { margin-top: .4vh; font: 400 clamp(8px, 1.3vh, 14px) "KQ Pixel", monospace; letter-spacing: .3em; color: #33e1ff; text-shadow: 0 0 1vh #33e1ff; }
+@keyframes kqflicker { 0%, 91%, 93%, 96%, 100% { opacity: 1; } 92%, 95% { opacity: .45; } }
+body[data-fx="0"] .neonsign b, body[data-fx="0"] .dsign b, body[data-fx="0"] .open b { animation: none !important; }
+body[data-theme="hall"] #skin .led { display: flex; align-items: center; gap: 1.2vw; left: 50%; translate: -50% 0; bottom: 3.6vh; height: 10vh; padding: 0 2vw; z-index: 72;
+  background: #120404; border-radius: .6vh; box-shadow: 0 0 0 .5vh #1c1c22, 0 0 0 .8vh #4a4a55, inset 0 0 2vh #000; }
+body[data-theme="hall"] .led small { font: 400 clamp(8px, 1.5vh, 16px) "KQ Pixel", monospace; color: #ff5a3a; letter-spacing: .1em; }
+body[data-theme="hall"] .led b { font: 700 clamp(22px, 6.4vh, 72px) "KQ 14Seg", "KQ 7Seg", monospace; color: #ff3020; text-shadow: 0 0 .6vh #ff3020, 0 0 2vh #ff000088; min-width: 2.2em; text-align: right; }
+body[data-theme="hall"].kqhit .led b { color: #ffe14a; text-shadow: 0 0 .6vh #ffe14a, 0 0 2vh #ff8a00; }
+
+/* ---------------------------------------------------------------- 🔫 Laser Zone — 90s blacklight laser tag */
+body[data-theme="laser"] {
+  --app-inset: 6vh 6vw 15vh;
+  --bg: #04021a; --panel: #0a0630f0; --line: #2b2bff; --text: #f2f0ff; --dim: #a9a8ff; --pink: #ff2bd6; --cyan: #2bf3ff; --gold: #ffe62b; --green: #6dff3b; --red: #ff3b3b;
+  background: radial-gradient(circle, #fff 0 1px, transparent 1.5px) 0 0 / 7vh 9vh, radial-gradient(circle, #9cf 0 1px, transparent 1.5px) 3vh 4vh / 11vh 7vh,
+    radial-gradient(50% 60% at 10% 30%, #1530ff88, transparent 70%), radial-gradient(50% 60% at 90% 70%, #1a2aff77, transparent 70%), radial-gradient(40% 40% at 50% 100%, #3a10a055, transparent 70%), linear-gradient(160deg, #0a1278, #040340 60%, #0a0660);
+}
+body[data-theme="laser"] #app { border-radius: .6vh; box-shadow: 0 0 0 .6vh #020110, 0 0 0 .8vh #2b2bff, 0 0 4vh #2b2bffaa; }
+body[data-theme="laser"] .logo, body[data-theme="laser"] .big, body[data-theme="laser"] .up-label, body[data-theme="laser"] #upSinger, body[data-theme="laser"] #intro h1, body[data-theme="laser"] #side h2 { font-family: "KQ Laser", "Arial Black", sans-serif; letter-spacing: .02em; }
+body[data-theme="laser"] .logo { color: #fff; text-shadow: 0 0 .3vh #fff, 0 0 1.5vh #2bf3ff, 0 0 4vh #2b2bff; }
+body[data-theme="laser"] .logo span { color: #ffe62b; text-shadow: 0 0 1.5vh #ff8a00, 0 0 4vh #ff2bd6; }
+body[data-theme="laser"] .big { color: #6dff3b; text-shadow: 0 0 1.2vh #6dff3b88; }
+body[data-theme="laser"] #upSinger { color: #fff; text-shadow: 0 0 1.5vh #ff2bd6, 0 0 4vh #ff2bd6; }
+body[data-theme="laser"] .up-label { color: #2bf3ff; text-shadow: 0 0 1.2vh #2bf3ff; }
+body[data-theme="laser"] #idle, body[data-theme="laser"] #upnext { background: radial-gradient(40% 50% at 15% 80%, #2b2bff44, transparent 70%), radial-gradient(30% 40% at 85% 20%, #ff2bd633, transparent 70%), #04021a; }
+body[data-theme="laser"] .big-qr { box-shadow: 0 0 0 .5vh #6dff3b, 0 0 4vh #6dff3b88; }
+/* UV-painted walls */
+body[data-theme="laser"] #skin .uv { display: block; inset: 0; z-index: 1; overflow: hidden; }
+body[data-theme="laser"] .uv .sw { position: absolute; border-radius: 50%; opacity: .85;
+  background: repeating-conic-gradient(from 0deg, transparent 0 8deg, #2b6bff 9deg 13deg, transparent 14deg 30deg), radial-gradient(circle, #fff 0 4%, #2bf3ff 6%, transparent 20%);
+  -webkit-mask: radial-gradient(circle, #000 30%, transparent 70%); mask: radial-gradient(circle, #000 30%, transparent 70%); filter: drop-shadow(0 0 1vh #2b6bff); animation: kqspin 40s linear infinite; }
+body[data-theme="laser"] .uv .s1 { width: 34vh; height: 34vh; left: -8vh; top: 8vh; }
+body[data-theme="laser"] .uv .s2 { width: 26vh; height: 26vh; right: -6vh; top: 40vh; animation-direction: reverse; filter: hue-rotate(110deg) drop-shadow(0 0 1vh #ff2bd6); }
+body[data-theme="laser"] .uv .s3 { width: 18vh; height: 18vh; left: 40vw; bottom: -6vh; filter: hue-rotate(200deg) drop-shadow(0 0 1vh #6dff3b); }
+body[data-theme="laser"] .uv .s4 { width: 14vh; height: 14vh; right: 22vw; top: -5vh; filter: hue-rotate(60deg); animation-duration: 25s; }
+@keyframes kqspin { to { rotate: 360deg; } }
+body[data-fx="0"] .uv .sw { animation: none; }
+body[data-theme="laser"] .uv .bolt { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: #b9e4ff; stroke-width: 1.6; stroke-linejoin: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 3px #4aa8ff) drop-shadow(0 0 10px #2b5bff); opacity: .8; }
+body[data-theme="laser"].kqhit .uv .bolt { opacity: 1; stroke: #fff; }
+/* edge-lit barrier panels around the screen: dark UV-painted boards with a glowing tube on the top edge */
+body[data-theme="laser"] #skin .tubes { display: block; inset: 0; z-index: 2; }
+body[data-theme="laser"] .tubes i { --c: #ff8a00; position: absolute; border-radius: .4vh;
+  background: radial-gradient(circle at 50% 60%, #fff 0 .4vh, var(--c) .6vh, transparent 1.4vh), repeating-radial-gradient(circle at 50% 60%, transparent 0 1.2vh, color-mix(in srgb, var(--c) 45%, transparent) 1.2vh 1.5vh, transparent 1.5vh 2.6vh), linear-gradient(#0a0a3a, #040320);
+  border-top: 1vh solid color-mix(in srgb, var(--c) 35%, #fff); box-shadow: 0 -.4vh 1.4vh var(--c), 0 -1vh 3.5vh var(--c), inset 0 0 0 .2vh #2b2bff66; }
+body[data-theme="laser"] .tubes i::after { content: ''; position: absolute; top: -1vh; bottom: 0; right: -1vh; width: 1vh; background: color-mix(in srgb, var(--c) 35%, #fff); box-shadow: 0 0 1.4vh var(--c), 0 0 3.5vh var(--c); border-radius: .5vh; }
+body[data-theme="laser"] .tubes i:nth-child(1) { left: .8vw; top: 22vh; width: 4vw; height: 24vh; rotate: -4deg; }
+body[data-theme="laser"] .tubes i:nth-child(2) { --c: #ff2bd6; left: 1.2vw; top: 52vh; width: 3.6vw; height: 20vh; rotate: 3deg; }
+body[data-theme="laser"] .tubes i:nth-child(3) { --c: #ffe62b; right: 1vw; top: 16vh; width: 4vw; height: 30vh; rotate: 3deg; }
+body[data-theme="laser"] .tubes i:nth-child(4) { --c: #6dff3b; right: 1.2vw; top: 52vh; width: 3.6vw; height: 22vh; rotate: -3deg; }
+body[data-theme="laser"] .tubes i:nth-child(5) { --c: #2bf3ff; left: 18vw; top: .6vh; width: 22vw; height: 3.6vh; rotate: -1deg; }
+body[data-theme="laser"] .tubes i:nth-child(6) { --c: #ff8a00; right: 16vw; top: .8vh; width: 26vw; height: 3.4vh; rotate: 1deg; }
+body[data-theme="laser"] .tubes i:nth-child(5)::after, body[data-theme="laser"] .tubes i:nth-child(6)::after { display: none; }
+body[data-theme="laser"][data-phase="playing"] .tubes i:nth-child(odd) { animation: kqflicker 5s infinite; }
+/* vest-style HUD */
+body[data-theme="laser"] #skin .hud { display: flex; align-items: center; gap: 1.6vw; left: 6vw; right: 6vw; bottom: 2.2vh; height: 9vh; padding: 0 2vw; z-index: 72; overflow: hidden;
+  background: linear-gradient(#141050, #070424); border-radius: 4.5vh; box-shadow: 0 0 0 .4vh #000, 0 0 0 .7vh #2b2bff, 0 0 3vh #2b2bff88; color: #fff; font-family: "KQ Laser", sans-serif; }
+body[data-theme="laser"] .hud > b { flex: none; font: 400 clamp(14px, 3.4vh, 38px) "KQ Laser", sans-serif; color: #ffe62b; text-shadow: 0 0 1vh #ff8a00; }
+body[data-theme="laser"] .hud .skinnow { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: clamp(12px, 2.4vh, 26px); }
+body[data-theme="laser"] .hud .vest { flex: none; display: flex; gap: .9vh; }
+body[data-theme="laser"] .hud .vest i { width: 2.6vh; height: 2.6vh; border-radius: 50%; background: #3a0a0a; box-shadow: inset 0 0 .6vh #000; }
+body[data-theme="laser"][data-phase="playing"] .hud .vest i { background: #6dff3b; box-shadow: 0 0 1.4vh #6dff3b; animation: kqvest 1.2s steps(1) infinite; }
+body[data-theme="laser"][data-phase="playing"] .hud .vest i:nth-child(2n) { animation-delay: .6s; }
+body[data-theme="laser"].kqhit .hud .vest i { background: #ff3b3b !important; box-shadow: 0 0 2vh #ff3b3b !important; animation: none !important; }
+@keyframes kqvest { 50% { background: #2bf3ff; box-shadow: 0 0 1.4vh #2bf3ff; } }
+body[data-theme="laser"] .hud .hits { flex: none; display: flex; align-items: baseline; gap: .8vh; }
+body[data-theme="laser"] .hud .hits small { font-size: clamp(9px, 1.6vh, 16px); color: #a9a8ff; }
+body[data-theme="laser"] .hud .hits b { font: 700 clamp(18px, 4.4vh, 48px) "KQ 7Seg", monospace; color: #ff3b3b; text-shadow: 0 0 1vh #ff3b3b; }
+body[data-theme="laser"] .hud .hitmsg { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; border-radius: inherit; background: #ff2b2bdd;
+  font: 400 clamp(20px, 5vh, 56px) "KQ Laser", sans-serif; color: #fff; text-shadow: 0 0 1vh #fff; letter-spacing: .1em; }
+body[data-theme="laser"].kqhit .hud .hitmsg { display: flex; animation: kqblink .25s steps(1) 3; }
+
+/* ---------------------------------------------------------------- 🍔 Diner — 1950s, neon script, chrome, checker floor */
+body[data-theme="diner"] {
+  --app-inset: 19vh 19vw 21vh 13vw;
+  --bg: #fff6ea; --panel: #fff6eaf2; --line: #e3b9b9; --text: #3a1414; --dim: #8a5050; --pink: #d7263d; --cyan: #1f9e94; --gold: #c8102e; --red: #c8102e; --green: #1f9e94;
+  background: linear-gradient(transparent 0 76.5%, #111 76.5% 77%, transparent 77%),
+    linear-gradient(transparent 0 77%, #46c3b8 77%), linear-gradient(#f7c6cf, #f4b3c0 76.5%);
+}
+body[data-theme="diner"] #app { border-radius: 1.4vh; background: var(--bg);
+  box-shadow: 0 0 0 .5vh #f2f2f2, 0 0 0 .9vh #9a9aa6, 0 0 0 1.3vh #e8e8ee, 0 0 0 1.5vh #6a6a78, 0 1.6vh 3vh #7a2a3a66; }
+body[data-theme="diner"] .logo { font-family: "KQ Script", cursive; letter-spacing: 0; color: #c8102e; text-shadow: .04em .04em 0 #f4b3c0; }
+body[data-theme="diner"] .logo span { color: #1f9e94; text-shadow: .04em .04em 0 #bfe9e4; }
+body[data-theme="diner"] #upSinger, body[data-theme="diner"] #intro h1 { font-family: "KQ Script", cursive; color: #c8102e; text-shadow: .04em .04em 0 #f4b3c0; }
+body[data-theme="diner"] .big, body[data-theme="diner"] .up-label, body[data-theme="diner"] #side h2 { font-family: "KQ Retro", "Arial Black", sans-serif; color: #1f9e94; letter-spacing: .04em; }
+body[data-theme="diner"] .up-label { color: #c8102e; }
+body[data-theme="diner"] #idle { background: linear-gradient(transparent 0 calc(100% - 3vh), #c8102e calc(100% - 3vh)), #fff6ea; }
+body[data-theme="diner"] #upnext { background: radial-gradient(70% 70% at 50% 40%, #fff6ea, #f7c6cf); }
+body[data-theme="diner"] .bgthumb { opacity: .25; }
+body[data-theme="diner"] .big-qr { border-radius: 1.2vh; box-shadow: 0 0 0 .5vh #c8102e, 0 0 0 1vh #fff, 0 0 0 1.3vh #9a9aa6; }
+body[data-theme="diner"] .keys, body[data-theme="diner"] .ver, body[data-theme="diner"] .hint { color: #8a5050; }
+body[data-theme="diner"] kbd { background: #fff; color: #3a1414; border-color: #c9a0a0; }
+body[data-theme="diner"] :is(#side, #menuPanel, #nowTag, #ticker, #pfPanel, #micPanel, #libPanel, #help, .up-inner) { background: #fff6eaf5 !important; color: #3a1414; border: .35vh solid #c8102e !important; border-radius: 1.4vh !important; box-shadow: 0 0 0 .7vh #fff6ea, 0 0 0 .9vh #9a9aa6, 0 1vh 3vh #0004 !important; backdrop-filter: none !important; }
+body[data-theme="diner"] .up-inner { padding: 3vh 4vw; }
+body[data-theme="diner"] #menuPanel button { color: #3a1414; } body[data-theme="diner"] #menuPanel button:hover, body[data-theme="diner"] #menuPanel button:focus { background: #c8102e; color: #fff; }
+body[data-theme="diner"] #app button:not(#menuPanel button), body[data-theme="diner"] #menuPill { background: #c8102e; color: #fff; border: 0; box-shadow: 0 .4vh 0 #7a0a1c; }
+body[data-theme="diner"] #sideList .w { color: #c8102e; } body[data-theme="diner"] #sideList li.up { background: #1f9e9422; outline-color: #1f9e94; }
+body[data-theme="diner"] :is(#pfPanel, #micPanel, #libPanel) :is(.fine, small, .x) { color: #6a3a3a !important; }
+body[data-theme="diner"] :is(#pfPanel, #micPanel, #libPanel) :is(input, select) { background: #fff; color: #3a1414; border: 1px solid #c9a0a0; }
+body[data-theme="diner"] :is(#nowTag, #ticker) small { color: #1f9e94 !important; }
+/* string lights along the ceiling */
+body[data-theme="diner"] #skin .dlights { display: block; left: 0; right: 0; top: 0; height: 4vh; z-index: 71;
+  background: radial-gradient(circle at 50% 70%, #fffbe0 0 .5vh, #ffd88a88 .8vh, transparent 1.6vh) 0 0 / 5vw 4vh, linear-gradient(#0000 0 1.2vh, #7a5a5a 1.2vh 1.35vh, #0000 1.35vh); }
+body[data-theme="diner"][data-phase="playing"] #skin .dlights { animation: kqbulbs 1s steps(1) infinite; }
+@keyframes kqbulbs { 50% { background-position: 2.5vw 0, 0 0; } }
+/* the neon sign with a chasing-bulb arrow pointing at the screen */
+body[data-theme="diner"] #skin .dsign { display: block; left: 13vw; top: 2.5vh; width: 60vw; height: 15.5vh; z-index: 72; }
+body[data-theme="diner"] .dsign b { position: absolute; left: 0; top: -1vh; font: 400 clamp(34px, 10vh, 120px)/1.25 "KQ Script", cursive; color: #ffe8ec;
+  text-shadow: 0 0 .3vh #fff, 0 0 1vh #ff2a4a, 0 0 2.4vh #ff1030, 0 0 5vh #ff1030; animation: kqflicker 9s infinite; }
+body[data-theme="diner"] .dsign small { position: absolute; left: 1vw; bottom: -1.2vh; padding: .4vh 1.2vh; border-radius: .6vh; background: #bfe0db; color: #2a4a48; font: 400 clamp(9px, 1.7vh, 18px) "KQ Retro", sans-serif; letter-spacing: .2em; box-shadow: 0 .3vh 0 #7aa8a2; }
+body[data-theme="diner"] .dsign .arrow { position: absolute; left: 24vw; top: 2vh; width: 36vw; height: 15.5vh; overflow: visible; }
+body[data-theme="diner"] .arrow .bar { fill: none; stroke: #c8102e; stroke-width: 22; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+body[data-theme="diner"] .arrow .bulb { fill: none; stroke: #fff6c8; stroke-width: 8; stroke-linecap: round; stroke-dasharray: 0 18; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 3px #ffd36a); animation: kqchasebulb .6s linear infinite; }
+body[data-theme="diner"] .arrow .head { fill: #c8102e; stroke: #fff6c8; stroke-width: 3; vector-effect: non-scaling-stroke; filter: drop-shadow(0 0 4px #ffd36a); }
+@keyframes kqchasebulb { to { stroke-dashoffset: -18; } }
+body[data-fx="0"] .arrow .bulb, body[data-fx="0"] #skin .dlights { animation: none !important; }
+body[data-theme="diner"] #skin .open { display: flex; align-items: center; gap: 1vw; right: 3vw; top: 5vh; z-index: 72; padding: .8vh 1.4vw; border-radius: 1vh; background: #2a0f14;
+  font: 400 clamp(11px, 2.4vh, 26px) "KQ Retro", sans-serif; color: #ffd0d6; letter-spacing: .08em; text-shadow: 0 0 .8vh #ff2a4a, 0 0 2vh #ff1030; box-shadow: 0 0 0 .4vh #9a9aa6; }
+body[data-theme="diner"] .open b { font-size: 1.5em; color: #fff0f0; animation: kqflicker 6s infinite; }
+body[data-theme="diner"] .open span { display: none; }
+body[data-theme="diner"].kqhit .open span { display: inline; color: #fff7b0; text-shadow: 0 0 1vh #ffb000; }
+body[data-theme="diner"].kqhit .open { font-size: clamp(11px, 2.4vh, 26px); }
+body[data-theme="diner"].kqhit .open > b { display: none; }
+/* tin signs + wall clock on the left wall */
+body[data-theme="diner"] #skin .tins { display: flex; flex-direction: column; align-items: center; gap: 2.6vh; left: 1.2vw; top: 21vh; width: 10vw; z-index: 72; }
+body[data-theme="diner"] .tins span { display: flex; flex-direction: column; align-items: center; padding: 1vh .8vw; border-radius: 1vh; font: 400 clamp(12px, 2.6vh, 28px)/1 "KQ Script", cursive; box-shadow: 0 .5vh 1vh #0003; }
+body[data-theme="diner"] .tins span b { font: 400 clamp(14px, 3.2vh, 34px)/1.1 "KQ Retro", sans-serif; }
+body[data-theme="diner"] .tins .t1 { background: #fff6ea; color: #c8102e; border: .4vh solid #c8102e; rotate: -4deg; }
+body[data-theme="diner"] .tins .t2 { background: #c8102e; color: #fff; rotate: 3deg; }
+body[data-theme="diner"] .tins .t3 { background: #1f9e94; color: #fff; rotate: -2deg; }
+body[data-theme="diner"] #skin .dclock { display: block; right: 3.4vw; top: 15vh; width: 11vh; height: 11vh; border-radius: 50%; z-index: 72;
+  background: radial-gradient(circle, #222 0 .5vh, transparent .6vh), repeating-conic-gradient(#3a1414 0 1deg, transparent 1deg 30deg), radial-gradient(circle, #fff 0 4.3vh, #ffe 4.3vh 4.6vh, #46c3b8 4.6vh); box-shadow: 0 0 0 .5vh #e8e8ee, 0 .6vh 1.2vh #0004;
+  -webkit-mask: radial-gradient(circle, #000 0 100%); }
+body[data-theme="diner"] .dclock i { position: absolute; left: 50%; bottom: 50%; width: .5vh; margin-left: -.25vh; background: #222; border-radius: .3vh; transform-origin: bottom center; }
+body[data-theme="diner"] .dclock .h { height: 2.6vh; rotate: var(--h, 0deg); } body[data-theme="diner"] .dclock .m { height: 3.8vh; width: .35vh; rotate: var(--m, 0deg); background: #c8102e; }
+/* jukebox in the corner */
+body[data-theme="diner"] #skin .jukebox { display: block; right: 2.2vw; bottom: 9vh; width: 13vw; height: 46vh; z-index: 72; border-radius: 6.5vw 6.5vw 1vh 1vh;
+  background: linear-gradient(90deg, #8a0a1c, #e0283f 30%, #ff6a7a 45%, #c8102e 60%, #7a0a1c); box-shadow: 0 0 0 .6vh #e8e8ee, 0 0 0 .9vh #8a8a96, 0 1.5vh 3vh #0005; }
+body[data-theme="diner"] .jukebox .top { position: absolute; left: 12%; right: 12%; top: 5%; height: 26%; border-radius: 5vw 5vw .6vh .6vh;
+  background: repeating-linear-gradient(90deg, #ffe7a0 0 6%, #ffb347 6% 12%), #ffd27a; box-shadow: inset 0 0 2vh #ff8a00, 0 0 2vh #ffcf6a; }
+body[data-theme="diner"] .jukebox .win { position: absolute; left: 14%; right: 14%; top: 36%; height: 16%; border-radius: .6vh; background: linear-gradient(#ffe9b0, #e0a850); box-shadow: inset 0 0 1vh #a06a20, 0 0 0 .5vh #e8e8ee; }
+body[data-theme="diner"] .jukebox .grille { position: absolute; left: 16%; right: 16%; top: 58%; height: 30%; border-radius: .6vh; background: repeating-linear-gradient(45deg, #444 0 .4vh, #9a9aa6 .4vh .8vh), #555; box-shadow: 0 0 0 .5vh #e8e8ee; }
+body[data-theme="diner"][data-phase="playing"] .jukebox .top { animation: kqjuke 2.4s linear infinite; }
+@keyframes kqjuke { 50% { filter: hue-rotate(-40deg) brightness(1.15); } }
+/* chair rail + checker floor */
+body[data-theme="diner"] #skin .dfloor { display: block; left: 0; right: 0; bottom: 0; height: 9vh; z-index: 71; perspective: 20vh; overflow: hidden;
+  background: linear-gradient(#e8e8ee 0 .5vh, #8a8a96 .5vh .8vh, transparent .8vh); }
+body[data-theme="diner"] .dfloor::before { content: ''; position: absolute; left: -50%; right: -50%; top: .8vh; height: 300%; transform: rotateX(62deg); transform-origin: top;
+  background: repeating-conic-gradient(#111 0 25%, #f4f0e8 0 50%) 0 0 / 7vh 7vh; }
+body[data-theme="diner"] #skin::after { content: ''; position: fixed; left: 0; right: 0; bottom: 21vh; translate: 0 50%; height: 2.4vh; z-index: 0;
+  background: repeating-conic-gradient(from 45deg, #111 0 25%, #fff 0 50%) 0 0 / 2.4vh 2.4vh; }
+
 /* ---- fit + legibility fixes shared by every framed skin ---- */
 body[data-theme="amber"] .screen, body[data-theme="cabinet"] .screen, body[data-theme="desk92"] .screen,
-body[data-theme="desk95"] .screen, body[data-theme="aero"] .screen, body[data-theme="rhythm"] .screen, body[data-theme="graffiti"] .screen { justify-content: safe center; align-items: safe center; }
+body[data-theme="desk95"] .screen, body[data-theme="aero"] .screen, body[data-theme="rhythm"] .screen, body[data-theme="graffiti"] .screen, body[data-theme="hall"] .screen, body[data-theme="laser"] .screen, body[data-theme="diner"] .screen { justify-content: safe center; align-items: safe center; }
 body[data-theme="amber"] .logo, body[data-theme="cabinet"] .logo, body[data-theme="desk92"] .logo,
-body[data-theme="desk95"] .logo, body[data-theme="aero"] .logo, body[data-theme="rhythm"] .logo, body[data-theme="graffiti"] .logo { font-size: clamp(36px, 5.2vw, 92px); margin-top: 1vh; }
+body[data-theme="desk95"] .logo, body[data-theme="aero"] .logo, body[data-theme="rhythm"] .logo, body[data-theme="graffiti"] .logo, body[data-theme="hall"] .logo, body[data-theme="laser"] .logo, body[data-theme="diner"] .logo { font-size: clamp(36px, 5.2vw, 92px); margin-top: 1vh; }
 body[data-theme="amber"] .big-qr, body[data-theme="cabinet"] .big-qr, body[data-theme="desk92"] .big-qr,
 body[data-theme="desk95"] .big-qr, body[data-theme="aero"] .big-qr, body[data-theme="rhythm"] .big-qr, body[data-theme="graffiti"] .big-qr { width: min(29vh, 330px); height: min(29vh, 330px); }
 /* the cabinet marquee already says KARAO-Q */
@@ -359,3 +548,30 @@ body[data-theme="desk92"] #nowTag small, body[data-theme="desk95"] #nowTag small
 body[data-theme="desk92"] #ticker small, body[data-theme="desk95"] #ticker small, body[data-theme="aero"] #ticker small { color: #0b3d91 !important; }
 /* the cabinet screen is short: shrink the idle card so the "haven't sung yet" row fits */
 body[data-theme="cabinet"] .idle-inner { zoom: .8; }
+
+/* ---- bundled display fonts on the earlier skins */
+body[data-theme="cabinet"] .deck .dmd { font-family: "KQ Pixel", "Courier New", monospace; font-size: clamp(12px, 3.4vh, 36px); }
+body[data-theme="cabinet"] .deck .start, body[data-theme="cabinet"] .deck .coin { font-family: "KQ Pixel", monospace; font-size: clamp(7px, 1.1vh, 12px); }
+body[data-theme="cabinet"] .marquee small { font-family: "KQ Pixel", monospace; font-size: clamp(7px, 1.1vh, 12px); }
+body[data-theme="rhythm"] .pf .score b { font-family: "KQ 7Seg", ui-monospace, monospace; }
+body[data-theme="graffiti"] .tags span { font-family: "KQ Marker", Impact, sans-serif; font-style: normal; }
+body[data-theme="amber"] .logo, body[data-theme="amber"] .big, body[data-theme="amber"] #upSinger { font-family: "KQ Term", var(--mono) !important; letter-spacing: .02em; }
+body[data-theme="amber"] .logo { font-size: clamp(48px, 7.6vw, 130px) !important; }
+/* wall art sits behind the screen, HUD/signs in front */
+body[data-theme="hall"] #app, body[data-theme="laser"] #app, body[data-theme="diner"] #app { z-index: 5; }
+body[data-theme="laser"] .uv .bolt { opacity: .5; }
+body[data-theme="hall"] #idle .logo { display: none; }
+body[data-theme="hall"] .idle-inner, body[data-theme="diner"] .idle-inner, body[data-theme="laser"] .idle-inner { zoom: .85; }
+body[data-theme="diner"] .dsign small { left: auto; right: 0; bottom: auto; top: 11.5vh; }
+body[data-theme="laser"] { --app-inset: 7vh 9vw 15vh; }
+body[data-theme="laser"] .tubes i:nth-child(1), body[data-theme="laser"] .tubes i:nth-child(2) { left: 2vw; }
+body[data-theme="laser"] .tubes i:nth-child(3), body[data-theme="laser"] .tubes i:nth-child(4) { right: 2vw; }
+body[data-theme="laser"] #idle, body[data-theme="laser"] #upnext {
+  background: radial-gradient(circle at 12% 75%, #fff 0 .5vh, #2bf3ff .8vh, transparent 2vh), radial-gradient(circle at 12% 75%, transparent 2.2vh, #2b6bff66 2.2vh 2.55vh, transparent 2.55vh, transparent 4.4vh, #2b6bff66 4.4vh 4.75vh, transparent 4.75vh, transparent 6.6vh, #2b6bff66 6.6vh 6.95vh, transparent 6.95vh, transparent 8.8vh, #2b6bff66 8.8vh 9.15vh, transparent 9.15vh, transparent 11.0vh, #2b6bff66 11.0vh 11.35vh, transparent 11.35vh, transparent),
+    radial-gradient(circle at 88% 22%, #fff 0 .4vh, #ff2bd6 .7vh, transparent 1.8vh), radial-gradient(circle at 88% 22%, transparent 1.8vh, #ff2bd655 1.8vh 2.15vh, transparent 2.15vh, transparent 3.6vh, #ff2bd655 3.6vh 3.95vh, transparent 3.95vh, transparent 5.4vh, #ff2bd655 5.4vh 5.75vh, transparent 5.75vh, transparent 7.2vh, #ff2bd655 7.2vh 7.55vh, transparent 7.55vh, transparent 9.0vh, #ff2bd655 9.0vh 9.35vh, transparent 9.35vh, transparent),
+    radial-gradient(circle, #ffffffaa 0 1px, transparent 1.5px) 0 0 / 6vh 8vh, radial-gradient(45% 55% at 12% 75%, #1530ff55, transparent 70%), radial-gradient(40% 50% at 88% 22%, #ff2bd633, transparent 70%), #05031f; }
+body[data-theme="laser"] #idle > *, body[data-theme="laser"] #upnext > * { position: relative; }
+body[data-theme="diner"] .dsign small { left: 1vw; right: auto; top: 12.4vh; }
+body[data-theme="diner"] .idle-inner { zoom: .74; }
+body[data-theme="diner"] { --app-inset: 19vh 19vw 15vh 13vw; }
+body[data-theme="laser"] .uv .bolt { opacity: .85; }
