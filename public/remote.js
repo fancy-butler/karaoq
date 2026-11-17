@@ -386,6 +386,14 @@
 
   // ---------- now card ----------
   $('#now').onclick = e => {
+    const sb = e.target.closest('[data-seek]');
+    if (sb) { // host: tap the progress bar to jump there
+      const st = KQ.state, c = st && st.current; if (!c) return;
+      const d = (progress && progress.itemId === c.id ? progress.d : 0) || c.duration || 0; if (!d) return;
+      const r = sb.getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+      progress = { itemId: c.id, t: f * d, d, at: Date.now() }; tickProgress();
+      return run('seek', { t: Math.floor(f * d) }, `Jumped to ${fmt(f * d)}`);
+    }
     const a = e.target.closest('button')?.dataset.a; if (!a) return;
     const st = KQ.state;
     if (a === 'skip') { if (!confirm(`Skip ${who(st.current)}'s song?`)) return; }
@@ -412,7 +420,7 @@
         <button class="star ${isFave(c.singer, c.videoId) ? 'on' : ''}" data-a="fave" title="Save to favourites">${isFave(c.singer, c.videoId) ? '★' : '☆'}</button>
         <div class="whorow">${avatars(c, 'l')}<div><div class="who">${esc(who(c))}</div><div class="song">${esc(clean(c.title))}</div></div></div>
         ${host || mine ? `<button class="gbtn" data-a="genreNow">${genreChip(c) || '<span class="gchip unknown">＋ genre</span>'}</button>` : genreChip(c)}
-        <div class="bar"><i id="pbar"></i></div><div class="times"><span id="ptime"></span><span id="pdur">${fmt(c.duration)}</span></div>
+        <div class="bar ${host ? 'seekable' : ''}" ${host ? 'data-seek="1"' : ''}><i id="pbar"></i></div><div class="times"><span id="ptime"></span><span id="pdur">${fmt(c.duration)}</span></div>
         <div class="reacts">${REACTS.slice(0, 6).map(e => `<button data-a="react:${e}">${e}</button>`).join('')}<button data-a="moreReacts" class="more ${moreReacts ? 'on' : ''}">${moreReacts ? '−' : '＋'}</button></div>
         ${moreReacts ? `<div class="reacts all">${REACTS.slice(6).map(e => `<button data-a="react:${e}">${e}</button>`).join('')}</div>` : ''}
         ${host || mine ? `<div class="keyrow"><span>Key</span><button data-a="keyDown" class="ghost">−</button><b>${keyLabel(c.key) || '0'}</b><button data-a="keyUp" class="ghost">+</button>${c.key ? '<button data-a="keyZero" class="ghost small">reset</button>' : ''}</div><div class="keyrow"><span>Vocals</span><button data-a="novoxNow" class="ghost ${c.novox ? 'on' : ''}">${novoxLabel(c)}</button></div>` : ''}
@@ -664,6 +672,7 @@
     $('#setIntro').checked = s.introCard !== false;
     $('#setOled').checked = s.oledCare !== false;
     $('#setSafe').checked = s.safeLayout !== false;
+    $('#setProg').checked = s.showProgress !== false;
     $('#setStepSpeed').value = s.stepSpeed || 'random';
     $('#setStream').checked = s.streamFirst !== false;
     $('#setLyrics').checked = s.lyricsWarn !== false;
@@ -671,7 +680,7 @@
     $('#setCache').value = String(s.cacheGB || 5);
     if (!$('#setCache').value) { $('#setCache').insertAdjacentHTML('beforeend', `<option value="${s.cacheGB}">${s.cacheGB} GB</option>`); $('#setCache').value = String(s.cacheGB); }
     $('#cacheUse').textContent = `Using ${(KQ.state.cacheBytes / 1e9).toFixed(1)} GB now. Oldest unplayed songs are deleted first; queued songs are never touched.`;
-    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, skinFx: $('#setSkinFx').checked, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, safeLayout: $('#setSafe').checked, stepSpeed: $('#setStepSpeed').value, oledCare: $('#setOled').checked, streamFirst: $('#setStream').checked, lyricsWarn: $('#setLyrics').checked, autoLyrics: $('#setAutoLyr').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
+    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, skinFx: $('#setSkinFx').checked, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, safeLayout: $('#setSafe').checked, showProgress: $('#setProg').checked, stepSpeed: $('#setStepSpeed').value, oledCare: $('#setOled').checked, streamFirst: $('#setStream').checked, lyricsWarn: $('#setLyrics').checked, autoLyrics: $('#setAutoLyr').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
   $('#newNightBtn').onclick = () => { if (confirm('Start a new night? The queue is cleared (you can restore it from the Queue tab) and song counts reset.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };

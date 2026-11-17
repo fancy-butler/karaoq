@@ -363,3 +363,20 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #ctrlBar button.armed { background: var(--red); border-color: var(--red); color: #fff; }
 #ctrlBar .up { display: none; } #ctrlBar .pl { display: inline-block; }
 [data-phase="upnext"] #ctrlBar .up { display: inline-block; } [data-phase="upnext"] #ctrlBar .pl { display: none; }
+
+/* ---- song progress ---- */
+#progLine { position: absolute; left: 0; bottom: 0; width: 100%; height: 5px; z-index: 11; background: #ffffff1c; opacity: 0; transition: opacity .4s; pointer-events: none; }
+#progLine i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--pink), var(--cyan)); box-shadow: 0 0 8px var(--pink); transition: width .25s linear; }
+.showprog #progLine { opacity: 1; }
+.safecol #progLine { width: calc(100% - var(--col)); }
+.side #progLine { width: calc(100% - min(430px, 34vw)); }
+#nowTime { display: none; font: 600 15px system-ui, sans-serif; font-variant-numeric: tabular-nums; color: var(--dim); margin-top: 4px; }
+.showprog #nowTime { display: block; }
+#ctrlBar { flex-direction: column; gap: 8px; border-radius: 22px; padding: 10px 12px; min-width: min(620px, 60vw); }
+#ctrlBar .btns { display: flex; gap: 8px; justify-content: center; }
+#ctrlBar .seek { display: flex; align-items: center; gap: 12px; font: 600 15px system-ui, sans-serif; font-variant-numeric: tabular-nums; color: var(--dim); padding: 0 6px; }
+[data-phase="upnext"] #ctrlBar .seek { display: none; }
+#cbBar { position: relative; flex: 1; height: 22px; cursor: pointer; touch-action: none; }
+#cbBar::before { content: ''; position: absolute; left: 0; right: 0; top: 9px; height: 4px; border-radius: 2px; background: #ffffff26; }
+#cbBar i { position: absolute; left: 0; top: 9px; height: 4px; width: 0; border-radius: 2px; background: linear-gradient(90deg, var(--pink), var(--cyan)); }
+#cbBar b { position: absolute; top: 4px; left: 0; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px var(--pink); }

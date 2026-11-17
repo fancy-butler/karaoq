@@ -258,6 +258,7 @@
 
   KQ.on('cmd', m => {
     if (m.cmd === 'restart') { vid.currentTime = 0; flashNowTag(); }
+    if (m.cmd === 'seek' && loaded && Number.isFinite(m.t)) vid.currentTime = Math.min(m.t, Math.max(0, (vid.duration || m.t) - 1));
     if (m.cmd === 'chime') chime();
     if (m.cmd === 'toast') toast(m.text);
     if (m.cmd === 'awards') showAwards(m.awards || []);
@@ -516,6 +517,7 @@
   // Skip asks for a second click so a stray click can't end someone's song.
   let ctrlSkipT = null;
   $('#ctrlBar').addEventListener('click', e => {
+    if (e.target.closest('.seek')) { e.stopPropagation(); return; }
     const b = e.target.closest('[data-c]'); if (!b) return; e.stopPropagation();
     const st = KQ.state; if (!st) return toast('Still starting up — one moment…');
     const c = b.dataset.c;
@@ -535,6 +537,31 @@
     const ms = $('#menuSkip'); if (ms) ms.hidden = !st.current;
     app.dataset.phase = st.phase;
   });
+
+  // Song progress: a slim line under the video, elapsed / length in the Now singing card, and a seek bar
+  // in the on-screen controls (click or drag). "Song progress" in Party settings turns the line + times off.
+  const mmss = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  setInterval(() => {
+    const st = KQ.state; if (!st) return;
+    const on = (st.phase === 'playing' || st.phase === 'paused') && loaded;
+    const d = vid.duration && isFinite(vid.duration) ? vid.duration : (st.current && st.current.duration) || 0, t = on ? vid.currentTime || 0 : 0;
+    const pct = d ? Math.min(100, (t / d) * 100) : 0;
+    app.classList.toggle('showprog', on && st.settings.showProgress !== false);
+    $('#progLine i').style.width = pct + '%';
+    $('#nowTime').textContent = on && d ? `${mmss(t)} / ${mmss(d)}` : '';
+    if (!seekDrag) { $('#cbBar i').style.width = pct + '%'; $('#cbBar b').style.left = pct + '%'; $('#cbT').textContent = mmss(t); }
+    $('#cbD').textContent = d ? mmss(d) : '0:00';
+  }, 250);
+  let seekDrag = false;
+  const seekAt = (e, commit) => {
+    const r = $('#cbBar').getBoundingClientRect(), f = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+    const d = vid.duration && isFinite(vid.duration) ? vid.duration : 0; if (!d || !loaded) return;
+    $('#cbBar i').style.width = f * 100 + '%'; $('#cbBar b').style.left = f * 100 + '%'; $('#cbT').textContent = mmss(f * d);
+    if (commit) vid.currentTime = Math.min(f * d, d - 1);
+  };
+  $('#cbBar').addEventListener('pointerdown', e => { seekDrag = true; $('#cbBar').setPointerCapture(e.pointerId); seekAt(e, false); e.stopPropagation(); });
+  $('#cbBar').addEventListener('pointermove', e => { if (seekDrag) seekAt(e, false); });
+  $('#cbBar').addEventListener('pointerup', e => { if (seekDrag) { seekDrag = false; seekAt(e, true); } });
 
   KQ.on('state', render);
   KQ.on('conn', up => app.classList.toggle('offline', !up));

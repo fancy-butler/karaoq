@@ -284,3 +284,5 @@ body[data-theme="diner"] .brand span { color: #46c3b8; text-shadow: 0 0 6px #46c
 body[data-theme="amp"] { --bg: #000; --panel: #1d1d2c; --panel2: #2a2a3c; --line: #4a4a6a; --pink: #1a7a1a; --cyan: #00e000; --gold: #d8c060; --green: #00ff00; --dim: #9a9ab8; }
 body[data-theme="amp"] .brand { font-family: "KQ Term", monospace; font-size: 24px; font-weight: 400; color: #00ff00; }
 #results .more { display: block; width: 100%; margin: 10px 0 4px; padding: 14px; font-size: 16px; font-weight: 800; border: 1px solid var(--line); border-radius: 12px; }
+#now .bar.seekable { height: 14px; margin: 8px 0 2px; border-radius: 7px; cursor: pointer; position: relative; }
+#now .bar.seekable::after { content: "tap to jump"; position: absolute; right: 6px; top: -1px; font-size: 10px; color: #fff9; pointer-events: none; }
