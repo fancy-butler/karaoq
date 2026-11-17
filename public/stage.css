@@ -318,3 +318,37 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 
 #micPanel .fxonly { display: flex; gap: 12px; align-items: flex-start; margin: 12px 0; padding: 12px 14px; border-radius: 12px; background: #ffffff0d; font-size: 16px; color: var(--dim); cursor: pointer; }
 #micPanel .fxonly b { color: var(--text); } #micPanel .fxonly input { width: 22px; height: 22px; accent-color: var(--pink); flex-shrink: 0; margin-top: 2px; }
+
+/* ---- lyrics-safe layout: cards live in a column beside the video during songs ---- */
+#app { --col: clamp(230px, 18vw, 360px); }
+#safeCol { position: absolute; top: 0; right: 0; bottom: 0; width: var(--col); display: none; z-index: 0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--panel) 92%, transparent), color-mix(in srgb, var(--bg) 96%, transparent)); border-left: 1px solid var(--line); }
+.safecol #safeCol { display: block; }
+.safecol #vid { width: calc(100% - var(--col)); }
+.safecol #lyrics { left: calc((100% - var(--col)) / 2); width: min(1500px, calc(94% - var(--col))); }
+.safecol #pausedTag { left: calc((100% - var(--col)) / 2); }
+.safecol :is(#nowTag, #ticker, #joinCorner) { left: auto !important; right: calc(var(--col) * .06) !important; width: calc(var(--col) * .88); max-width: none; translate: none !important;
+  transform: none !important; rotate: none !important; flex-direction: column; text-align: center; gap: 8px; padding: 12px 10px !important; }
+.safecol #nowTag { top: 3vh; opacity: 1 !important; }
+.safecol #nowTag b { font-size: clamp(22px, 2vw, 36px); }
+.safecol #ticker { top: calc(3vh + clamp(150px, 26vh, 240px)); }
+.safecol.showticker #ticker { opacity: 1; }
+.safecol #ticker b { font-size: clamp(18px, 1.6vw, 28px); } .safecol #ticker #tickSong { font-size: 13px; opacity: .8; }
+.safecol #joinCorner { top: auto !important; bottom: 3vh; }
+.safecol.showjoin #joinCorner { opacity: 1; }
+.safecol #joinCorner .qr { width: calc(var(--col) * .62); height: calc(var(--col) * .62); }
+.safecol #joinCorner .cornernet { display: none; }
+.safecol #menuPill { right: calc(var(--col) + 1.5vw); }
+.safecol #menuPanel { right: calc(var(--col) + 1.5vw); }
+#joinCorner .hidehint { display: block; margin-top: 4px; font-size: 12px; opacity: .75; }
+.safecol #joinCorner .hidehint { font-size: 11px; }
+#app { container-type: size; }
+.safecol #nowTag { top: 2.5cqh; }
+.safecol #ticker { top: 31cqh; }
+.safecol #joinCorner { bottom: 2.5cqh; }
+.safecol #joinCorner .qr { width: min(calc(var(--col) * .62), 27cqh); height: min(calc(var(--col) * .62), 27cqh); }
+@container (max-height: 560px) {
+  .safecol :is(#nowTag, #ticker) .av, .safecol :is(#nowTag, #ticker) #nowAv, .safecol #tickAv, .safecol #joinCorner .url { display: none !important; }
+  .safecol #ticker { top: 22cqh; }
+  .safecol :is(#nowTag, #ticker, #joinCorner) { padding: 8px 8px !important; gap: 4px; }
+}

@@ -106,7 +106,7 @@
   <form method="dialog">
     <h2>Party settings</h2>
     <label>Look
-      <select id="setTheme"><option value="neon">Neon (default)</option><option value="synthwave">Synthwave '84</option><option value="divebar">Dive Bar</option><option value="arcade">Retro Arcade</option><option value="minimal">Minimal</option><optgroup label="Party skins"><option value="amber">Amber Terminal (old CRT)</option><option value="cabinet">Arcade Cabinet</option><option value="desk92">Desktop '92</option><option value="desk95">Desktop '95</option><option value="aero">Aero (glossy 2000s)</option><option value="rhythm">Dance Stage (arrows!)</option><option value="graffiti">Graffiti Radio</option><option value="hall">Arcade Hall</option><option value="laser">Laser Zone (90s)</option><option value="diner">Diner (1950s)</option></optgroup></select>
+      <select id="setTheme"><option value="neon">Neon (default)</option><option value="synthwave">Synthwave '84</option><option value="divebar">Dive Bar</option><option value="arcade">Retro Arcade</option><option value="minimal">Minimal</option><optgroup label="Party skins"><option value="amber">Amber Terminal (old CRT)</option><option value="cabinet">Arcade Cabinet</option><option value="desk92">Desktop '92</option><option value="desk95">Desktop '95</option><option value="aero">Aero (glossy 2000s)</option><option value="rhythm">Dance Stage (arrows!)</option><option value="graffiti">Graffiti Radio</option><option value="hall">Arcade Hall</option><option value="laser">Laser Zone (90s)</option><option value="diner">Diner (1950s)</option><option value="amp">MP3 Player ’98</option></optgroup></select>
     </label>
     <label>Countdown before each song
       <select id="setCountdown">
@@ -132,6 +132,8 @@
       <label class="toggle"><input type="checkbox" id="setAutoLyr"> Show lyrics on screen for songs that aren't karaoke videos (from LRCLIB)</label>
       <label class="toggle"><input type="checkbox" id="setLevel"> Even out song volumes (new downloads)</label>
       <label class="toggle"><input type="checkbox" id="setSkinFx"> Screen effects in party skins (scanlines, glow, amber monochrome)</label>
+      <label class="selrow">Dance Stage arrow speed <select id="setStepSpeed"><option value="random">Random (changes as you go)</option><option value="slow">Slow</option><option value="normal">Normal</option><option value="fast">Fast</option><option value="insane">Insane</option></select></label>
+      <label class="toggle"><input type="checkbox" id="setSafe"> Keep lyrics clear (cards sit beside the video during songs)</label>
       <label class="toggle"><input type="checkbox" id="setOled"> OLED care (drift overlays, screensaver when idle)</label>
       <label>Space for downloaded songs
         <select id="setCache"><option value="2">2 GB</option><option value="5">5 GB</option><option value="10">10 GB</option><option value="20">20 GB</option><option value="50">50 GB</option></select>

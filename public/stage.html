@@ -48,9 +48,10 @@
   </section>
 
   <!-- During a song -->
+  <div id="safeCol"></div>
   <div id="nowTag"><span id="nowAv"></span><div><small>NOW SINGING</small><b id="nowSinger"></b><em id="nowKey"></em></div></div>
   <div id="ticker"><span id="tickAv"></span><div><small>NEXT UP</small><b id="tickSinger"></b><span id="tickSong"></span></div></div>
-  <div id="joinCorner"><div class="qr"></div><div><b>Scan to add songs</b><span class="url"></span><em id="phonesCorner"></em></div><div class="net-only cornernet"><div class="netqr"></div><small>Can't connect?</small></div></div>
+  <div id="joinCorner"><div class="qr"></div><div><b>Scan to add songs</b><span class="url"></span><em id="phonesCorner"></em><small class="hidehint">Press <kbd>J</kbd> to hide this code</small></div><div class="net-only cornernet"><div class="netqr"></div><small>Can't connect?</small></div></div>
   <div id="pausedTag">⏸ PAUSED</div>
 
   <aside id="side">
@@ -71,6 +72,7 @@
     <button data-m="preflight">✅ Pre-party check</button>
     <button data-m="mics">🎤 Microphones</button>
     <button data-m="library">💾 Karaoke library</button>
+    <button data-m="join">📱 Hide / show join code <kbd>J</kbd></button>
     <button data-m="queue">📋 Show / hide queue <kbd>Q</kbd></button>
     <button data-m="help">⌨ Help &amp; keys <kbd>?</kbd></button>
     <button data-m="about">ⓘ About &amp; credits</button>
@@ -140,7 +142,10 @@
 <div id="skin" aria-hidden="true">
   <svg width="0" height="0" style="position:absolute"><defs>
     <filter id="kqAmber" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%"><feColorMatrix type="matrix" values="0.234 0.787 0.079 0 0  0.155 0.522 0.053 0 0  0.011 0.036 0.004 0 0  0 0 0 1 0"/></filter>
-    <symbol id="kqArrow" viewBox="0 0 100 100"><path d="M50 94 L6 50 L6 30 L35 52 L35 6 L65 6 L65 52 L94 30 L94 50 Z" stroke-linejoin="round"/></symbol>
+    <linearGradient id="kqSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#d9dce6"/><stop offset=".55" stop-color="#9aa0b2"/><stop offset="1" stop-color="#e8eaf2"/></linearGradient>
+    <linearGradient id="kqGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c0"/><stop offset=".5" stop-color="#f2c84a"/><stop offset="1" stop-color="#b8861c"/></linearGradient>
+    <symbol id="kqArrow" viewBox="0 0 100 100"><path d="M50 94 L6 50 L6 30 L35 52 L35 6 L65 6 L65 52 L94 30 L94 50 Z" stroke-linejoin="round" style="fill: var(--af, url(#kqSilver)); stroke: var(--as, #15151c); stroke-width: 8"/>
+      <path d="M50 80 L22 52 L22 44 L42 58 L42 16 L58 16 L58 58 L78 44 L78 52 Z" style="fill: var(--ai, url(#kqGold)); stroke: #0004; stroke-width: 1.5; opacity: var(--aio, 1)"/></symbol>
   </defs></svg>
   <div class="scan"></div>
   <div class="bezel">KARAO-Q 2000 <i></i></div>
@@ -152,9 +157,16 @@
     <div class="start" data-skin="menu"><b></b>1P START</div><div class="coin">INSERT<br>COIN</div></div>
   <div class="titlebar"><b class="l">━</b><span class="t">🎤 KARAO-Q</span><span class="r"><b>▾</b><b>▴</b><b class="x">✕</b></span></div>
   <div class="menubar"><span data-skin="menu"><u>P</u>arty</span><span data-skin-m="add"><u>S</u>ongs</span><span data-skin-m="queue"><u>Q</u>ueue</span><span data-skin-m="mics"><u>M</u>ics</span><span data-skin-m="settings">S<u>e</u>ttings</span><span data-skin-m="help"><u>H</u>elp</span></div>
-  <div class="pf"><div class="life"><i></i></div><div class="lanes"><div class="lane l"><svg class="rcp"><use href="#kqArrow"/></svg><svg class="n q0"><use href="#kqArrow"/></svg><svg class="n q1"><use href="#kqArrow"/></svg><svg class="n q2"><use href="#kqArrow"/></svg><svg class="n q3"><use href="#kqArrow"/></svg></div><div class="lane d"><svg class="rcp"><use href="#kqArrow"/></svg><svg class="n q0"><use href="#kqArrow"/></svg><svg class="n q1"><use href="#kqArrow"/></svg><svg class="n q2"><use href="#kqArrow"/></svg><svg class="n q3"><use href="#kqArrow"/></svg></div><div class="lane u"><svg class="rcp"><use href="#kqArrow"/></svg><svg class="n q0"><use href="#kqArrow"/></svg><svg class="n q1"><use href="#kqArrow"/></svg><svg class="n q2"><use href="#kqArrow"/></svg><svg class="n q3"><use href="#kqArrow"/></svg></div><div class="lane r"><svg class="rcp"><use href="#kqArrow"/></svg><svg class="n q0"><use href="#kqArrow"/></svg><svg class="n q1"><use href="#kqArrow"/></svg><svg class="n q2"><use href="#kqArrow"/></svg><svg class="n q3"><use href="#kqArrow"/></svg></div></div>
+  <div class="sel"><div class="shead"><b>// Select Music</b><span id="selCount">99</span></div>
+    <div class="splate"><div><small>STAGE /</small><b id="selStage">1st</b></div><div><small>SPEED /</small><b id="selSpeed">RANDOM</b></div></div>
+    <div class="sbanner"><b id="selTitle">KARAO-Q</b><span id="selWho">scan the code to pick a song</span></div>
+    <svg class="radar" viewBox="-60 -60 120 120"><polygon class="rg" points="0,-50 47.6,-15.5 29.4,40.5 -29.4,40.5 -47.6,-15.5"/><polygon class="rg2" points="0,-30 28.5,-9.3 17.6,24.3 -17.6,24.3 -28.5,-9.3"/><polygon id="selRadar" class="rv" points="0,-20 20,-6 12,16 -12,16 -20,-6"/>
+      <text x="0" y="-53">STREAM</text><text x="53" y="-15" text-anchor="start">VOLTAGE</text><text x="34" y="52" text-anchor="start">CHAOS</text><text x="-34" y="52" text-anchor="end">FREEZE</text><text x="-53" y="-15" text-anchor="end">AIR</text></svg>
+    <div class="sfeet"><small>LEVEL</small><span id="selFeet"></span></div>
+    <ol class="swheel" id="selWheel"></ol></div>
+  <div class="pf"><div class="life"><i></i><span class="stg"><small>STAGE</small><b id="pfStage">1st</b></span></div><div class="lanes"><div class="lane l"><svg class="rcp"><use href="#kqArrow"/></svg></div><div class="lane d"><svg class="rcp"><use href="#kqArrow"/></svg></div><div class="lane u"><svg class="rcp"><use href="#kqArrow"/></svg></div><div class="lane r"><svg class="rcp"><use href="#kqArrow"/></svg></div></div>
     <div class="combo" id="skinCombo"></div><div class="judge" id="skinJudge"></div>
-    <div class="score"><small>SCORE</small><b id="skinScore">0000000</b></div></div>
+    <div class="score"><small>EXPERT</small><b id="skinScore">0000000</b></div><div class="songplate"><b class="pfsong"></b><span class="pfwho"></span></div></div>
   <div class="tags"><span>SING!</span><span>KQ</span><span>♪♪</span><span>LOUD</span><span>MIC CHECK</span></div>
   <div class="radio"><b>📻 KQ RADIO</b><i>ON AIR</i><span class="skinnow">🎤 KARAO-Q</span></div>
   <div class="hall"><div class="ceil"></div><div class="row l"><div class="track"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div></div><div class="row r"><div class="track"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div></div><div class="floor"></div></div>
@@ -169,9 +181,19 @@
     <svg class="arrow" viewBox="0 0 300 160" preserveAspectRatio="none"><path class="bar" d="M10 30 H230 Q270 30 270 70 V120"/><path class="bulb" d="M10 30 H230 Q270 30 270 70 V120"/><path class="head" d="M240 112 L270 152 L300 112 Z"/></svg></div>
   <div class="open"><b>OPEN</b> ’TIL LAST CALL<span data-flash></span></div>
   <div class="tins"><span class="t1">Malts<b>15¢</b></span><span class="t2">HOT<b>Coffee</b></span><span class="t3">Shakes<b>&amp; Fries</b></span></div>
-  <div class="dclock"><i class="h"></i><i class="m"></i></div>
+  <div class="dboard"><small>Today’s Special</small><em>— NEXT UP —</em><b class="skinnext">YOU?</b><span class="skinnextsong">Scan the code to order</span></div>
   <div class="jukebox"><i class="top"></i><i class="win"></i><i class="grille"></i></div>
   <div class="dfloor"></div>
+  <div class="amain"><div class="atitle"><span>KARAO-Q</span></div><div class="albody">
+    <div class="alcd"><i class="aplay"></i><b id="ampTime">00:00</b><div class="aspec"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="ainfo"><div class="ascroll"><span class="skinnow">🎤 KARAO-Q</span></div><div class="arate"><b>128</b>kbps <b>44</b>kHz <em>mono</em> <em class="on">stereo</em></div>
+      <div class="aseek"><i id="ampSeek"></i></div><div class="abtns"><i>⏮</i><i>▶</i><i>⏸</i><i>⏹</i><i>⏭</i><i class="ej">⏏</i><span>SHUFFLE</span><span>⟲</span></div></div></div></div>
+  <div class="aeq"><div class="atitle"><span>KARAO-Q EQUALIZER</span></div><div class="aeqtop"><span class="on">ON</span><span>AUTO</span><span class="pre">PRESETS</span></div><div class="aeqb"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div></div>
+  <div class="apl"><div class="atitle"><span>KARAO-Q PLAYLIST</span></div><ol id="ampList"></ol><div class="aplf"><span>ADD</span><span>REM</span><span>SEL</span><span>MISC</span><em id="ampTotal"></em></div></div>
+  <div class="avid"><span>KARAO-Q VIDEO</span></div>
+  <div class="aqua"><i class="rays"></i><i class="wave w1"></i><i class="wave w2"></i>
+    <span class="orb o1">🐠</span><span class="orb o2">🎵</span><span class="orb o3">💬</span><span class="orb o4">🐬</span><span class="orb o5">🌍</span><span class="orb o6">🐟</span><span class="orb o7"></span><span class="orb o8"></span>
+    <i class="leaf l1"></i><i class="leaf l2"></i><i class="leaf l3"></i></div>
   <div class="taskbar"><div class="startbtn" data-skin="menu">🎤 Start</div><div class="task skinnow" id="skinTask">🎤 KARAO-Q</div><div class="tray" id="skinClock"></div></div>
 </div>
 <script src="/common.js"></script>

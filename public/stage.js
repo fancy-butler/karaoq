@@ -187,6 +187,75 @@
     clearTimeout(judgeT); judgeT = setTimeout(() => j.classList.remove('hit'), 900);
   }
 
+  // MP3-player skin: LCD clock, seek bar, spectrum + EQ bars that dance while a song plays
+  const ampBars = [];
+  setInterval(() => {
+    if (document.body.dataset.theme !== 'amp' || document.hidden) return;
+    const st = KQ.state; const on = st && st.phase === 'playing';
+    const t = on || (st && st.phase === 'paused') ? vid.currentTime || 0 : 0;
+    const tm = $('#ampTime'); if (tm) tm.textContent = `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+    const sk = $('#ampSeek'); if (sk) sk.style.left = `${vid.duration && t ? Math.min(100, (t / vid.duration) * 100) : 0}%`;
+    document.querySelectorAll('#skin .aspec i').forEach((b, i) => {
+      const shape = 1 - Math.abs(i - 6) / 16; ampBars[i] = on ? Math.max(.05, Math.min(1, (ampBars[i] || .3) * .55 + Math.random() * shape * .75)) : Math.max(0, (ampBars[i] || 0) * .7);
+      b.style.height = `${Math.round(ampBars[i] * 100)}%`;
+    });
+    if (on && Math.random() < .25) document.querySelectorAll('#skin .aeqb b').forEach(b => { b.style.top = `${15 + Math.random() * 60}%`; });
+  }, 110);
+
+  // Dance Stage "Select Music" panel (between songs) + stage/song plates (during songs)
+  const ord = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
+  const hashOf = s => { let h = 2166136261; for (const c of String(s)) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; };
+  function rhythmPanel(st) {
+    const sung = (st.stats || []).reduce((a, x) => a + (x.sung || 0), 0);
+    const stage = st.current && !st.queue.length ? 'FINAL' : ord(sung + 1);
+    const set = (id, v) => { const el = document.getElementById(id); if (el && el.textContent !== v) el.textContent = v; };
+    set('selStage', stage); set('pfStage', stage); set('selCount', String(Math.min(99, st.queue.length)).padStart(2, '0'));
+    const sp = st.settings.stepSpeed || 'random'; set('selSpeed', sp === 'random' ? 'RANDOM' : `×${SPEEDS[sp]}`);
+    const pick = st.phase === 'playing' || st.phase === 'paused' ? st.current : st.queue[0];
+    set('selTitle', pick ? clean(pick.title) : 'KARAO-Q'); set('selWho', pick ? `/ ${who(pick)}` : 'scan the code to pick a song');
+    const h = hashOf(pick ? pick.title : 'kq');
+    const r = [0, 1, 2, 3, 4].map(i => 14 + ((h >>> (i * 5)) & 31) / 31 * 36);
+    const pts = r.map((v, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / 5; return `${(Math.cos(a) * v).toFixed(1)},${(Math.sin(a) * v).toFixed(1)}`; }).join(' ');
+    const rv = document.getElementById('selRadar'); if (rv) rv.setAttribute('points', pts);
+    const lvl = 3 + (h % 8); const ft = document.getElementById('selFeet'); if (ft) ft.innerHTML = Array.from({ length: 10 }, (_, i) => `<i class="${i < lvl ? 'on' : ''}"></i>`).join('') + `<b>${lvl}</b>`;
+    const wh = document.getElementById('selWheel');
+    if (wh) wh.innerHTML = st.queue.length ? st.queue.slice(0, 6).map((it, i) => `<li class="${i === 0 ? 'cur' : ''} c${i % 5}"><b>${esc(clean(it.title))}</b><span>/ ${esc(who(it))}</span></li>`).join('') : '<li class="cur c3"><b>RANDOM</b><span>/ scan the code — any song</span></li><li class="c4"><b>ROULETTE</b><span>/ try 🎲 Spin on your phone</span></li>';
+    document.querySelectorAll('#skin .pfsong').forEach(el => { el.textContent = st.current ? clean(st.current.title) : ''; });
+    document.querySelectorAll('#skin .pfwho').forEach(el => { el.textContent = st.current ? who(st.current) : ''; });
+  }
+
+  // Dance Stage: a live step chart — random arrows (with jumps), speed set in Party settings or changing as you go
+  const SPEEDS = { slow: 0.7, normal: 1, fast: 1.6, insane: 2.4 };
+  let beatN = 0, speedMod = 1, nextShift = 0;
+  setInterval(() => {
+    const st = KQ.state; if (!st || document.body.dataset.theme !== 'rhythm' || document.hidden) return;
+    const playing = st.phase === 'playing' || st.phase === 'upnext', idle = st.phase === 'idle';
+    if (!playing && !idle) return;
+    beatN++;
+    const pick = st.settings.stepSpeed || 'random';
+    if (pick !== 'random') speedMod = SPEEDS[pick] || 1;
+    else if (beatN >= nextShift) { // change speed every 16–40 eighth-notes
+      const old = speedMod; speedMod = [0.8, 1, 1.25, 1.5, 2, 2.5, 3][Math.floor(Math.random() * 7)];
+      nextShift = beatN + 16 + Math.floor(Math.random() * 24);
+      if (playing && old !== speedMod && beatN > 1) { const j = $('#skinJudge'); if (j) { j.textContent = `SPEED ×${speedMod}`; j.className = 'judge g'; void j.offsetWidth; j.classList.add('hit'); } }
+    }
+    const density = playing ? 0.5 : 0.18;
+    if (Math.random() > density) return;
+    const lanes = [...document.querySelectorAll('#skin .pf .lane')]; if (!lanes.length) return;
+    const quant = beatN % 4 === 0 ? 0 : beatN % 2 === 0 ? 1 : (Math.random() < .5 ? 2 : 3);
+    const picks = new Set([Math.floor(Math.random() * 4)]);
+    if (playing && Math.random() < 0.12) picks.add(Math.floor(Math.random() * 4)); // jump
+    const travel = (playing ? 2400 : 4200) / speedMod;
+    for (const li of picks) {
+      const lane = lanes[li];
+      const n = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); n.setAttribute('class', 'n q' + quant);
+      const u = document.createElementNS('http://www.w3.org/2000/svg', 'use'); u.setAttribute('href', '#kqArrow'); n.appendChild(u);
+      lane.appendChild(n);
+      const a = n.animate([{ top: '100%', opacity: 1 }, { top: '1vh', opacity: 1, offset: 0.94 }, { top: '1vh', opacity: 0, scale: 1.35 }], { duration: travel / 0.94, easing: 'linear' });
+      a.onfinish = () => { n.remove(); const r = lane.querySelector('.rcp'); if (r) { r.classList.add('hit'); setTimeout(() => r.classList.remove('hit'), 120); } };
+    }
+  }, 250);
+
   KQ.on('cmd', m => {
     if (m.cmd === 'restart') { vid.currentTime = 0; flashNowTag(); }
     if (m.cmd === 'chime') chime();
@@ -256,6 +325,17 @@
     const nowTxt = st.current ? `🎤 ${who(st.current)} — ${clean(st.current.title)}` : st.queue[0] ? `⏭ Up next: ${who(st.queue[0])}` : '🎤 KARAO-Q';
     const dmdTxt = st.current ? `NOW SINGING: ${who(st.current)}` : st.queue[0] ? `UP NEXT: ${who(st.queue[0])}` : 'INSERT COIN';
     document.querySelectorAll('#skin .skinnow').forEach(el => { const t = el.closest('.dmd') ? dmdTxt.toUpperCase() : nowTxt; if (el.textContent !== t) el.textContent = t; });
+    const al = $('#ampList');
+    if (al && document.body.dataset.theme === 'amp') {
+      const rows = [...(st.current ? [st.current] : []), ...st.queue];
+      const mmss = s => s ? `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}` : '';
+      al.innerHTML = rows.length ? rows.slice(0, 40).map((it, i) => `<li class="${i === 0 && st.current ? 'cur' : ''}"><span>${i + 1}. ${esc(who(it))} – ${esc(clean(it.title))}</span><em>${mmss(it.duration)}</em></li>`).join('') : '<li><span>Playlist empty — scan the code to add songs</span></li>';
+      const tot = rows.reduce((a, it) => a + (it.duration || 0), 0); $('#ampTotal').textContent = `${rows.length} songs · ${mmss(tot) || '0:00'}`;
+    }
+    if (document.body.dataset.theme === 'rhythm') rhythmPanel(st);
+    const nx = st.queue[0];
+    document.querySelectorAll('#skin .skinnext').forEach(el => { el.textContent = nx ? who(nx) : 'YOU?'; });
+    document.querySelectorAll('#skin .skinnextsong').forEach(el => { el.textContent = nx ? clean(nx.title) : 'Scan the code to order'; });
     const songKey = st.current ? st.current.id + '|' + st.current.singer : '';
     if (songKey !== lastSongKey) { lastSongKey = songKey; combo = 0; showCombo(); }
     const cr = $('#skinCredit'); if (cr && !document.body.classList.contains('kqhit')) cr.textContent = String(Math.min(99, st.queue.length)).padStart(2, '0');
@@ -339,6 +419,8 @@
     // "Next up" card stays up the whole song (U or the phone setting hides it)
     const showTicker = (st.phase === 'playing' || st.phase === 'paused') && st.queue.length && st.settings.showNext !== false && !nextHidden;
     app.classList.toggle('showticker', !!showTicker && !app.classList.contains('side'));
+    // lyrics-safe layout: during a song the video narrows and the cards sit in a column beside it, never over the lyrics
+    app.classList.toggle('safecol', (st.phase === 'playing' || st.phase === 'paused') && st.settings.safeLayout !== false && !app.classList.contains('side'));
   }, 250);
 
   // Mouse moves → cursor + ☰ Menu appear; both hide again after 3 s still (unless the menu is open)
@@ -374,6 +456,7 @@
     if (m === 'add') openDrawerAt('');
     if (m === 'awards') showAwards((KQ.state && KQ.state.awards) || []);
     if (m === 'settings') openDrawerAt('#settings');
+    if (m === 'join') { joinHidden = !joinHidden; if (st) render(st); toast(joinHidden ? 'Join code hidden — J brings it back' : 'Join code showing'); }
     if (m === 'queue') { sidePinned = !sidePinned; if (st) render(st); }
     if (m === 'help') { if (!$('#helpAbout').innerHTML) KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; }); app.classList.add('help'); }
     if (m === 'about') { KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; app.classList.add('help'); setTimeout(() => $('#helpAbout').scrollIntoView({ behavior: 'smooth' }), 50); }); }

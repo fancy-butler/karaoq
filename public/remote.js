@@ -645,13 +645,15 @@
     $('#setLevel').checked = s.levelVolume !== false;
     $('#setIntro').checked = s.introCard !== false;
     $('#setOled').checked = s.oledCare !== false;
+    $('#setSafe').checked = s.safeLayout !== false;
+    $('#setStepSpeed').value = s.stepSpeed || 'random';
     $('#setStream').checked = s.streamFirst !== false;
     $('#setLyrics').checked = s.lyricsWarn !== false;
     $('#setAutoLyr').checked = s.autoLyrics !== false;
     $('#setCache').value = String(s.cacheGB || 5);
     if (!$('#setCache').value) { $('#setCache').insertAdjacentHTML('beforeend', `<option value="${s.cacheGB}">${s.cacheGB} GB</option>`); $('#setCache').value = String(s.cacheGB); }
     $('#cacheUse').textContent = `Using ${(KQ.state.cacheBytes / 1e9).toFixed(1)} GB now. Oldest unplayed songs are deleted first; queued songs are never touched.`;
-    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, skinFx: $('#setSkinFx').checked, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, oledCare: $('#setOled').checked, streamFirst: $('#setStream').checked, lyricsWarn: $('#setLyrics').checked, autoLyrics: $('#setAutoLyr').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
+    $('#settingsDlg').onclose = () => { if ($('#settingsDlg').returnValue === 'ok') run('settings', { settings: { countdown: Number($('#setCountdown').value), fair: $('#setFair').checked, showQr: $('#setQr').checked, showNext: $('#setNext').checked, genreRows: $('#setRows').checked, maxPerPerson: Number($('#setMax').value), theme: $('#setTheme').value, skinFx: $('#setSkinFx').checked, levelVolume: $('#setLevel').checked, introCard: $('#setIntro').checked, safeLayout: $('#setSafe').checked, stepSpeed: $('#setStepSpeed').value, oledCare: $('#setOled').checked, streamFirst: $('#setStream').checked, lyricsWarn: $('#setLyrics').checked, autoLyrics: $('#setAutoLyr').checked, cacheGB: Number($('#setCache').value) } }, 'Saved'); };
     $('#settingsDlg').showModal();
   };
   $('#newNightBtn').onclick = () => { if (confirm('Start a new night? The queue is cleared (you can restore it from the Queue tab) and song counts reset.')) { $('#settingsDlg').close(); run('newNight', {}, 'New night — counts reset'); } };

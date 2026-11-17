@@ -280,3 +280,6 @@ body[data-theme="laser"] .brand { font-family: "KQ Laser", sans-serif; text-shad
 body[data-theme="diner"] { --bg: #2a0f14; --panel: #3a161d; --panel2: #4a1d26; --line: #6a2a36; --pink: #c8102e; --cyan: #46c3b8; --gold: #ffd0d6; --dim: #e0b0b8; }
 body[data-theme="diner"] .brand { font-family: "KQ Script", cursive; font-weight: 400; font-size: 18px; color: #ffe8ec; text-shadow: 0 0 6px #ff2a4a; }
 body[data-theme="diner"] .brand span { color: #46c3b8; text-shadow: 0 0 6px #46c3b8; }
+.selrow { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0; font-size: 15px; } .selrow select { flex: 0 1 55%; }
+body[data-theme="amp"] { --bg: #000; --panel: #1d1d2c; --panel2: #2a2a3c; --line: #4a4a6a; --pink: #1a7a1a; --cyan: #00e000; --gold: #d8c060; --green: #00ff00; --dim: #9a9ab8; }
+body[data-theme="amp"] .brand { font-family: "KQ Term", monospace; font-size: 24px; font-weight: 400; color: #00ff00; }
