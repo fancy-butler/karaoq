@@ -260,12 +260,14 @@
     const sl = (id, label, v, max = 1.5) => `<label class="mic-sl"><span>${label}</span><input type="range" id="${id}" min="0" max="${max}" step="0.05" value="${v}"></label>`;
     sheet(`<h3>🎤 Mics</h3>
       <label class="toggle"><input type="checkbox" id="pmOn" ${m.on ? 'checked' : ''}> Mics on (through the party computer's speakers)</label>
+      <label class="toggle"><input type="checkbox" id="pmFx" ${m.fxOnly ? 'checked' : ''}> Effects only (voice comes from the interface's direct monitor — no delay)</label>
       ${vols.map((v, i) => sl('pmV' + i, 'Mic ' + (i + 1), v, 3)).join('')}${sl('pmRev', 'Reverb', m.reverb, 1)}${sl('pmEcho', 'Echo', m.echo, 1)}${sl('pmAll', 'All mics', m.master)}
       <p class="hint">Which sound card / input is Mic 1 and Mic 2 is picked on the party computer: ☰ Menu → 🎤 Microphones.</p>`, () => { });
     let t = null, pend = {};
     const send = p => { pend = { ...pend, ...p }; clearTimeout(t); t = setTimeout(() => { act('settings', { settings: { mic: pend } }); pend = {}; }, 120); };
     const v = id => Number($('#' + id).value);
     $('#pmOn').onchange = e => send({ on: e.target.checked });
+    $('#pmFx').onchange = e => send({ fxOnly: e.target.checked });
     for (let i = 0; i < 4; i++) $('#pmV' + i).oninput = () => send({ vol: [0, 1, 2, 3].map(k => v('pmV' + k)) });
     $('#pmRev').oninput = () => send({ reverb: v('pmRev') });
     $('#pmEcho').oninput = () => send({ echo: v('pmEcho') });

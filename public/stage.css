@@ -314,3 +314,6 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 #pfList .c b { font-size: 19px; } #pfList .c .d { color: var(--dim); font-size: 15px; word-break: break-word; }
 #pfList .c .f { color: var(--gold); font-size: 15px; }
 #pfList .c.ok { box-shadow: inset 3px 0 0 #4dff9c; } #pfList .c.bad { box-shadow: inset 3px 0 0 #ff4b4b; } #pfList .c.wait { box-shadow: inset 3px 0 0 var(--gold); }
+
+#micPanel .fxonly { display: flex; gap: 12px; align-items: flex-start; margin: 12px 0; padding: 12px 14px; border-radius: 12px; background: #ffffff0d; font-size: 16px; color: var(--dim); cursor: pointer; }
+#micPanel .fxonly b { color: var(--text); } #micPanel .fxonly input { width: 22px; height: 22px; accent-color: var(--pink); flex-shrink: 0; margin-top: 2px; }

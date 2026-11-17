@@ -97,6 +97,7 @@
     <h2>🎤 Microphones <label class="sw"><input type="checkbox" id="micOn"> <span>On</span></label></h2>
     <p class="fine">Plug mics into this computer's sound card (or a USB mic) and they play through the speakers with the song, with reverb and echo. The host can also change all of this from their phone: ☰ → 🎤 Mics.</p>
     <div id="micRows"></div>
+    <label class="fxonly"><input type="checkbox" id="micFxOnly"> <span><b>Effects only</b> — the voice itself comes from the interface's direct monitor (no delay); KARAO-Q adds just the reverb and echo. Use this if singers hear themselves late.</span></label>
     <div class="mrow fx"><b>Reverb</b><input type="range" id="micRev" min="0" max="1" step="0.05"><b>Echo</b><input type="range" id="micEcho" min="0" max="1" step="0.05"><b>All mics</b><input type="range" id="micMaster" min="0" max="1.5" step="0.05"></div>
     <div class="mrow"><b>Speakers</b><select id="micOut"></select></div>
     <p class="fine" id="micNote"></p>

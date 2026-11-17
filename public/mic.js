@@ -51,7 +51,8 @@
     master.gain.setTargetAtTime(on * params.master, t, 0.03);
     revSend.gain.setTargetAtTime(params.reverb * 3.5, t, 0.05); // convolver output is ~13 dB below the dry voice; this makes 25% clearly audible
     echoSend.gain.setTargetAtTime(params.echo * 0.8, t, 0.05);
-    dry.gain.setTargetAtTime(1, t, 0.05);
+    // effects only: the interface's direct monitor plays the dry voice with zero delay; we add just reverb/echo
+    dry.gain.setTargetAtTime(params.fxOnly ? 0 : 1, t, 0.05);
     slots.forEach((s, i) => s && s.gain.gain.setTargetAtTime(params.vol[i] ?? 0.8, t, 0.03));
   }
 

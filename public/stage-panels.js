@@ -100,7 +100,7 @@
 
   // ---------- 🎤 microphones (see mic.js) ----------
   const N = KQMic.N;
-  const micS = () => { const m = { on: false, reverb: 0.25, echo: 0.1, master: 0.9, ...((KQ.state && KQ.state.settings.mic) || {}) }; m.vol = Array.from({ length: N }, (_, i) => (m.vol || [])[i] ?? 0.8); return m; };
+  const micS = () => { const m = { on: false, fxOnly: false, reverb: 0.25, echo: 0.1, master: 0.9, ...((KQ.state && KQ.state.settings.mic) || {}) }; m.vol = Array.from({ length: N }, (_, i) => (m.vol || [])[i] ?? 0.8); return m; };
   const micErr = Array(N).fill('');
   KQMic.onError = (i, e) => { micErr[i] = e.name === 'NotAllowedError' ? 'not allowed to use the mic' : e.name === 'NotFoundError' || e.name === 'OverconstrainedError' ? 'device not found — unplugged?' : (e.message || e.name); micNoteUpdate(); };
   const sendMic = (() => { let t = null, pend = {}; return p => { pend = { ...pend, ...p }; clearTimeout(t); t = setTimeout(() => { KQ.act('settings', { settings: { mic: pend } }); pend = {}; }, 120); }; })();
@@ -111,13 +111,14 @@
     if (!app.classList.contains('mics')) return;
     const m = micS();
     $('#micOn').checked = m.on;
+    $('#micFxOnly').checked = !!m.fxOnly;
     document.querySelectorAll('[data-mvol]').forEach(el => { if (document.activeElement !== el) el.value = m.vol[el.dataset.mvol]; });
     for (const [id, v] of [['micRev', m.reverb], ['micEcho', m.echo], ['micMaster', m.master]]) if (document.activeElement !== $('#' + id)) $('#' + id).value = v;
   }
   function micNoteUpdate() {
     const lat = KQMic.latencyMs();
     $('#micNote').textContent = !KQMic.supported() ? 'Mics only work in the KARAO-Q app on this computer (browsers only allow microphones on secure pages).'
-      : [...micErr.map((e, i) => e && `Mic ${i + 1}: ${e}`), lat != null && micS().on ? `Delay through the computer: about ${lat} ms${lat > 30 ? ' — noticeable; use direct monitoring for the dry voice' : ''}` : ''].filter(Boolean).join(' · ');
+      : [...micErr.map((e, i) => e && `Mic ${i + 1}: ${e}`), lat != null && micS().on ? `Delay through the computer: more than ${lat} ms (that's the output side only — the input adds more). If singers notice it, tick Effects only${micS().fxOnly ? ' (effects only — the dry voice comes from your interface)' : ''}` : ''].filter(Boolean).join(' · ');
   }
   const chOpts = (n, sel) => {
     const list = [['both', n > 2 ? 'inputs 1 + 2' : 'both channels'], ...Array.from({ length: n }, (_, k) => [String(k + 1), `input ${k + 1} only`])];
@@ -153,6 +154,7 @@
     KQMic.levels().forEach((v, i) => { const el = $('#lv' + i); if (el) el.style.width = `${Math.round((v || 0) * 100)}%`; });
   })();
   $('#micOn').onchange = e => sendMic({ on: e.target.checked });
+  $('#micFxOnly').onchange = e => sendMic({ fxOnly: e.target.checked });
   $('#micRows').addEventListener('input', e => {
     const v = e.target.closest('[data-mvol]'); if (!v) return;
     const vol = micS().vol.slice(); vol[v.dataset.mvol] = Number(v.value); sendMic({ vol });
