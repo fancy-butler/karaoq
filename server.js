@@ -92,8 +92,9 @@ app.post('/api/avatar', express.json({ limit: '900kb' }), (req, res) => {
 app.get('/api/search', async (req, res) => {
   const q = String(req.query.q || '').trim().slice(0, 200);
   if (!q) return res.json([]);
-  const local = library.search(q); // 💾 songs from the karaoke library come first
-  try { res.json([...local, ...await yt.search(q, req.query.karaoke !== '0')]); }
+  const page = Math.max(0, Math.min(5, Number(req.query.page) | 0));
+  const local = page ? [] : library.search(q); // 💾 songs from the karaoke library come first
+  try { res.json([...local, ...await yt.search(q, req.query.karaoke !== '0', page)]); }
   catch (e) { local.length ? res.json(local) : res.status(502).json({ error: e.message }); }
 });
 app.get('/api/lookup', async (req, res) => {

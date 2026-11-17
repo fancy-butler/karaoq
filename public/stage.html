@@ -64,6 +64,10 @@
     <div class="side-join"><div class="qr"></div><div><b>Add songs</b><span class="url"></span></div><div class="net-only cornernet"><div class="netqr"></div><small>Can't connect?</small></div></div>
   </aside>
 
+  <div id="ctrlBar">
+    <button data-c="restart" class="pl">⟲ Restart</button><button data-c="pause" class="pl" id="ctrlPause">⏸ Pause</button><button data-c="skip" class="pl" id="ctrlSkip">⏭ Skip song</button>
+    <button data-c="start" class="up">▶ Start now</button><button data-c="defer" class="up">↷ Not here</button>
+  </div>
   <button id="menuPill" aria-label="Menu">☰ Menu</button>
   <div id="menuPanel">
     <button data-m="add">🔍 Add songs <kbd>A</kbd></button>
@@ -72,6 +76,7 @@
     <button data-m="preflight">✅ Pre-party check</button>
     <button data-m="mics">🎤 Microphones</button>
     <button data-m="library">💾 Karaoke library</button>
+    <button data-m="skip" id="menuSkip">⏭ Skip this song <kbd>S S</kbd></button>
     <button data-m="join">📱 Hide / show join code <kbd>J</kbd></button>
     <button data-m="queue">📋 Show / hide queue <kbd>Q</kbd></button>
     <button data-m="help">⌨ Help &amp; keys <kbd>?</kbd></button>

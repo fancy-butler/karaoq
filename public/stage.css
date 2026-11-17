@@ -352,3 +352,14 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
   .safecol #ticker { top: 22cqh; }
   .safecol :is(#nowTag, #ticker, #joinCorner) { padding: 8px 8px !important; gap: 4px; }
 }
+
+/* ---- on-screen controls: appear with the mouse, centred under the video ---- */
+#ctrlBar { position: absolute; left: 50%; bottom: 3vh; translate: -50% 0; z-index: 24; display: flex; gap: 8px; padding: 8px; border-radius: 999px;
+  background: var(--panel); border: 1px solid var(--line); backdrop-filter: blur(10px); box-shadow: 0 10px 30px #0008; opacity: 0; pointer-events: none; transition: opacity .3s; }
+.safecol #ctrlBar { left: calc((100% - var(--col)) / 2); }
+.mouse:is([data-phase="playing"], [data-phase="paused"], [data-phase="upnext"]) #ctrlBar { opacity: 1; pointer-events: auto; }
+#ctrlBar button { font: 700 18px system-ui, sans-serif; color: var(--text); background: #ffffff12; border: 1px solid var(--line); border-radius: 999px; padding: 11px 20px; cursor: pointer; white-space: nowrap; }
+#ctrlBar button:hover { background: #ffffff26; }
+#ctrlBar button.armed { background: var(--red); border-color: var(--red); color: #fff; }
+#ctrlBar .up { display: none; } #ctrlBar .pl { display: inline-block; }
+[data-phase="upnext"] #ctrlBar .up { display: inline-block; } [data-phase="upnext"] #ctrlBar .pl { display: none; }

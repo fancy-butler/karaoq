@@ -225,9 +225,25 @@
       const r = await fetch(url); const j = await r.json();
       if (!r.ok) throw new Error(j.error || 'Search failed');
       lastResults = isLink ? [j] : j;
+      morePage = isLink || !j.length ? -1 : 1; moreQ = q; moreKaraoke = $('#karaoke').checked;
       renderResults();
     } catch (err) { box.innerHTML = `<p class="hint">😬 ${esc(err.message)}</p>`; }
   };
+  // "Next results": the next page of the same search, added under what's already showing
+  let morePage = -1, moreQ = '', moreKaraoke = true;
+  async function loadMore(btn) {
+    btn.disabled = true; btn.textContent = 'Loading…';
+    try {
+      const r = await fetch(`/api/search?q=${encodeURIComponent(moreQ)}&karaoke=${moreKaraoke ? 1 : 0}&page=${morePage}`); const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'Search failed');
+      const seen = new Set(lastResults.map(v => v.videoId));
+      const fresh = j.filter(v => !seen.has(v.videoId));
+      lastResults = [...lastResults, ...fresh];
+      morePage = fresh.length && morePage < 5 ? morePage + 1 : -1;
+      renderResults();
+      if (!fresh.length) toast('No more results — try different words');
+    } catch (err) { toast(err.message, 'bad'); btn.disabled = false; btn.textContent = 'Next results ›'; }
+  }
   function renderResults() {
     const box = $('#results');
     if (!lastResults.length) { box.innerHTML = '<p class="hint">Nothing found. Try the artist name too.</p>'; return; }
@@ -238,9 +254,11 @@
         <div class="meta"><div class="t">${esc(v.title)}</div><div class="s">${esc(v.channel)}${v.duration ? ' · ' + fmt(v.duration) : ''}${queued.has(v.videoId) ? ' · <span class="dl ok">in queue</span>' : ''}${looksSingable(v) ? '' : ' · <span class="dl warn" title="Title doesn\'t say karaoke or lyrics — may have vocals and no lyrics">⚠ maybe no lyrics</span>'}</div></div>
         <div class="acts"><button class="ghost" data-for="${i}" title="Add for someone else">👤</button><button data-add="${i}" title="Add">＋</button></div>
       </div>`).join('');
+    if (morePage > 0) box.insertAdjacentHTML('beforeend', `<button class="ghost more" id="moreResults">Next results ›</button>`);
   }
   $('#results').onclick = async e => {
     const b = e.target.closest('button'); if (!b) return;
+    if (b.id === 'moreResults') return loadMore(b);
     const v = lastResults[b.dataset.add ?? b.dataset.for];
     if (!v) return;
     let singer = myName, partner = '';

@@ -428,7 +428,7 @@
   document.addEventListener('mousemove', () => {
     document.body.classList.remove('hidecursor'); app.classList.add('mouse');
     clearTimeout(mouseT);
-    mouseT = setTimeout(() => { if (!app.classList.contains('menu')) { document.body.classList.add('hidecursor'); app.classList.remove('mouse'); } }, 3000);
+    mouseT = setTimeout(() => { if (!app.classList.contains('menu') && !$('#ctrlBar').matches(':hover')) { document.body.classList.add('hidecursor'); app.classList.remove('mouse'); } }, 3000);
   });
   function setMenu(open) { app.classList.toggle('menu', open); document.body.classList.toggle('menuopen', open); if (open) $('#menuPanel button').focus(); }
   // skin chrome: the arcade "1P START" and the desktop "Start" button open the menu
@@ -456,6 +456,7 @@
     if (m === 'add') openDrawerAt('');
     if (m === 'awards') showAwards((KQ.state && KQ.state.awards) || []);
     if (m === 'settings') openDrawerAt('#settings');
+    if (m === 'skip') { if (st && st.current) doAct('skip', {}, 'Skipped'); return; }
     if (m === 'join') { joinHidden = !joinHidden; if (st) render(st); toast(joinHidden ? 'Join code hidden — J brings it back' : 'Join code showing'); }
     if (m === 'queue') { sidePinned = !sidePinned; if (st) render(st); }
     if (m === 'help') { if (!$('#helpAbout').innerHTML) KQ.aboutHtml().then(h => { $('#helpAbout').innerHTML = h; }); app.classList.add('help'); }
@@ -509,6 +510,30 @@
       if (Date.now() - skipArmed < 2000) { skipArmed = 0; return doAct('skip', {}, 'Skipped'); }
       skipArmed = Date.now(); toast(`Press S again to skip ${who(st.current)}`);
     }
+  });
+
+  // On-screen controls (appear with the mouse): restart / pause / skip during a song, start / not here before one.
+  // Skip asks for a second click so a stray click can't end someone's song.
+  let ctrlSkipT = null;
+  $('#ctrlBar').addEventListener('click', e => {
+    const b = e.target.closest('[data-c]'); if (!b) return; e.stopPropagation();
+    const st = KQ.state; if (!st) return toast('Still starting up — one moment…');
+    const c = b.dataset.c;
+    if (c === 'restart') return doAct('restart');
+    if (c === 'pause') return doAct(st.phase === 'paused' ? 'resume' : 'pause');
+    if (c === 'start') return doAct('startNow');
+    if (c === 'defer') return doAct('defer', {}, 'Not here — next person is up');
+    if (c === 'skip') {
+      if (!st.current) return;
+      if (b.classList.contains('armed')) { clearTimeout(ctrlSkipT); b.classList.remove('armed'); b.textContent = '⏭ Skip song'; return doAct('skip', {}, 'Skipped'); }
+      b.classList.add('armed'); b.textContent = `Skip ${who(st.current)}? Click again`;
+      clearTimeout(ctrlSkipT); ctrlSkipT = setTimeout(() => { b.classList.remove('armed'); b.textContent = '⏭ Skip song'; }, 3500);
+    }
+  });
+  KQ.on('state', st => {
+    const p = $('#ctrlPause'); if (p) p.textContent = st.phase === 'paused' ? '▶ Resume' : '⏸ Pause';
+    const ms = $('#menuSkip'); if (ms) ms.hidden = !st.current;
+    app.dataset.phase = st.phase;
   });
 
   KQ.on('state', render);
