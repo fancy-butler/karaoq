@@ -155,12 +155,17 @@
     setTimeout(() => el.remove(), 4200);
   }
   KQ.on('react', m => { floatReaction(m.emoji); judge(); });
-  // Dance Stage skin: every reaction from the crowd scores a judgement
-  let judgeT = null;
+  // Dance Stage skin: every reaction from the crowd is a "step" — judgement, combo, score
+  let judgeT = null, combo = 0, score = 0, lastSongKey = '';
+  function showCombo() {
+    const c = $('#skinCombo'); if (c) { c.innerHTML = combo > 1 ? `<b>${combo}</b><small>COMBO</small>` : ''; c.classList.remove('bump'); void c.offsetWidth; if (combo > 1) c.classList.add('bump'); }
+    const sc = $('#skinScore'); if (sc) sc.textContent = String(score).padStart(7, '0');
+  }
   function judge() {
     const j = $('#skinJudge'); if (!j || document.body.dataset.theme !== 'rhythm') return;
-    const words = [['MARVELOUS!!', 'm'], ['PERFECT!!', 'p'], ['PERFECT!!', 'p'], ['GREAT!', 'g'], ['COMBO ×' + (2 + Math.floor(Math.random() * 40)), 'c']];
-    const [w, c] = words[Math.floor(Math.random() * words.length)];
+    const r = Math.random();
+    const [w, c, pts] = r < .2 ? ['MARVELOUS', 'm', 3000] : r < .65 ? ['PERFECT', 'p', 2000] : ['GREAT', 'g', 1000];
+    combo++; score = Math.min(9999999, score + pts + combo * 10); showCombo();
     j.textContent = w; j.className = 'judge ' + c; void j.offsetWidth; j.classList.add('hit');
     clearTimeout(judgeT); judgeT = setTimeout(() => j.classList.remove('hit'), 900);
   }
@@ -229,7 +234,11 @@
     document.body.dataset.phase = st.phase;
     document.body.dataset.fx = st.settings.skinFx === false ? '0' : '1';
     // Desktop '95 taskbar: what's on
-    const tk = $('#skinTask'); if (tk) tk.textContent = st.current ? `🎤 ${who(st.current)} — ${clean(st.current.title)}` : st.queue[0] ? `⏭ Up next: ${who(st.queue[0])}` : '🎤 KARAO-Q';
+    const nowTxt = st.current ? `🎤 ${who(st.current)} — ${clean(st.current.title)}` : st.queue[0] ? `⏭ Up next: ${who(st.queue[0])}` : '🎤 KARAO-Q';
+    const dmdTxt = st.current ? `NOW SINGING: ${who(st.current)}` : st.queue[0] ? `UP NEXT: ${who(st.queue[0])}` : 'INSERT COIN';
+    document.querySelectorAll('#skin .skinnow').forEach(el => { const t = el.closest('.dmd') ? dmdTxt.toUpperCase() : nowTxt; if (el.textContent !== t) el.textContent = t; });
+    const songKey = st.current ? st.current.id + '|' + st.current.singer : '';
+    if (songKey !== lastSongKey) { lastSongKey = songKey; combo = 0; showCombo(); }
     renderAttract(st);
 
     // songs sung tonight
@@ -319,6 +328,8 @@
   function setMenu(open) { app.classList.toggle('menu', open); document.body.classList.toggle('menuopen', open); if (open) $('#menuPanel button').focus(); }
   // skin chrome: the arcade "1P START" and the desktop "Start" button open the menu
   document.querySelectorAll('#skin [data-skin="menu"]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); setMenu(!app.classList.contains('menu')); }));
+  // desktop skins: menu-bar items run the matching menu entry
+  document.querySelectorAll('#skin [data-skin-m]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); const t = $(`#menuPanel [data-m="${b.dataset.skinM}"]`); if (t) t.click(); }));
   const clockTick = () => { const c = $('#skinClock'); if (c) c.textContent = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); };
   clockTick(); setInterval(clockTick, 15000);
   $('#menuPill').onclick = e => { e.stopPropagation(); setMenu(!app.classList.contains('menu')); };
