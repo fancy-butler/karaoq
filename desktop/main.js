@@ -65,6 +65,41 @@ function waitForServer(port, ms = 25000) {
   });
 }
 
+// Linux AppImage: AppImages don't install a menu entry or icon by themselves, so docks and launchers
+// (Cairo Dock, Plank, the app menu…) show nothing. Add/refresh one on every launch, pointing at wherever
+// the AppImage lives now. Removing KARAO-Q = delete the AppImage and these two files.
+if (process.platform === 'linux') {
+  app.commandLine.appendSwitch('class', 'karaoq'); // X11 window class, matched by StartupWMClass below
+  try { if (app.setDesktopName) app.setDesktopName('karaoq.desktop'); } catch { } // Wayland app id → same entry
+}
+function linuxDesktopEntry() {
+  if (process.platform !== 'linux' || !process.env.APPIMAGE) return;
+  try {
+    const os = require('os');
+    const data = process.env.XDG_DATA_HOME || path.join(os.homedir(), '.local', 'share');
+    const iconDir = path.join(data, 'icons', 'hicolor', '256x256', 'apps'); // assets/icon.png is 256×256
+    fs.mkdirSync(iconDir, { recursive: true });
+    const icon = path.join(iconDir, 'karaoq.png');
+    const src = path.join(appRoot, 'assets', 'icon.png');
+    if (!fs.existsSync(icon) || fs.statSync(icon).size !== fs.statSync(src).size) fs.copyFileSync(src, icon);
+    const q = s => `"${s.replace(/(["`$\\])/g, '\\$1')}"`;
+    const entry = ['[Desktop Entry]', 'Type=Application', 'Name=KARAO-Q', 'GenericName=Karaoke party',
+      'Comment=Party karaoke with a shared phone queue', `Exec=${q(process.env.APPIMAGE)} %U`, `TryExec=${process.env.APPIMAGE}`,
+      `Icon=karaoq`, 'Terminal=false', 'Categories=AudioVideo;Audio;Video;', 'Keywords=karaoke;party;sing;youtube;', 'StartupWMClass=karaoq',
+      'X-AppImage-Integrate=false', ''].join('\n');
+    const appsDir = path.join(data, 'applications');
+    fs.mkdirSync(appsDir, { recursive: true });
+    const file = path.join(appsDir, 'karaoq.desktop');
+    let old = ''; try { old = fs.readFileSync(file, 'utf8'); } catch { }
+    if (old !== entry) {
+      fs.writeFileSync(file, entry, { mode: 0o755 });
+      log(`menu entry written: ${file} → ${process.env.APPIMAGE}`);
+      require('child_process').execFile('update-desktop-database', [appsDir], () => { });
+      require('child_process').execFile('gtk-update-icon-cache', ['-f', '-t', path.join(data, 'icons', 'hicolor')], () => { });
+    }
+  } catch (e) { log(`menu entry: ${e.message}`); }
+}
+
 // Linux: most desktop distros with ufw block incoming connections, so phones can't reach us.
 // Ask once, with the system's normal password dialog (pkexec). Windows and macOS prompt by themselves.
 function linuxFirewall(port) {
@@ -280,6 +315,7 @@ app.whenReady().then(async () => {
   // Keep the screen awake while KARAO-Q is open — between songs nothing is "playing", so the computer
   // would otherwise dim or sleep the display mid-party. Released the moment KARAO-Q closes.
   try { powerSaveBlocker.start('prevent-display-sleep'); } catch { }
+  linuxDesktopEntry();
   start(); setTimeout(checkForUpdates, 15000);
 });
 app.on('window-all-closed', () => app.quit());

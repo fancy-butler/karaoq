@@ -13,7 +13,7 @@ Grab the installer for your computer from the **[latest release](https://github.
 |---|---|---|
 | **Windows** | `KARAO-Q-…-win-x64.exe` | If a blue "Windows protected your PC" box shows, click **More info → Run anyway**. Allow the firewall prompt so phones can connect. |
 | **macOS** | `KARAO-Q-…-mac-arm64.dmg` (M1 or newer) or `KARAO-Q-…-mac-x64.dmg` (Intel; needs macOS 12 Monterey or newer) | Drag to Applications. The app isn't Apple-signed, so macOS blocks the first launch — see **[First launch on a Mac](#first-launch-on-a-mac)** below. |
-| **Linux** | `KARAO-Q-…-linux-x86_64.AppImage` | Right-click → Properties → allow executing, then double-click. You may be asked for your password once so phones can get through the firewall. |
+| **Linux** | `KARAO-Q-…-linux-x86_64.AppImage` | Right-click → Properties → allow executing, then double-click. You may be asked for your password once so phones can get through the firewall. The first time it opens, KARAO-Q adds itself to your app menu with its icon, so docks and launchers can find it. |
 
 ### First launch on a Mac
 KARAO-Q isn't signed with a paid Apple developer certificate, so macOS is suspicious of it once:
