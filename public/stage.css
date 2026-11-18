@@ -383,3 +383,16 @@ body[data-theme="minimal"] .big-qr { box-shadow: none; }
 
 /* [hidden] must win over component display rules (menu buttons, cards…) */
 [hidden] { display: none !important; }
+
+/* ---- smooth playback: no backdrop blur on anything while a video plays ---- */
+:is(.playing, .paused) :is(#nowTag, #ticker, #joinCorner, #ctrlBar, #menuPill, #menuPanel, #side, #safeCol) { backdrop-filter: none !important; }
+
+/* ---- lyrics: sized to the video area (not the whole TV), wrap instead of running off the edge ---- */
+#lyrics { width: min(1500px, 92%); bottom: 6cqh; }
+#lyrics .l { overflow-wrap: anywhere; text-wrap: balance; }
+#lyrics .cur { font-size: clamp(24px, 4.4cqw, 76px); }
+#lyrics .prev { font-size: clamp(16px, 2.1cqw, 36px); }
+#lyrics .next { font-size: clamp(18px, 2.5cqw, 42px); }
+.safecol #lyrics { left: calc((100% - var(--col)) / 2); width: min(1500px, calc(94% - var(--col))); }
+.side #lyrics { left: calc((100% - min(430px, 34vw)) / 2); width: min(1500px, calc(94% - min(430px, 34vw))); }
+.safecol #lyrics .cur { font-size: clamp(22px, 4cqw, 70px); }

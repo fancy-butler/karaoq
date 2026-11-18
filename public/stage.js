@@ -379,7 +379,7 @@
   }, 8000);
 
   // ---------- OLED care: overlays drift a few pixels; a dark screensaver after 5 idle minutes ----------
-  let lastWake = Date.now(), lastSig = '';
+  let lastWake = Date.now(), lastSig = '', sx = 0, sy = 0;
   const wake = () => { lastWake = Date.now(); app.classList.remove('saver'); };
   document.addEventListener('mousemove', wake); document.addEventListener('keydown', wake);
   KQ.on('state', st => { const sig = st.phase + st.queue.length + (st.current ? st.current.id : ''); if (sig !== lastSig) { lastSig = sig; wake(); } });
@@ -389,8 +389,10 @@
     app.style.setProperty('--px', care ? `${Math.round(Math.random() * 12 - 6)}px` : '0px');
     app.style.setProperty('--py', care ? `${Math.round(Math.random() * 12 - 6)}px` : '0px');
     // skin frames and their chrome (bezels, signs, taskbars) move as one, a few pixels at a time
-    document.body.style.setProperty('--sx', care ? `${Math.round(Math.random() * 8 - 4)}px` : '0px');
-    document.body.style.setProperty('--sy', care ? `${Math.round(Math.random() * 8 - 4)}px` : '0px');
+    // one pixel at a time (like a TV's pixel shift), wandering within ±3 px
+    const step = v => care ? Math.max(-3, Math.min(3, v + (Math.random() < .5 ? -1 : 1))) : 0;
+    sx = step(sx); sy = step(sy);
+    document.body.style.setProperty('--sx', sx + 'px'); document.body.style.setProperty('--sy', sy + 'px');
   }, 90000);
   setInterval(() => {
     const st = KQ.state; if (!st) return;

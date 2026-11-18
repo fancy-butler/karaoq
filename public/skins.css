@@ -571,12 +571,14 @@ body[data-theme="laser"] .uv .bolt { opacity: .85; }
 
 /* ---- Amber: the whole screen — video, photos, QR, emoji — goes through one amber phosphor filter.
    Switch "Screen effects" off to drop it (and the scanlines) if an old machine struggles. */
-body[data-theme="amber"][data-fx="1"] #app { filter: url(#kqAmber); }
-body[data-theme="amber"][data-fx="1"] #vid { filter: contrast(1.15) brightness(1.05); }
+body[data-theme="amber"][data-fx="1"] #app { filter: grayscale(1) contrast(1.08); }
+body[data-theme="amber"][data-fx="1"] #skin .scan { mix-blend-mode: multiply;
+  background: repeating-linear-gradient(transparent 0 2px, #00000038 2px 4px), radial-gradient(ellipse at center, transparent 62%, #0009 100%), #ffb000; }
+body[data-theme="amber"] :is(#app, #app *) { backdrop-filter: none !important; }
 
 /* ---- OLED care for the skins: the frame and its chrome drift a few pixels together, and dim while a song plays */
-body[data-oled="1"] #skin > *:not(svg) { translate: var(--sx, 0) var(--sy, 0); transition: translate 4s ease-in-out, filter 1.5s; }
-body[data-oled="1"][data-skin="1"] #app { translate: var(--sx, 0) var(--sy, 0); transition: translate 4s ease-in-out; }
+body[data-oled="1"] #skin > *:not(svg) { translate: var(--sx, 0) var(--sy, 0); transition: filter 1.5s; }
+body[data-oled="1"][data-skin="1"] #app { translate: var(--sx, 0) var(--sy, 0); }
 body[data-oled="1"][data-phase="playing"] #skin > *:not(svg, .scan, .pf, .judge) { filter: brightness(.7); }
 
 /* ---------------------------------------------------------------- 🎧 MP3 Player '98 — classic skinnable-player windows */

@@ -53,7 +53,14 @@
       const from = cur ? cur.t : 0, pct = Math.max(0, Math.min(100, 100 * (t - from) / Math.max(1, nxt.t - from)));
       if (nxt.t - t < 8) curText = `<span class="bar"><i style="width:${pct.toFixed(1)}%"></i></span>`; else curText = '♪';
     } else curText = KQ.esc(curText);
-    const set = (sel, html) => { const el = $(`#lyrics ${sel}`); if (el._h !== html) { el._h = html; el.innerHTML = html; } };
+    // a line too long for its space gets a smaller font — never cut off (current line: up to 3 rows, others 2)
+    const fit = (el, rows) => {
+      el.style.fontSize = '';
+      let fs = parseFloat(getComputedStyle(el).fontSize);
+      const lh = () => parseFloat(getComputedStyle(el).lineHeight) || fs * 1.25;
+      while (fs > 14 && el.scrollHeight > lh() * rows + 2) { fs = Math.floor(fs * 0.9); el.style.fontSize = fs + 'px'; }
+    };
+    const set = (sel, html) => { const el = $(`#lyrics ${sel}`); if (el._h !== html || el._w !== el.clientWidth) { el._h = html; el._w = el.clientWidth; el.innerHTML = html; fit(el, sel === '.cur' ? 3 : 2); } };
     set('.prev', i > 0 ? KQ.esc(L[i - 1].text) : '');
     set('.cur', curText);
     set('.next', nxt ? KQ.esc(nxt.text) : '');
