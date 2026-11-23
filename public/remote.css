@@ -286,3 +286,4 @@ body[data-theme="amp"] .brand { font-family: "KQ Term", monospace; font-size: 24
 #results .more { display: block; width: 100%; margin: 10px 0 4px; padding: 14px; font-size: 16px; font-weight: 800; border: 1px solid var(--line); border-radius: 12px; }
 #now .bar.seekable { height: 14px; margin: 8px 0 2px; border-radius: 7px; cursor: pointer; position: relative; }
 #now .bar.seekable::after { content: "tap to jump"; position: absolute; right: 6px; top: -1px; font-size: 10px; color: #fff9; pointer-events: none; }
+.keyrow button[data-a="novoxNow"] { width: auto; padding: 0 16px; font-size: 15px; white-space: nowrap; }

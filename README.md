@@ -6,6 +6,8 @@ There are no ads to block. Songs are fetched with **yt-dlp** and played from a l
 
 Works on **Linux, Windows and macOS**.
 
+![The big screen mid-song, with the phone remote beside it](docs/screenshots/hero.jpg)
+
 ## ⬇ Download (easiest)
 Grab the installer for your computer from the **[latest release](https://github.com/fancy-butler/karaoq/releases/latest)**. Everything is built in, so there's nothing else to install:
 
@@ -109,12 +111,31 @@ The queue is **saved to disk on every change**. You can refresh the browser, clo
 **Between songs** the big screen shows a big **UP NEXT: NAME** screen with a countdown (15 s by default, adjustable in ⚙ Settings) and a chime. Set the countdown to "None" if you'd rather the host hit Start every time.
 
 ## Look & sound
-- **Themes** (⚙ Settings → Look): Neon, **Synthwave '84** (sunset + neon grid), Dive Bar, Retro Arcade, Minimal. Phones follow the big screen's theme.
+- **Themes** (phone → ☰ → Party settings → Theme): five everyday looks (Neon, Synthwave '84, Dive Bar, Retro Arcade, Minimal) and eleven party skins that frame the big screen: Amber Terminal, Arcade Cabinet, Desktop '92, Desktop '95, Aero, Dance Stage, Graffiti Radio, Arcade Hall, Laser Zone, Diner and MP3 Player '98. Phones follow the big screen's theme. "Screen effects" in More settings turns off scanlines, glow and the amber filter.
 - **Title card:** each song opens with a 3-second card (face, name, song, genre) and a little ta-da.
 - **Even volumes:** new downloads are loudness-matched (EBU R128, −14 LUFS), so songs play at the same level.
 - **Attract mode:** the idle screen keeps the QR up and rotates through tonight's leaderboard, the genre mix, *Haven't sung yet 👀*, and tips.
 - **OLED care:** on-screen cards drift a few pixels every 90 s, and after 5 idle minutes the screen goes dark with a small drifting "scan to sing" card.
 - **Reactions:** 20 emoji, with six in the quick row and ＋ for the rest.
+
+### Screenshots
+
+**The idle screen in all 16 themes.** Guests scan the QR to join:
+
+![All 16 themes](docs/screenshots/themes.jpg)
+
+**A few of the skins mid-song.** The cards sit beside the video so lyrics stay clear:
+
+![Arcade Cabinet, Desktop '95, Diner and MP3 Player '98 during a song](docs/screenshots/themes-playing.jpg)
+
+**On the phone:** now playing (reactions, key, vocal remover), the queue, and search:
+
+![Phone remote: now playing, queue and search](docs/screenshots/phones.jpg)
+
+**Big screen:** "up next" countdown with the queue open, and the on-screen controls that appear with the mouse:
+
+![Up next countdown with the queue](docs/screenshots/big-screen-upnext.jpg)
+![On-screen controls with a seek bar](docs/screenshots/big-screen-controls.jpg)
 
 ## Fun stuff
 - **Can't decide what to sing?** The Search tab shows:
